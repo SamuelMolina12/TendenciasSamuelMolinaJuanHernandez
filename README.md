@@ -1,4 +1,3 @@
-# TendenciasSamuelMolinaJuanHernandez
 # Tendencias de desarollo de software
 ## Integrantes del equipo
 - Juan Camilo Hernandez Chavarria
