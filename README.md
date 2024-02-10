@@ -1,8 +1,8 @@
 # TendenciasSamuelMolinaJuanHernandez
 # Tendencias de desarollo de software
 ## Integrantes del equipo
--Juan Camilo Hernandez Chavarria
--Samuel Molina Parra 
+- Juan Camilo Hernandez Chavarria
+- Samuel Molina Parra 
 ## Tecnología en que se desarolló
 - Phyton
 -
