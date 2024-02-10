@@ -4,7 +4,7 @@
 -Juan Camilo Hernandez Chavarria
 -Samuel Molina Parra 
 ## Tecnología en que se desarolló
--Phyton
+- Phyton
 -
 # Nombre del proyecto
 -
