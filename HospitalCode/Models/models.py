@@ -1,9 +1,10 @@
 import datetime
 
-class person():
-     def __init__(self,name,id,mail,telephone,birth,address,role,username,password):
+class Employer():
+     def __init__(self,name,id,genre,mail,telephone,birth,address,role,username,password):
         self.name=name
         self.id=id
+        self.genre=genre
         self.mail=mail
         self.telephone=telephone
         self.birth=birth
@@ -12,22 +13,33 @@ class person():
         self.username=username
         self.password=password
 
-class emergencyContact():
+class Patient():
+     def __init__(self,name,id,mail,telephone,birth,address,emergencyContact,clinicHistory):
+        self.name=name
+        self.id=id
+        self.mail=mail
+        self.telephone=telephone
+        self.birth=birth
+        self.address=address
+        self.emergencyContact=emergencyContact
+        self.clinicHistory=clinicHistory
+
+class EmergencyContact():
     def __init__(self,name,relationship,telephone):
         self.name=name
         self.relationship=relationship
         self.telephone=telephone
 
         
-class policy():
+class Policy():
     def __init__(self,insuranceCompany,policynumber,statePolicy,termPolicy):
         
         self.insuaranceCompany=insuranceCompany
         self.policynumber=policynumber
         self.statePolicy=statePolicy
         self.termPolicy=termPolicy
-class billing():
-    def __init__(self,name,age,id,doctor,insuranceCompany,policynumber,statePolicy,termPolicy):
+class Billing():
+    def __init__(self,name,age, id,doctor,insuranceCompany,policynumber,statePolicy,termPolicy):
         self.name=name
         self.age=age
         self.id=id
@@ -37,7 +49,7 @@ class billing():
         self.statePolicy=statePolicy
         self.termPolicy=termPolicy
 
-class diagnostic():
+class Diagnostic():
     def __init__(self,patient,description,medicine,cost,dose,procedure,exam):
        self.patient=patient
        self.description=description
@@ -47,7 +59,7 @@ class diagnostic():
        self.procedure=procedure
        self.exam=exam 
 
-class historyVisits():
+class HistoryVisits():
     def __init__(self,pacient,bloodPressure,temperature,pulse,oxygenBlood):
         self.pacient=pacient
         self.bloodPreasurre=bloodPressure
@@ -56,7 +68,7 @@ class historyVisits():
         self.oxygenBlood=oxygenBlood
         self.date=datetime.datetime.now
 
-class clinicHistory():
+class ClinicHistory():
     def __init__(self,doctorId,reason,symptoms,billing):
         self.date=datetime.datetime.now
         self.doctorId=doctorId
@@ -64,7 +76,7 @@ class clinicHistory():
         self.symptoms=symptoms
         self.billing=billing
                   
-class procedure():
+class Procedure():
     def __init__ (self,orderNumber,id,quantity,frequency,assistance,specialistId,item):
         self.orderNumber=orderNumber
         self.id=id
@@ -74,7 +86,7 @@ class procedure():
         self.specialistId=specialistId
         self.item=item
 
-class  diagnosticHelp():
+class  DiagnosticHelp():
     def __init__(self,orderNumber,id,quantity,assistance,specialistId,item):
         self.orderNumber=orderNumber
         self.id=id
@@ -82,4 +94,16 @@ class  diagnosticHelp():
         self.assistance=assistance
         self.specialistId=specialistId
         self.item=item
-              
+
+
+class Hospital():
+    def __init__(self):
+        self.persons = []  
+        self.clinicHistory = []  
+        self.diagnostic = []  
+        self.diagnosticHelp = []  
+        self.procedure = []  
+        self.historyVisits = [] 
+        self.billing = []  
+        self.policy = []  
+      
