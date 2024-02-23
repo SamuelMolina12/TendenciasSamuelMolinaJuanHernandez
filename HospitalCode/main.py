@@ -1,8 +1,13 @@
 from Models import models
+from Service import LoginService
+from Menus import AdminMenu
+from Validators import typeValidator
 
-hospital=models.hospital()
 
+hospital=models.Hospital()
 
+admin=models.Employer("samuel",1,"masculino","samuelgmail.com","30004399", "22/09/2002","calle 64A", "admin","samuelito","mini")
+hospital.persons.append(admin)
 
 initialMenu="1. iniciar sesion\n0. cerrar programa\n"
 
