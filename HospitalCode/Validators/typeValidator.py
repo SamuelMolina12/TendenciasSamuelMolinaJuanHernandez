@@ -25,5 +25,5 @@ def PasswordValidator(password,element):
     if not re.search(r"[!@#$%^&*()_+{}[\]:;<>,.?/~`]", password):
         raise ValueError("La contraseña debe contener al menos un caracter especial")
 
-    return True
+    return password
     

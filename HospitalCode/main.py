@@ -6,9 +6,14 @@ from Validators import typeValidator
 
 hospital=models.Hospital()
 
-admin=models.Employer("samuel",1,"masculino","samuelgmail.com","30004399", "22/09/2002","calle 64A", "admin","samuelito","mini")
+admin=models.Employer("samuel",1,"masculino","samuelgmail.com","30004399", "22/09/2002","calle 64A", "admin","sam","12")
 hospital.persons.append(admin)
-
+doctor=models.Employer("juan",2,"masculino","juangmail.com","20004399", "24/89/2004","calle 64A", "doctor","ju","13")
+hospital.persons.append(doctor)
+nurs=models.Employer("soto",3,"masculino","juanmigmail.com","33004399", "24/30/2005","carrera 64A", "enfermera","sot","14")
+hospital.persons.append(nurs)
+suport=models.Employer("julia",4,"femenino","juliagmail.com","10002343", "21/89/2006","calle 53A", "soporte","soporte","15")
+hospital.persons.append(suport)
 initialMenu="1. iniciar sesion\n0. cerrar programa\n"
 
 

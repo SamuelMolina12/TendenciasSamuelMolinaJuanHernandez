@@ -20,3 +20,9 @@ def createAdmin(hospital,name,id,genre,mail,telephone,birth,address,role,usernam
         raise Exception("ya existe un usuario con ese user name")
     user=models.Employer(name,id,genre,mail,telephone,birth,address,role,username,password)
     hospital.persons.append(user)
+
+def DeleteUser(hospital,id):
+    for user in hospital.persons:
+        if user.id == id:
+            return True
+    return False
