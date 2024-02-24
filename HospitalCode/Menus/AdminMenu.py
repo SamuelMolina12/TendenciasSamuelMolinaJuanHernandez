@@ -94,5 +94,8 @@ def showUser(hospital,role):
         print(str(error))
 
 def DeleteUser(hospital, id):
-    id = input("Ingrese la identificación del usuario que desea eliminar: ")
-    personTypeValidator.DeleteUser(hospital,id)
+    try:
+        id = input("Ingrese la identificación del usuario que desea eliminar: ")
+        personTypeValidator.DeleteUser(hospital, id)
+    except Exception as error:
+        print(str(error))

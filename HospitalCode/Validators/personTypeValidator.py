@@ -7,13 +7,12 @@ def createUser(hospital,role):
     TextValidator(name,"nombre de " + role  + "\n")
     id=NumberValidator(input("ingrese la cedula  " + "\n"), "cedula de " + role )
     username=input("ingrese el usuario  " +  "\n")
-    TextValidator(name,"usuario de " + role  + "\n" ) 
+    TextValidator(username,"usuario de " + role  + "\n" ) 
     genre=input("ingrese el genero " +  "\n")
-    TextValidator(name, "genero de " +role  + "\n")
+    TextValidator(genre, "genero de " +role  + "\n")
     mail=input("ingrese el correo " +  "\n")
-    TextValidator(name, "correo de " +role  + "\n")
-    telephone=input("ingrese el numero tlefonico "   + "\n")
-    TextValidator(name, "telefono  de " +role  + "\n")
+    TextValidator(mail, "correo de " +role  + "\n")
+    telephone=NumberValidator(input("ingrese el numero telefonico " + "\n"),"fecha de nacimiento de" + role  )
     birth=NumberValidator(input("ingrese la fecha de nacimiento " + "\n"),"fecha de nacimiento de" + role  )
     address=input("ingrese la direccion " +  "\n")
     TextValidator(name, "direccion de  " +role  + "\n")
@@ -40,12 +39,15 @@ def ShowUsers(hospital,role):
 
            
 def DeleteUser(hospital, id):
-    id = int(id)  
+    id = int(id)
     if adminService.DeleteUser(hospital, id):
-        for i, user in enumerate(hospital.persons):
-            if user.id == id:
-                del hospital.persons[i]
-                print("Usuario eliminado exitosamente.")
-                return
+        DeleteUser2(hospital, id)
     else:
         print("No se encontró ningún usuario con esa identificación.")
+
+def DeleteUser2(hospital, id):
+    for i, user in enumerate(hospital.persons):
+        if user.id == id:
+            del hospital.persons[i]
+            print("Usuario eliminado exitosamente.")
+            return
