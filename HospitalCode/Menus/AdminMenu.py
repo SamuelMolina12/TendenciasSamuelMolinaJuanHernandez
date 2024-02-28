@@ -1,31 +1,31 @@
-from Validators import personTypeValidator
+from Validators import PersonTypeValidator
 
 
 def adminMenu(hospital,user):
     while True:
         option=input("1.Gestionar administrador \n2.Gestionar doctor \n3.Gestionar enfermera \n4.Gestionar personal de soporte de informacion\n5.Cerrar sesion\n")
         if option=="1":
-            ManageAdmin(hospital)
+            manageAdmin(hospital)
         if option=="2":
-            ManageDoctor(hospital)
+            manageDoctor(hospital)
         if option == "3":
-            ManageNurse(hospital)
+            manageNurse(hospital)
         if option =="4":
-            ManageSupport(hospital)
+            manageSupport(hospital)
         if option == "5":
             print("cerrando sesion")
             return           
         
 
-def ManageAdmin(hospital):
+def manageAdmin(hospital):
     while True:
         option=input("1.Crear administrador \n2.Editar administrador\n3.Eliminar administrador \n4.Mostrar administradores \n5.Cancelar\n")
         if option=="1":
            createUser(hospital,"admin")
         if option=="2":
-           pass
+           updateUser (hospital,id)
         if option == "3":
-           DeleteUser(hospital, id)
+           deleteUser(hospital, id)
         if option == "4":
           showUser(hospital,"admin")
         if option == "5":
@@ -33,15 +33,15 @@ def ManageAdmin(hospital):
             return           
         
             
-def ManageDoctor(hospital):
+def manageDoctor(hospital):
      while True:
         option=input("1.Crear doctor \n2.Editar doctor\n3.Eliminar doctor \n4.Mostrar doctores \n5.Cancelar\n")
         if option=="1":
             createUser(hospital,"doctor")
         if option=="2":
-         print("2")
+            updateUser (hospital,id)
         if option == "3":
-           DeleteUser(hospital, id)
+           deleteUser(hospital, id)
         if option == "4":
           showUser(hospital,"doctor")
         if option == "5":
@@ -49,7 +49,7 @@ def ManageDoctor(hospital):
             return  
         
 
-def ManageNurse(hospital):
+def manageNurse(hospital):
      while True:
         option=input("1.Crear enfermera \n2.Editar enfermera \n3.Eliminar enfermera \n4.Mostrar enfermera \n5.Cancelar\n")
         if option=="1":
@@ -57,22 +57,22 @@ def ManageNurse(hospital):
         if option=="2":
          print("2")
         if option == "3":
-           DeleteUser(hospital, id)
+           deleteUser(hospital, id)
         if option == "4":
           showUser(hospital,"enfermera")
         if option == "5":
           
             return  
         
-def ManageSupport(hospital):
+def manageSupport(hospital):
      while True:
         option=input("1.Crear soporte \n2.Editar soporte \n3.Eliminar soporte \n4.Mostrar soporte \n5.Cancelar\n")
         if option=="1":
             createUser(hospital,"soporte")
         if option=="2":
-         print("2")
+           updateUser (hospital,id)
         if option == "3":
-           DeleteUser(hospital, id)
+           deleteUser(hospital, id)
         if option == "4":
           showUser(hospital,"soporte")
         if option == "5":
@@ -82,20 +82,27 @@ def ManageSupport(hospital):
 
 def createUser(hospital,role):
     try:
-        personTypeValidator.createUser(hospital,role)
+        PersonTypeValidator.createUser(hospital,role)
         print("se ha creado el " + role)
     except Exception as error:
         print(str(error))
 
 def showUser(hospital,role):
     try:
-        personTypeValidator.ShowUsers(hospital,role)
+        PersonTypeValidator.ShowUsers(hospital,role)
     except Exception as error:
         print(str(error))
 
-def DeleteUser(hospital, id):
+def deleteUser(hospital, id):
     try:
         id = input("Ingrese la identificación del usuario que desea eliminar: ")
-        personTypeValidator.DeleteUser(hospital, id)
+        PersonTypeValidator.deleteUser(hospital, id)
+    except Exception as error:
+        print(str(error))
+
+def updateUser(hospital,id):
+    try:
+        id = input("Ingrese la identificación del usuario que desea actualizar: ")
+        PersonTypeValidator.updateUser(hospital, id)
     except Exception as error:
         print(str(error))
