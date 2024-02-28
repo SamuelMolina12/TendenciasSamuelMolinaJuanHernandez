@@ -1,7 +1,7 @@
 import datetime
 
 class Employer():
-     def __init__(self,name,id,genre,mail,telephone,birth,address,role,username,password):
+     def __init__(self,name,id,genre,mail,telephone,birth,address,role,userName,password):
         self.name=name
         self.id=id
         self.genre=genre
@@ -10,7 +10,7 @@ class Employer():
         self.birth=birth
         self.address=address
         self.role=role
-        self.username=username
+        self.userName=userName
         self.password=password
 
 class Patient():
@@ -38,6 +38,8 @@ class Policy():
         self.policynumber=policynumber
         self.statePolicy=statePolicy
         self.termPolicy=termPolicy
+
+        
 class Billing():
     def __init__(self,name,age, id,doctor,insuranceCompany,policynumber,statePolicy,termPolicy):
         self.name=name
@@ -49,15 +51,6 @@ class Billing():
         self.statePolicy=statePolicy
         self.termPolicy=termPolicy
 
-class Diagnostic():
-    def __init__(self,patient,description,medicine,cost,dose,procedure,exam):
-       self.patient=patient
-       self.description=description
-       self.medicine=medicine
-       self.cost=cost
-       self.dose=dose
-       self.procedure=procedure
-       self.exam=exam 
 
 class HistoryVisits():
     def __init__(self,pacient,bloodPressure,temperature,pulse,oxygenBlood):
@@ -68,32 +61,10 @@ class HistoryVisits():
         self.oxygenBlood=oxygenBlood
         self.date=datetime.datetime.now
 
-class ClinicHistory():
-    def __init__(self,doctorId,reason,symptoms,billing):
-        self.date=datetime.datetime.now
-        self.doctorId=doctorId
-        self.reason=reason
-        self.symptoms=symptoms
-        self.billing=billing
-                  
-class Procedure():
-    def __init__ (self,orderNumber,id,quantity,frequency,assistance,specialistId,item):
-        self.orderNumber=orderNumber
-        self.id=id
-        self.quantity=quantity
-        self.frequency=frequency
-        self.assistance=assistance
-        self.specialistId=specialistId
-        self.item=item
 
-class  DiagnosticHelp():
-    def __init__(self,orderNumber,id,quantity,assistance,specialistId,item):
-        self.orderNumber=orderNumber
-        self.id=id
-        self.quantity=quantity
-        self.assistance=assistance
-        self.specialistId=specialistId
-        self.item=item
+                  
+
+
 
 
 class Hospital():

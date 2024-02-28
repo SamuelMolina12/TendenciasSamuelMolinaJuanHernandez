@@ -1,18 +1,19 @@
 import re
 
-def TextValidator(string,element):
+
+def textValidator(string,element):
     if string==None or string=="":
         raise Exception(element + "no es un valor es valido")
 
-def NumberValidator(string,element):
-    TextValidator(string,element)
+def numberValidator(string,element):
+    textValidator(string,element)
     try:
         return int(string)
     except:
         raise Exception(element + " no es un numero valido")
 
 
-def PasswordValidator(password,element):
+def passwordValidator(password,element):
     if len(password) < 8:
         raise ValueError("La contraseña debe tener al menos 8 caracteres")
 
@@ -26,4 +27,3 @@ def PasswordValidator(password,element):
         raise ValueError("La contraseña debe contener al menos un caracter especial")
 
     return password
-    
