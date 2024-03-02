@@ -11,7 +11,7 @@ def adminMenu(hospital,user):
         if option == "3":
             manageNurse(hospital)
         if option =="4":
-            manageSupport(hospital)
+            manageAdminStaff(hospital)
         if option == "5":
             print("cerrando sesion")
             return           
@@ -64,17 +64,17 @@ def manageNurse(hospital):
           
             return  
         
-def manageSupport(hospital):
+def manageAdminStaff(hospital):
      while True:
-        option=input("1.Crear soporte \n2.Editar soporte \n3.Eliminar soporte \n4.Mostrar soporte \n5.Cancelar\n")
+        option=input("1.Crear PersonalAdministrativo \n2.Editar PersonalAdministrativo \n3.Eliminar PersonalAdministrativo \n4.Mostrar PersonalAdministrativo \n5.Cancelar\n")
         if option=="1":
-            createUser(hospital,"soporte")
+            createUser(hospital,"PersonalAdministrativo")
         if option=="2":
            updateUser (hospital,id)
         if option == "3":
            deleteUser(hospital, id)
         if option == "4":
-          showUser(hospital,"soporte")
+          showUser(hospital,"PersonalAdministrativo")
         if option == "5":
           
             return  
@@ -89,7 +89,7 @@ def createUser(hospital,role):
 
 def showUser(hospital,role):
     try:
-        PersonTypeValidator.ShowUsers(hospital,role)
+        PersonTypeValidator.showUsers(hospital,role)
     except Exception as error:
         print(str(error))
 

@@ -20,22 +20,25 @@ def createUser(hospital,role):
     textValidator(role, "rol de " +role  + "\n")
     password=input("Ingrese la contraseña  " + "\n")
     passwordValidator(password, "contraseña de " + role + "\n")
-    adminService.createAdmin(hospital, name, id, genre, mail, telephone, birth, address, role, userName, password)
+    adminService.createUser(hospital, name, id, genre, mail, telephone, birth, address, role, userName, password)
     
-def ShowUsers(hospital,role):
-    allUsers = hospital.persons
-    for user in allUsers:
-        if user.role == role:
+def showUsers(hospital, role):
+    users = adminService.findUsersByRole(hospital, role)
+    if users:
+        for user in users:
             print(f"Nombre: {user.name}")
             print(f"Cedula: {user.id}")
-            print(f"genero: {user.genre}")
+            print(f"Genero: {user.genre}")
             print(f"Email: {user.mail}")
             print(f"Telefono: {user.telephone}")
             print(f"Fecha de nacimiento: {user.birth}")
             print(f"Direccion: {user.address}")
             print(f"Rol: {user.role}")
             print(f"Usuario: {user.userName}")
-            print(f"")
+            print("")
+    else:
+        print("No se encontraron usuarios con ese rol.")
+
 
 
 

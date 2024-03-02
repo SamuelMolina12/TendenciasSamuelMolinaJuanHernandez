@@ -1,17 +1,17 @@
 import Models.models as models
 
-def validateId(vet,id):
-    for person in vet.persons:
+def validateId(hospital,id):
+    for person in hospital.persons:
         if person.id==id:
             return person
     return None
-def validateUserName(vet,userName):
-    for person in vet.persons:
+def validateUserName(hospital,userName):
+    for person in hospital.persons:
         if person.userName==userName:
             return person
     return None
 
-def createAdmin(hospital,name,id,genre,mail,telephone,birth,address,role,userName,password):
+def createUser(hospital,name,id,genre,mail,telephone,birth,address,role,userName,password):
     user=validateId(hospital,id)
     if user:
         raise Exception("ya existe una persona con esa cedula registrada")
@@ -33,3 +33,6 @@ def updateUser(hospital,id):
             return user
     return None
   
+def findUsersByRole(hospital, role):
+    users = hospital.persons
+    return [user for user in users if user.role == role]
