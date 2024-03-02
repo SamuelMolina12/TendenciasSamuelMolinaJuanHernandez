@@ -1,7 +1,7 @@
 from Models import models
 from Service import LoginService
-from Menus import AdminMenu
-from Validators import TypeValidator
+from Menus import AdminMenu,StaffAdminMenu
+
 
 
 hospital=models.Hospital()
@@ -12,8 +12,10 @@ doctor=models.Employer("juan",2,"masculino","juangmail.com","20004399", "24/89/2
 hospital.persons.append(doctor)
 nurse=models.Employer("soto",3,"masculino","juanmigmail.com","33004399", "24/30/2005","carrera 64A", "enfermera","sot","14")
 hospital.persons.append(nurse)
-suport=models.Employer("julia",4,"femenino","juliagmail.com","10002343", "21/89/2006","calle 53A", "soporte","soporte","15")
-hospital.persons.append(suport)
+adminStaff=models.Employer("julia",4,"femenino","juliagmail.com","10002343", "21/89/2006","calle 53A", "personalAdministrativo","pel","15")
+hospital.persons.append(adminStaff)
+Patient=models.Patient(1,"paci","femenino","juliagmail.com","119999", "21/89/2006","calle 53A", "contacto..","poliza...","historica clinica")
+hospital.patient.append(Patient)
 initialMenu="1. iniciar sesion\n0. cerrar programa\n"
 
 
@@ -26,6 +28,8 @@ initialMenu="1. iniciar sesion\n0. cerrar programa\n"
 def loginRouter(hospital,user):
     if user.role=="admin":
         AdminMenu.adminMenu(hospital,user)
+    elif user.role=="personalAdministrativo":
+        StaffAdminMenu.staffAdminMenu(hospital)
     elif user.role=="doctor":
           print("enfermera")
         # doctorMenu(hospital,user)
