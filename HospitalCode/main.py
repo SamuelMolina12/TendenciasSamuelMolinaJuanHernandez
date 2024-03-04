@@ -1,8 +1,17 @@
 from Models import models
 from Service import LoginService
+<<<<<<< HEAD
 from Menus import HumanRMenu,StaffAdminMenu
+=======
+from Menus import AdminMenu
+from Validators import typeValidator
+>>>>>>> 4029855b1b4d1e4ff7f30c1b56509f54626a495a
 
 
+hospital=models.Hospital()
+
+admin=models.Employer("samuel",1,"masculino","samuelgmail.com","30004399", "22/09/2002","calle 64A", "admin","samuelito","mini")
+hospital.persons.append(admin)
 
 hospital=models.Hospital()
 
