@@ -5,30 +5,31 @@ def staffAdminMenu(hospital):
     while True:
         option=input("1.Crear Paciente  \n2.Gestionar Paciente \n3.Cerrar sesion\n")
         if option=="1":
-            createPacient(hospital)
+            createPatient(hospital)
         if option=="2":
             id=input("ingrese el id del paicente \n")
-            managePacient(hospital,int(id))
+            managePatient(hospital,int(id))
         if option == "3":
             print("cerrando sesion")
             return       
 
-def createPacient(hospital): 
+def createPatient(hospital): 
     try:
         patien=StaffAdminValidator.createPatient(hospital)
         print("se ha creado el paciente  con cedula" + str(patien.id) )
     except Exception as error:
         print(str(error))
 
-def managePacient(hospital,id):
+def managePatient(hospital,id):
     while True:
-        option=input("1.Mostrar informacion del  Paciente \n2.Editar Paciente  \n3.Eliminar Paciente \n4.Agendar Cita \n5.Facturacion  \n6.Cerrar sesion\n")
+        option=input("1.Mostrar informacion del  Paciente \n2.Editar Paciente  \n3.Eliminar Paciente \n4.Agendar Cita \n5.Facturacion  \n6.Cancelar\n")
         if option=="1":
             showPatient(hospital,id)
         if option=="2":
-           pass
+           updatePatient(hospital,id)
         if option=="3":
-            pass
+            deletePatient(hospital, id)
+            return 
         if option=="4":
            pass
         if option=="5":
@@ -43,3 +44,17 @@ def showPatient(hospital,id):
         StaffAdminValidator.showPatient(hospital,id)
     except Exception as error:
         print(str(error))
+
+def deletePatient(hospital, id):
+    try:     
+        StaffAdminValidator.deletePatient(hospital,id)
+       
+    except Exception as error:
+        print(str(error))
+
+
+def updatePatient(hospital,id):
+    try:
+        StaffAdminValidator.updatePatient(hospital, id)
+    except Exception as error:
+        print(str(error))                
