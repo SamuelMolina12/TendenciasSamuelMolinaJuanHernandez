@@ -14,7 +14,7 @@ class Employer():
         self.password=password
 
 class Patient():
-     def __init__(self,id,name,genre,mail,telephone,birth,address,emergencyContact,policy,clinicHistory):
+     def __init__(self,id,name,genre,mail,telephone,birth,address):
         self.id=id
         self.name=name
         self.mail=mail
@@ -22,9 +22,9 @@ class Patient():
         self.telephone=telephone
         self.birth=birth
         self.address=address
-        self.emergencyContact=emergencyContact
-        self.policy=policy
-        self.clinicHistory=clinicHistory
+        self.emergencyContact=EmergencyContact
+        self.policy=Policy
+      
 
 class EmergencyContact():
     def __init__(self,patientId,name,relationship,telephone):

@@ -1,34 +1,28 @@
 from Models import models
 from Service import LoginService
-from Menus import AdminMenu,StaffAdminMenu
+from Menus import HumanRMenu,StaffAdminMenu
 
 
 
 hospital=models.Hospital()
 
-admin=models.Employer("samuel",1,"masculino","samuelgmail.com","30004399", "22/09/2002","calle 64A", "admin","sam","12")
+admin=models.Employer("samuel",1,"masculino","samuelgmail.com","30004399", "22/09/2002","calle 64A", "RecursosHumanos","sam","12")
 hospital.persons.append(admin)
 doctor=models.Employer("juan",2,"masculino","juangmail.com","20004399", "24/89/2004","calle 64A", "doctor","ju","13")
 hospital.persons.append(doctor)
 nurse=models.Employer("soto",3,"masculino","juanmigmail.com","33004399", "24/30/2005","carrera 64A", "enfermera","sot","14")
 hospital.persons.append(nurse)
-adminStaff=models.Employer("julia",4,"femenino","juliagmail.com","10002343", "21/89/2006","calle 53A", "personalAdministrativo","pel","15")
+adminStaff=models.Employer("julia",4,"femenino","juliagmail.com","10002343", "21/89/2006","calle 53A", "administrador","pel","15")
 hospital.persons.append(adminStaff)
-Patient=models.Patient(1,"paci","femenino","juliagmail.com","119999", "21/89/2006","calle 53A", "contacto..","poliza...","historica clinica")
-hospital.patient.append(Patient)
+
 initialMenu="1. iniciar sesion\n0. cerrar programa\n"
 
 
 
-
-
-
-
-
 def loginRouter(hospital,user):
-    if user.role=="admin":
-        AdminMenu.adminMenu(hospital,user)
-    elif user.role=="personalAdministrativo":
+    if user.role=="RecursosHumanos":
+       HumanRMenu.humanRMenu(hospital)
+    elif user.role=="administrador":
         StaffAdminMenu.staffAdminMenu(hospital)
     elif user.role=="doctor":
           print("enfermera")
