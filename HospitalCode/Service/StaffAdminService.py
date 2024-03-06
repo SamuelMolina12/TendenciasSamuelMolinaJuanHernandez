@@ -7,25 +7,43 @@ def validateId(hospital,id):
     return None
 
 
-def createPatient(hospital, id, name, genre, mail, telephone, birth, address, emergency_contact_info, policy_info):
+def createPatient(hospital, id, name, genre, mail, telephone, birth, address):
     patient = validateId(hospital, id)
     if patient:
         raise Exception("Ya existe una persona con esa cédula registrada")
     patient = models.Patient(id, name, genre, mail, telephone, birth, address)
-    emergency_contact = models.EmergencyContact(id, emergency_contact_info['name'], emergency_contact_info['relationship'], emergency_contact_info['telephone'])
-    patient.emergencyContact = emergency_contact
-    policy = models.Policy(id, policy_info['insuranceCompany'], policy_info['policynumber'], policy_info['statePolicy'], policy_info['termPolicy'])
-    patient.policy = policy
     hospital.patient.append(patient)
+    
 
-    return patient
+def createEmergencyContact(hospital, patientId, name, relationship, telephone):
+    patient = None
+    for p in hospital.patient:
+        if p.id == patientId:
+            patient = p
+            break
 
-def findPatient(hospital, id):
-    patient = hospital.patient
-    for human in patient:
-        if human.id == id:
-            return human
-    return None
+    if patient is None:
+        raise Exception("No se encontró ningún paciente con ese ID")
+
+    emergencyContact = models.EmergencyContact(patientId, name, relationship, telephone)
+    patient.emergencyContact = emergencyContact
+    hospital.emergencyContact.append(emergencyContact)
+
+    
+def createPolicy(hospital, patientId, insuranceCompany, policynumber, statePolicy, termPolicy):
+    patient = None
+    for p in hospital.patient:
+        if p.id == patientId:
+            patient = p
+            break
+
+    if patient is None:
+        raise Exception("No se encontró ningún paciente con ese ID")
+    policy = models.Policy(patientId, insuranceCompany, policynumber, statePolicy, termPolicy)
+    patient.policy = policy
+    hospital.policy.append(policy)
+
+
 
 def deletePatient(hospital,id):
     for user in hospital.patient:
