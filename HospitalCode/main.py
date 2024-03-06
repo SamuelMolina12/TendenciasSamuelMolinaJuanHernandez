@@ -1,6 +1,6 @@
 from Models import models
 from Service import LoginService
-from Menus import HumanRMenu,StaffAdminMenu
+from Menus import HumanRMenu,StaffAdminMenu,DoctorMenu,NurseMenu
 
 
 hospital=models.Hospital()
@@ -18,6 +18,17 @@ nurse=models.Employer("soto",3,"masculino","juanmigmail.com","33004399", "24/30/
 hospital.persons.append(nurse)
 adminStaff=models.Employer("julia",4,"femenino","juliagmail.com","10002343", "21/89/2006","calle 53A", "administrador","pel","15")
 hospital.persons.append(adminStaff)
+# ----------
+patient =models.Patient(id=1, name="Juan", genre="masculino", mail="juan@example.com",telephone="123456789", birth="01/01/1990", address="Calle Principal 123")
+emergency_contact=models.EmergencyContact(patientId=patient.id,name="María", relationship="esposa", telephone="987654321")
+patient.emergencyContact = emergency_contact
+policy = models.Policy(patientId=1, insuranceCompany="Seguros XYZ", policynumber="ABC123",statePolicy="activo", termPolicy="01/01/2025")
+patient.policy = policy
+hospital.patient.append(patient)
+
+
+
+
 
 initialMenu="1. iniciar sesion\n0. cerrar programa\n"
 
@@ -29,11 +40,9 @@ def loginRouter(hospital,user):
     elif user.role=="administrador":
         StaffAdminMenu.staffAdminMenu(hospital)
     elif user.role=="doctor":
-          print("enfermera")
-        # doctorMenu(hospital,user)
-    elif user.role=="nurse":
-        print("enfermera")
-        # nurseMenu(hospital,user)
+        DoctorMenu.doctorMenu(hospital) 
+    elif user.role=="enfermera":
+        NurseMenu.nurseMenu(hospital,user)
     else:
         print("el usuario no tiene un rol valido")
 

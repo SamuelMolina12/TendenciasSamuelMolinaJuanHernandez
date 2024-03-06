@@ -44,25 +44,21 @@ class Policy():
 
         
 class Billing():
-    def __init__(self,name,age, patientId,doctor,insuranceCompany,policynumber,statePolicy,termPolicy):
-        self.name=name
-        self.age=age
+    def __init__(self,patientI):
         self.patientId=patientId
-        self.doctor=doctor
-        self.insuaranceCompany=insuranceCompany
-        self.policynumber=policynumber
-        self.statePolicy=statePolicy
-        self.termPolicy=termPolicy
+        self.Poliicy=Policy
+       
 
-
-class HistoryVisits():
-    def __init__(self,patient,bloodPressure,temperature,pulse,oxygenBlood):
-        self.patient=patient
-        self.bloodPreasurre=bloodPressure
-        self.temperature=temperature
-        self.pulse=pulse
-        self.oxygenBlood=oxygenBlood
-        self.date=datetime.datetime.now
+# class HistoryVisits():
+#     def __init__(self,patientId,patientName,nurse,bloodPressure,temperature,pulse,oxygenBlood):
+#         self.patient=patientId
+#         self.patientName=patientName
+#         self.nurse = nurse
+#         self.bloodPreasurre=bloodPressure
+#         self.temperature=temperature
+#         self.pulse=pulse
+#         self.oxygenBlood=oxygenBlood
+       
 
 
                   
@@ -74,11 +70,11 @@ class Hospital():
     def __init__(self):
         self.persons = [] 
         self.patient = [] 
-        self.clinicHistory = []  
+        self.emergencyContact = []  
         self.diagnostic = []  
         self.diagnosticHelp = []  
         self.procedure = []  
         self.historyVisits = [] 
         self.billing = []  
         self.policy = []  
-      
+        self.clinicHistory = {}

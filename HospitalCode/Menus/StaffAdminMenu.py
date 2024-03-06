@@ -7,7 +7,7 @@ def staffAdminMenu(hospital):
         if option=="1":
             createPatient(hospital)
         if option=="2":
-            id=input("ingrese el id del paicente \n")
+            id=input("ingrese el id del paciente \n")
             managePatient(hospital,int(id))
         if option == "3":
             print("cerrando sesion")
@@ -15,8 +15,8 @@ def staffAdminMenu(hospital):
 
 def createPatient(hospital): 
     try:
-        patien=StaffAdminValidator.createPatient(hospital)
-        print("se ha creado el paciente  con cedula" + str(patien.id) )
+        StaffAdminValidator.createPatient(hospital)
+        print("se ha creado el paciente")
     except Exception as error:
         print(str(error))
 
