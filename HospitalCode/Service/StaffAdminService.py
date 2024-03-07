@@ -12,6 +12,7 @@ def createPatient(hospital, id, name, genre, mail, telephone, birth, address):
     if patient:
         raise Exception("Ya existe una persona con esa cédula registrada")
     patient = models.Patient(id, name, genre, mail, telephone, birth, address)
+    hospital.historyVisits[str(id)] ={}
     hospital.patient.append(patient)
     
 

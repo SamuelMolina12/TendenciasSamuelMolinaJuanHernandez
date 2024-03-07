@@ -44,7 +44,7 @@ class Policy():
 
         
 class Billing():
-    def __init__(self,patientI):
+    def __init__(self,patientId):
         self.patientId=patientId
         self.Poliicy=Policy
        
@@ -74,7 +74,7 @@ class Hospital():
         self.diagnostic = []  
         self.diagnosticHelp = []  
         self.procedure = []  
-        self.historyVisits = [] 
+        self.historyVisits = {}
         self.billing = []  
         self.policy = []  
         self.clinicHistory = {}

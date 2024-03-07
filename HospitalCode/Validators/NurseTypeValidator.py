@@ -31,34 +31,33 @@ def showPatient(hospital, id):
 
 def createHistoryVisitsQuery(hospital,id):
     patientId = id
-    # patientName = patientName
-    # nurse = user
+    id=len(hospital.patient)
     bloodPressure = input("ingrese la presion arterial \n")
     textValidator(bloodPressure,"presion arterial")
     temperature = input("ingrese la temperatura \n ")
     textValidator(temperature,"la temperatura")
-    pulse =input("ingrese el pulso \n ")
+    pulse =input("ingrese el pulso \n")
     textValidator(pulse,"pulso")
-    oxygenBlood = input("ingrese el nivel de oxigeno en la sangre \n ")
+    oxygenBlood = input("ingrese el nivel de oxigeno en la sangre \n")
     textValidator(oxygenBlood,"ingrese el nivel de oxigeno en la sangre")
-    medicine=input("medicamento")
+    medicine=input("ingrese medicamento\n")
     if medicine=="":
         medicine="N/A"
     textValidator(medicine,"ingrese el medicamento")
     medicineDose=input("dosis de medicamento\n")
     if medicineDose=="":
         medicineDose="N/A"
-    procedure=input("ingrese el procedimiento")
+    procedure=input("ingrese el procedimiento\n")
     if procedure=="":
         procedure="N/A"
     textValidator(procedure,"procedimiento")
-    procedureDetail=input("detalle del procedimiento")
+    procedureDetail=input("detalle del procedimiento \n")
     if procedureDetail=="":
         procedureDetail="N/A"
     textValidator(procedureDetail,"detalle procedimiento")    
-    medicaltests = input("Pruebas medicas realizadas")
+    medicaltests = input("Pruebas medicas realizadas\n")
     textValidator(medicaltests,"pruebas medicas")
-    observation = input("observaciones")
+    observation = input("observaciones \n")
     if observation=="":
        observation="N/A"
     textValidator(observation,"observaciones")   

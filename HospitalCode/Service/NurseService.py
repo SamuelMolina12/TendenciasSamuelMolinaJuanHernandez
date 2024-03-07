@@ -15,11 +15,11 @@ def validateId(hospital,id):
 
 
 def createHistoryVisitsQuery(hospital,patientId,bloodPressure,temperature,pulse,oxygenBlood,medicine,medicineDose,procedure,procedureDetail,medicaltests,observation):
-    id = patientId
-    patient = validateId(hospital,id)
+    
+    patient = validateId(hospital,patientId)
     if not patient:
         raise Exception("no existe el id")
-    # patientName = patient.name
+    
     date=datetime.date.today()
     newVisitHistory={}
     newVisitHistory["bloodPressure"]=bloodPressure
@@ -38,6 +38,19 @@ def createHistoryVisitsQuery(hospital,patientId,bloodPressure,temperature,pulse,
     print(date)
     print("nueva historia clinica")
     print(newVisitHistory)
-    hospital.historyVisits[str(id)][date]=newVisitHistory
-    print("historia clinica")
-    print(hospital.historyVisits[str(id)])
+    print(str(patientId))
+    hospital.historyVisits[str(patientId)][str(date)] = newVisitHistory
+
+def showHistoryVisitsQuery(hospital, patientId):
+    patient_history = hospital.historyVisits.get(str(patientId))
+    if not patient_history:
+        print("No hay historial de visitas para este paciente.")
+        return
+
+    print("Historial de visitas para el paciente:")
+    for visit_date, visit_details in patient_history.items():
+        print(f"Fecha de visita: {visit_date}")
+        for key, value in visit_details.items():
+            print(f"{key}: {value}")
+        print("-----------------------------")
+  

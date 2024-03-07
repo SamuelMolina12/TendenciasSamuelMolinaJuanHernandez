@@ -3,23 +3,26 @@ import Service.AdminService as adminService
 
 def createUser(hospital,role):
     print("Ingreso a la creacion del rol " + role)
-    name=input("ingrese el nombre " + "\n")
-    textValidator(name,"nombre de " + role  + "\n")
-    id=numberValidator(input("ingrese la cedula  " + "\n"), "cedula de " + role )
-    userName=input("ingrese el usuario  " +  "\n")
-    textValidator(userName,"usuario de " + role  + "\n" ) 
-    genre=input("ingrese el genero " +  "\n")
-    textValidator(genre, "genero de " +role  + "\n")
-    mail=input("ingrese el correo " +  "\n")
-    textValidator(mail, "correo de " +role  + "\n")
-    telephone=numberValidator(input("ingrese el numero telefonico " + "\n"),"fecha de nacimiento de" + role  )
-    birth=numberValidator(input("ingrese la fecha de nacimiento " + "\n"),"fecha de nacimiento de" + role  )
-    address=input("ingrese la direccion " +  "\n")
-    textValidator(address, "direccion de  " +role  + "\n")
+    name=input("ingrese el nombre \n")
+    textValidator(name,"nombre  \n")
+    id=numberValidator(input("ingrese la cedula  \n"), "cedula de " + role )
+    userName=input("ingrese el usuario  " + "máximo 15 caracteres, solo debe contener letras y numeros \n")
+    textValidator(userName,"usuario de   \n" )
+    usernameValidator(userName,"usuario de    \n" )
+    genre=input("ingrese el genero \n")
+    textValidator(genre, "genero de    \n")
+    mail=input("ingrese el correo " + " dominio y el @ \n")
+    textValidator(mail, "correo de   \n")
+    emailValidator(mail, "correo de    \n")
+    telephone=phoneValidator(input("ingrese el numero telefonico " + "Debe contener entre 1 y 10 dígitos" + "\n"), "numero telefonico de" + role )
+    birth=dateValidator(input("ingrese la fecha de nacimiento " + "Formato DD/MM/YYYY, max 150 años" + "\n"),"fecha de nacimiento de" + role  )
+    address=input("ingrese la direccion " + "Máximo 30 caracteres  \n")
+    textValidator(address, "direccion de    \n")
+    addressValidator(address, "direccion de  \n")
     role=role
-    textValidator(role, "rol de " +role  + "\n")
-    password=input("Ingrese la contraseña  " + "\n")
-    passwordValidator(password, "contraseña de " + role + "\n")
+    textValidator(role, "rol de \n")
+    password=input("Ingrese la contraseña  " + "8 caracteres, un numero, 1 letra Mayuscula y 1 caracter especial \n")
+    passwordValidator(password, "contraseña de \n")
     adminService.createUser(hospital, name, id, genre, mail, telephone, birth, address, role, userName, password)
     
 def showUsers(hospital, role):
@@ -60,15 +63,25 @@ def updateUser(hospital,id):
     id = adminService.updateUser(hospital,id)
     if id:
         print("Usuario encontrado. Introduzca los nuevos datos:")
-        new_name = input("Nuevo nombre: ").strip()
-        new_genre = input("Nuevo genero: ").strip()
-        new_mail = input("Nuevo correo: ").strip()
-        new_telephone = input("Nuevo telefono: ").strip()
-        new_birth = input("nueva fecha de nacimiento: ").strip()
-        new_address= input("Nueva direccion: ").strip()
-        new_role= input("Nuevo rol: ").strip()
-        new_userName= input("Nuevo usuario: ").strip()
-        new_password= input("Nueva contrasena: ").strip()
+        new_name =input("ingrese el nuevo nombre \n")
+        textValidatorU(new_name,"el nuevo nombre \n")
+        new_genre = input("ingrese el nuevo genero \n")
+        textValidatorU(new_genre, "nuevo genero" + new_genre)
+        new_mail = input("ingrese el nuevo correo " + " dominio y el @ \n")
+        textValidatorU(new_mail, "correo  \n")
+        emailValidator( new_mail,"correo \n")
+        new_telephone = input("Nuevo telefono: " + "Debe contener entre 1 y 10 dígitos") 
+        phoneValidator(new_telephone, "nuevo numero de telefo\n")
+        new_birth = input("nueva fecha de nacimiento: " + "Formato DD/MM/YYYY")
+        dateValidator(new_birth, "nuevo fecha de nacimiento\n")
+        new_address= input("ingrese la nueva direccion " + "Máximo 30 caracteres\n")
+        textValidatorU(new_address, "direccion  \n")
+        addressValidator(new_address, "direccion \n")
+        new_userName= input("ingrese el nuevo usuario  " + "máximo 15 caracteres, solo debe contener letras y numeros\n")
+        textValidatorU(new_userName,"usuario \n" )
+        usernameValidator(new_userName,"usuario  \n" )
+        new_password= input("Ingrese la nueva contraseña  " + "8 caracteres, un numero, 1 letra Mayuscula y 1 caracter especial\n")
+        passwordValidator(new_password, "contraseña \n")
         
         if new_name:
             id.name = new_name
@@ -82,8 +95,6 @@ def updateUser(hospital,id):
             id.birth = new_birth
         if new_address:
             id.address = new_address
-        if new_role:
-            id.role = new_role
         if new_userName:
             id.username = new_userName
         if new_password:
