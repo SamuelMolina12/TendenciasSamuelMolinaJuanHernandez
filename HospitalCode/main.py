@@ -26,6 +26,7 @@ policy = models.Policy(patientId=1, insuranceCompany="Seguros XYZ", policynumber
 patient.policy = policy
 hospital.patient.append(patient)
 
+hospital.historyVisits["1"] ={}
 
 
 
