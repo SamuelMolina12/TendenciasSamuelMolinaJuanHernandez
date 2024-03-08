@@ -22,7 +22,7 @@ def createPatient(hospital):
 
 def managePatient(hospital,id):
     while True:
-        option=input("1.Mostrar informacion del  Paciente \n2.Editar Paciente  \n3.Eliminar Paciente \n4.Agendar Cita \n5.Facturacion  \n6.Cancelar\n")
+        option=input("1.Mostrar informacion del  Paciente \n2.Editar Paciente  \n3.Eliminar Paciente \n4.Agendar Cita \n5.ver citas programadas \n6.Facturacion  \n7.Cancelar\n")
         if option=="1":
             showPatient(hospital,id)
         if option=="2":
@@ -31,10 +31,12 @@ def managePatient(hospital,id):
             deletePatient(hospital, id)
             return 
         if option=="4":
-           pass
+           createClinicalAppointment(hospital,id)
         if option=="5":
+           showClinicalAppointment(hospital,id)
+        if option=="6":
             pass
-        if option == "6":
+        if option == "7":
             print("cerrando sesion")
             return 
 
@@ -57,4 +59,16 @@ def updatePatient(hospital,id):
     try:
         StaffAdminValidator.updatePatient(hospital, id)
     except Exception as error:
-        print(str(error))                
+        print(str(error))
+
+def createClinicalAppointment(hospital,id):
+    try:
+        StaffAdminValidator.createClinicalAppointment(hospital, id)
+    except Exception as error:
+        print(str(error))
+
+def showClinicalAppointment(hospital,id):
+    try:
+        StaffAdminValidator.showClinicalAppointment(hospital, id)
+    except Exception as error:
+        print(str(error))

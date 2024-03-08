@@ -58,3 +58,16 @@ def updateUser(hospital,id):
             return user
     return None
 
+
+def createClinicalAppointment(hospital,patientId,date,hour,doctor,appointmentType):
+    appointment = validateId(hospital,patientId)
+    if not appointment:
+        raise Exception("no hay un paciente con esa cedula")
+    appointment = models.ClinicalAppointment(patientId,date,hour,doctor,appointmentType)
+    hospital.clinicalAppointment.append(appointment)
+
+def validateClinicalAppointment(hospital,id):
+    for appointment in hospital.clinicalAppointment:
+        if appointment.id==id:
+            return appointment
+    return None

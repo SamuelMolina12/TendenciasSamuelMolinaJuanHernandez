@@ -22,8 +22,8 @@ class Patient():
         self.telephone=telephone
         self.birth=birth
         self.address=address
-        self.emergencyContact=EmergencyContact
-        self.policy=Policy
+        self.emergencyContact=[]
+        self.policy=[]
       
 
 class EmergencyContact():
@@ -42,6 +42,14 @@ class Policy():
         self.statePolicy=statePolicy
         self.termPolicy=termPolicy
 
+class ClinicalAppointment():
+    def __init__(self,id, date, hour, doctor,appointmentType):
+        self.id = id
+        self.date = date
+        self.hour = hour
+        self.doctor = doctor
+        self.appointmentType = appointmentType
+
         
 class Billing():
     def __init__(self,patientId):
@@ -50,8 +58,8 @@ class Billing():
        
 
 class Medicine():
-    def __init__(self,numberOrderM,itemMedicine,medicineName,medicineDose,durationMedication,medicineCost):       
-        self.numberOrderM = numberOrderM
+    def __init__(self,orderId,itemMedicine,medicineName,medicineDose,durationMedication,medicineCost):       
+        self.orderId = orderId
         self.itemMedicine = itemMedicine
         self.medicineName = medicineName
         self.medicineDose = medicineDose
@@ -60,8 +68,8 @@ class Medicine():
 
 
 class Procedure():
-    def __init__(self,numberOrderP,itemProcedure,nameProcedure,numberRepeated,frequencyRepeated,procedureCost,requiresSpecialistP,specialistId):
-        self.numberOrderP = numberOrderP
+    def __init__(self,orderId,itemProcedure,nameProcedure,numberRepeated,frequencyRepeated,procedureCost,requiresSpecialistP,specialistId):
+        self.orderId = orderId
         self.itemProcedure = itemProcedure
         self.nameProcedure = nameProcedure
         self.numberRepeated = numberRepeated
@@ -72,8 +80,8 @@ class Procedure():
 
 
 class DiagnosticHelp():
-    def __init__(self, numberOrderD, itemDiagnostic, nameDiagnostic,quantity, diagnosticCost, requiresSpecialistD, specialistId):
-        self.numberOrderD = numberOrderD
+    def __init__(self, orderId, itemDiagnostic, nameDiagnostic,quantity, diagnosticCost, requiresSpecialistD, specialistId):
+        self.orderId = orderId
         self.itemDiagnostic = itemDiagnostic
         self.nameDiagnostic = nameDiagnostic
         self.quantity = quantity
@@ -83,14 +91,14 @@ class DiagnosticHelp():
 
 
 class Order():
-    def __init__(self, orderId, patientId, doctorId):
+    def __init__(self, orderId, patientId, doctorId,date):
         self.orderId = orderId
         self.patientId = patientId
         self.doctorId = doctorId
-        self.date = datetime.datetime.now()
-        self.Medicines = []
-        self.Procedure = []
-        self.DiagnosticHelp = []
+        self.date = date
+        self.medicines = Medicine
+        self.procedure = []
+        self.diagnosticHelp = []
 
 
 
@@ -98,6 +106,8 @@ class Hospital():
     def __init__(self):
         self.persons = [] 
         self.patient = [] 
-        self.orders = []       
+        self.orders = []
+        self.clinicalAppointment= []       
         self.historyVisits = {}   
         self.historyClinic = {}
+       

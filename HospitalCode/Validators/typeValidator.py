@@ -56,17 +56,6 @@ def emailValidator(mail, element):
     return mail
 
 
-# def emailValidatorU(mail, element):
-
-#     if not re.match(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", mail):
-#         print("Error: El campo " + element + " no es un correo electrónico válido.")
-#         return False
-    
-#     return mail
-
-
-
-
 
 
 def phoneValidator(thelephone, element):
