@@ -23,7 +23,7 @@ def createPatient(hospital):
     createEmergencyContact(hospital,id)
     print("Póliza")
     createPolicy(hospital,id)
-   
+    print("Paciente creado con exito")
 
     
 
@@ -90,19 +90,19 @@ def updatePatient(hospital,id):
         print("Paciente encontrado. Introduzca los nuevos datos:")
 
         new_name = input("ingrese el nuevo nombre \n")
-        textValidatorU(new_name,"el nuevo nombre \n")
+        textValidator(new_name,"el nuevo nombre \n")
         new_genre = input("ingrese el nuevo genero \n")
-        textValidatorU(new_genre, "nuevo genero\n")
+        textValidator(new_genre, "nuevo genero\n")
         genreValidator(new_genre, "nuevo genero: masculino o femenino\n")
         new_mail = input("ingrese el nuevo correo " + " dominio y el @ \n")
-        textValidatorU(new_mail, "correo  \n")
+        textValidator(new_mail, "correo  \n")
         emailValidator( new_mail,"correo \n")
         new_telephone = input("Nuevo telefono: " + "Debe contener entre 1 y 10 dígitos") 
         phoneValidator(new_telephone, "nuevo numero de telefono\n")
         new_birth = input("nueva fecha de nacimiento: " + "Formato DD/MM/YYYY")
         dateValidator(new_birth, "nuevo fecha de nacimiento\n")
         new_address = input("ingrese la nueva direccion " + "Máximo 30 caracteres\n")
-        textValidatorU(new_address, "direccion  \n")
+        textValidator(new_address, "direccion  \n")
         addressValidator(new_address, "direccion \n")
         updateEmergencyContact(patient)
         updatePolicy(patient)
@@ -155,4 +155,32 @@ def updatePolicy(patient):
         patient.policy.statePolicy =  new_statePolicy
     if  new_termPolicy:
         patient.policy.termPolicy =  new_termPolicy
-        
+
+
+def createClinicalAppointment(hospital,id):
+    patientId = id
+    date= input("Ingrese la fecha de la cita:\n")
+    textValidator(date, "fecha  \n")
+    hour = input("ingrese la hora de la cita\n")
+    textValidator(hour, "hora de\n")
+    doctor = input("Ingrese el nombre del doctor al que se le asignara la cita:\n")
+    textValidator(doctor, "correo  \n")
+    appointmentType = input("ingrese el tipo de cita\n")
+    textValidator(appointmentType, "direccion de\n")
+    staffAdminService.createClinicalAppointment(hospital,patientId,date,hour, doctor,appointmentType)
+    print("Cita medica creada con exito")
+
+def showClinicalAppointment(hospital,id):
+    patientId = id
+    appointment = staffAdminService.validateClinicalAppointment(hospital,patientId)
+    if appointment:
+       for appointment in hospital.clinicalAppointment:
+            print(f"Cedula Paciente: {appointment.id}")
+            print(f"Fecha: {appointment.date}")
+            print(f"Hora: {appointment.hour}")
+            print(f"Doctor: {appointment.doctor}")
+            print(f"Tipo de cita: {appointment.appointmentType}")
+            print() 
+    else:
+        print("No hay citas programadas")
+

@@ -3,7 +3,7 @@ from Validators import NurseTypeValidator
 def nurseMenu(hospital,user):
     while True:
         
-        option = input("1. Mostrar paciente \n2. Mostar historia de visitas del paciente \n3. Agregar historia de visitas \n4. cerrar sesion\n")
+        option = input("1. Mostrar paciente \n2. Mostar historia de visitas del paciente \n3. Agregar historia de visitas  \n4. cerrar sesion\n")
         if option == "1":
             id = int(input("Ingrese el ID del paciente: "))
             showPatient(hospital,id)
@@ -14,7 +14,7 @@ def nurseMenu(hospital,user):
             id = int(input("Ingrese el ID del paciente: "))
             createHistoryVisitsQuery(hospital,id)                           
         elif option == "4":
-            print("Cerrando sesión")
+            
             return
         else:
             print("Opción inválida. Intente de nuevo.")

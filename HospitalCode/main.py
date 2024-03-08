@@ -22,10 +22,10 @@ patient.emergencyContact = emergency_contact
 policy = models.Policy(patientId=1, insuranceCompany="Seguros XYZ", policynumber="ABC123",statePolicy="activo", termPolicy="01/01/2025")
 patient.policy = policy
 hospital.patient.append(patient)
-
+# ---------
 hospital.historyVisits["1"] ={}
 hospital.historyClinic["1"] ={}
-
+# ---------
 
 
 
