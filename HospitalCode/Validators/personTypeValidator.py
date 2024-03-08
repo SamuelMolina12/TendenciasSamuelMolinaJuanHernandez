@@ -9,13 +9,14 @@ def createUser(hospital,role):
     userName=input("ingrese el usuario  " + "máximo 15 caracteres, solo debe contener letras y numeros \n")
     textValidator(userName,"usuario de   \n" )
     usernameValidator(userName,"usuario de    \n" )
-    genre=input("ingrese el genero \n")
+    genre=input("ingrese el genero: masculino o femenino \n")
     textValidator(genre, "genero de    \n")
+    genreValidator(genre, "genero de    \n")
     mail=input("ingrese el correo " + " dominio y el @ \n")
     textValidator(mail, "correo de   \n")
     emailValidator(mail, "correo de    \n")
-    telephone=phoneValidator(input("ingrese el numero telefonico " + "Debe contener entre 1 y 10 dígitos" + "\n"), "numero telefonico de" + role )
-    birth=dateValidator(input("ingrese la fecha de nacimiento " + "Formato DD/MM/YYYY, max 150 años" + "\n"),"fecha de nacimiento de" + role  )
+    telephone=phoneValidator(input("ingrese el numero telefonico " + "Debe contener entre 1 y 10 dígitos\n"), "numero telefono")
+    birth=dateValidator(input("ingrese la fecha de nacimiento " + "Formato DD/MM/YYYY, max 150 años\n"),"fecha de nacimiento de")
     address=input("ingrese la direccion " + "Máximo 30 caracteres  \n")
     textValidator(address, "direccion de    \n")
     addressValidator(address, "direccion de  \n")
@@ -64,18 +65,16 @@ def updateUser(hospital,id):
     if id:
         print("Usuario encontrado. Introduzca los nuevos datos:")
         new_name =input("ingrese el nuevo nombre \n")
-        textValidatorU(new_name,"el nuevo nombre \n")
-        new_genre = input("ingrese el nuevo genero \n")
-        textValidatorU(new_genre, "nuevo genero" + new_genre)
+        textValidator(new_name,"el nuevo nombre \n")
+        new_genre = input("¿Desea actualizar el género? Ingrese el nuevo género o presione Enter para mantener el mismo: ")
         new_mail = input("ingrese el nuevo correo " + " dominio y el @ \n")
-        textValidatorU(new_mail, "correo  \n")
         emailValidator( new_mail,"correo \n")
         new_telephone = input("Nuevo telefono: " + "Debe contener entre 1 y 10 dígitos") 
         phoneValidator(new_telephone, "nuevo numero de telefo\n")
         new_birth = input("nueva fecha de nacimiento: " + "Formato DD/MM/YYYY")
         dateValidator(new_birth, "nuevo fecha de nacimiento\n")
         new_address= input("ingrese la nueva direccion " + "Máximo 30 caracteres\n")
-        textValidatorU(new_address, "direccion  \n")
+        textValidator(new_address, "direccion  \n")
         addressValidator(new_address, "direccion \n")
         new_userName= input("ingrese el nuevo usuario  " + "máximo 15 caracteres, solo debe contener letras y numeros\n")
         textValidatorU(new_userName,"usuario \n" )
@@ -86,7 +85,8 @@ def updateUser(hospital,id):
         if new_name:
             id.name = new_name
         if new_genre:
-            id.genre = new_genre
+           genreValidator(new_genre)
+           id.genre = new_genre
         if new_mail:
             id.mail = new_mail
         if new_telephone:

@@ -5,18 +5,15 @@ from Menus import HumanRMenu,StaffAdminMenu,DoctorMenu,NurseMenu
 
 hospital=models.Hospital()
 
-admin=models.Employer("samuel",1,"masculino","samuelgmail.com","30004399", "22/09/2002","calle 64A", "admin","samuelito","mini")
+admin=models.Employer("samuel",5,"masculino","samuelgmail.com","30004399", "22/09/2002","calle 64A", "admin","samuelito","mini")
 hospital.persons.append(admin)
-
-hospital=models.Hospital()
-
-admin=models.Employer("samuel",1,"masculino","samuelgmail.com","30004399", "22/09/2002","calle 64A", "RecursosHumanos","sam","12")
-hospital.persons.append(admin)
-doctor=models.Employer("juan",2,"masculino","juangmail.com","20004399", "24/89/2004","calle 64A", "doctor","ju","13")
+rh=models.Employer("samuel",1,"masculino","samuelgmail.com","30004399", "22/09/2002","calle 64A", "RecursosHumanos","rh","1")
+hospital.persons.append(rh)
+doctor=models.Employer("juan",2,"masculino","juangmail.com","20004399", "24/89/2004","calle 64A", "doctor","doc","1")
 hospital.persons.append(doctor)
-nurse=models.Employer("soto",3,"masculino","juanmigmail.com","33004399", "24/30/2005","carrera 64A", "enfermera","sot","14")
+nurse=models.Employer("soto",3,"masculino","juanmigmail.com","33004399", "24/30/2005","carrera 64A", "enfermera","enf","1")
 hospital.persons.append(nurse)
-adminStaff=models.Employer("julia",4,"femenino","juliagmail.com","10002343", "21/89/2006","calle 53A", "administrador","pel","15")
+adminStaff=models.Employer("julia",4,"femenino","juliagmail.com","10002343", "21/89/2006","calle 53A", "administrador","adm","1")
 hospital.persons.append(adminStaff)
 # ----------
 patient =models.Patient(id=1, name="Juan", genre="masculino", mail="juan@example.com",telephone="123456789", birth="01/01/1990", address="Calle Principal 123")
@@ -27,11 +24,11 @@ patient.policy = policy
 hospital.patient.append(patient)
 
 hospital.historyVisits["1"] ={}
+hospital.historyClinic["1"] ={}
 
 
 
 
-initialMenu="1. iniciar sesion\n0. cerrar programa\n"
 
 
 
@@ -41,14 +38,14 @@ def loginRouter(hospital,user):
     elif user.role=="administrador":
         StaffAdminMenu.staffAdminMenu(hospital)
     elif user.role=="doctor":
-        DoctorMenu.doctorMenu(hospital) 
+        DoctorMenu.doctorMenu(hospital,user) 
     elif user.role=="enfermera":
         NurseMenu.nurseMenu(hospital,user)
     else:
         print("el usuario no tiene un rol valido")
 
 
-
+initialMenu="1. iniciar sesion\n0. cerrar programa\n"
 while True:
     option=input(initialMenu)
     if option=="1":
