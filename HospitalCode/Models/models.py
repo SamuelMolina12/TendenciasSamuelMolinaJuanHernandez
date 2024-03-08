@@ -49,20 +49,48 @@ class Billing():
         self.Poliicy=Policy
        
 
-# class HistoryVisits():
-#     def __init__(self,patientId,patientName,nurse,bloodPressure,temperature,pulse,oxygenBlood):
-#         self.patient=patientId
-#         self.patientName=patientName
-#         self.nurse = nurse
-#         self.bloodPreasurre=bloodPressure
-#         self.temperature=temperature
-#         self.pulse=pulse
-#         self.oxygenBlood=oxygenBlood
-       
+class Medicine():
+    def __init__(self,numberOrderM,itemMedicine,medicineName,medicineDose,durationMedication,medicineCost):       
+        self.numberOrderM = numberOrderM
+        self.itemMedicine = itemMedicine
+        self.medicineName = medicineName
+        self.medicineDose = medicineDose
+        self.durationMedication = durationMedication
+        self.medicineCost = medicineCost
 
 
-                  
+class Procedure():
+    def __init__(self,numberOrderP,itemProcedure,nameProcedure,numberRepeated,frequencyRepeated,procedureCost,requiresSpecialistP,specialistId):
+        self.numberOrderP = numberOrderP
+        self.itemProcedure = itemProcedure
+        self.nameProcedure = nameProcedure
+        self.numberRepeated = numberRepeated
+        self.frequencyRepeated = frequencyRepeated
+        self.procedureCost = procedureCost
+        self.requiresSpecialistP = requiresSpecialistP
+        self.specialistId = specialistId                    
 
+
+class DiagnosticHelp():
+    def __init__(self, numberOrderD, itemDiagnostic, nameDiagnostic,quantity, diagnosticCost, requiresSpecialistD, specialistId):
+        self.numberOrderD = numberOrderD
+        self.itemDiagnostic = itemDiagnostic
+        self.nameDiagnostic = nameDiagnostic
+        self.quantity = quantity
+        self.diagnosticCost = diagnosticCost
+        self.requiresSpecialistD = requiresSpecialistD
+        self.specialistId = specialistId
+
+
+class Order():
+    def __init__(self, orderId, patientId, doctorId):
+        self.orderId = orderId
+        self.patientId = patientId
+        self.doctorId = doctorId
+        self.date = datetime.datetime.now()
+        self.Medicines = []
+        self.Procedure = []
+        self.DiagnosticHelp = []
 
 
 
@@ -70,11 +98,6 @@ class Hospital():
     def __init__(self):
         self.persons = [] 
         self.patient = [] 
-        self.emergencyContact = []  
-        self.diagnostic = []  
-        self.diagnosticHelp = []  
-        self.procedure = []  
-        self.historyVisits = {}
-        self.billing = []  
-        self.policy = []  
-        self.clinicHistory = {}
+        self.orders = []       
+        self.historyVisits = {}   
+        self.historyClinic = {}

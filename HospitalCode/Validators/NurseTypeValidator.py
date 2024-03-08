@@ -4,7 +4,6 @@ from Validators.TypeValidator import *
 
 
 def showPatient(hospital, id):
-    print(id)
     patient = nurseService.validateId(hospital, id)
     if patient:
         print(f"Cedula: {patient.id}")
@@ -13,28 +12,17 @@ def showPatient(hospital, id):
         print(f"Email: {patient.mail}")
         print(f"Telefono: {patient.telephone}")
         print(f"Fecha de nacimiento: {patient.birth}")
-        print(f"Direccion: {patient.address}")
-        if patient.emergencyContact:
-            print("Contacto de Emergencia:")
-            print(f"Nombre: {patient.emergencyContact.name}")
-            print(f"Relación: {patient.emergencyContact.relationship}")
-            print(f"Teléfono: {patient.emergencyContact.telephone}")                  
-        if patient.policy:
-            print("Poliza:")
-            print(f"Compañía de Seguros: {patient.policy.insuaranceCompany}")
-            print(f"Número de Póliza: {patient.policy.policynumber}")
-            print(f"Estado de la Póliza: {patient.policy.statePolicy}")
-            print(f"Término de la Póliza: {patient.policy.termPolicy}")         
+        print(f"Direccion: {patient.address}")         
         print()
     else:
         print("Paciente no encontrado.")
 
 def createHistoryVisitsQuery(hospital,id):
     patientId = id
-    id=len(hospital.patient)
+
     bloodPressure = input("ingrese la presion arterial \n")
     textValidator(bloodPressure,"presion arterial")
-    temperature = input("ingrese la temperatura \n ")
+    temperature = input("ingrese la temperatura \n")
     textValidator(temperature,"la temperatura")
     pulse =input("ingrese el pulso \n")
     textValidator(pulse,"pulso")
@@ -62,3 +50,17 @@ def createHistoryVisitsQuery(hospital,id):
        observation="N/A"
     textValidator(observation,"observaciones")   
     nurseService.createHistoryVisitsQuery(hospital,patientId,bloodPressure,temperature,pulse,oxygenBlood,medicine,medicineDose,procedure,procedureDetail,medicaltests,observation)
+ 
+
+
+
+def showHistoryVisitsQuery(hospital, patientId):
+    nurseService.showHistoryVisitsQuery(hospital,patientId)
+    patient_history = hospital.historyVisits.get(str(patientId))
+    print("Historial de visitas para el paciente:")
+    for visit_date, visit_details in patient_history.items():
+        print(f"Fecha de visita: {visit_date}")
+        for key, value in visit_details.items():
+            print(f"{key}: {value}")
+        print("")
+

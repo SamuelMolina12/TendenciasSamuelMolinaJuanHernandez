@@ -7,14 +7,17 @@ def createPatient(hospital):
     id = numberValidator(input("Ingrese la cédula:\n"), "cedula de")
     name = input("Ingrese el nombre :\n")
     textValidator(name, "nombre  \n")
-    genre = input("Ingrese el género:\n")
+    genre = input("Ingrese el género: masculino o femenino\n")
     textValidator(genre, "genero de\n")
+    genreValidator(genre, "genero de\n")
     mail = input("Ingrese el correo:\n")
     textValidator(mail, "correo  \n")
-    telephone = numberValidator(input("Ingrese el número telefónico:\n"), "telefono" )
-    birth = numberValidator(input("Ingrese la fecha de nacimiento:\n"), "fecha de nacimiento" )
-    address = input("Ingrese la dirección:\n")
-    textValidator(address, "direccion  \n")
+    emailValidator(mail,"correo \n")
+    telephone = phoneValidator(input("ingrese el numero telefonico " + "Debe contener entre 1 y 10 dígitos\n"), "numero telefonico ")
+    birth = dateValidator(input("ingrese la fecha de nacimiento " + "Formato DD/MM/YYYY, max 150 años\n"),"fecha de nacimiento de")
+    address = input("ingrese la direccion " + "Máximo 30 caracteres  \n")
+    textValidator(address, "direccion de    \n")
+    addressValidator(address, "direccion de  \n")
     staffAdminService.createPatient(hospital, id, name, genre, mail, telephone, birth, address)
     print("Contacto de emergencia")
     createEmergencyContact(hospital,id)
@@ -26,10 +29,10 @@ def createPatient(hospital):
 
 def createEmergencyContact(hospital,patientId):
     name = input("Ingrese el nombre del contacto de emergencia del paciente: \n") 
-    textValidator(name,"Nombre del contacto de emergencia del paciente")
+    textValidator(name,"Nombre del paciente")
     relationship = input("Ingrese la relacion del contacto de emergencia:\n")
     textValidator(relationship,"Relacion del contacto de emergencia")
-    telephone = numberValidator(input("Ingrese el numero de telefono: \n"), "Numero del contacto de emergencia")
+    telephone = phoneValidator(input("ingrese el numero de contacto de emergencia " + "Debe contener entre 1 y 10 dígitos\n"), "numero telefonico ")
     staffAdminService.createEmergencyContact(hospital,patientId,name,relationship,telephone)
 
 def createPolicy(hospital,patientId):
@@ -86,12 +89,21 @@ def updatePatient(hospital,id):
     if patient:
         print("Paciente encontrado. Introduzca los nuevos datos:")
 
-        new_name = input("Nuevo nombre: ")
-        new_genre = input("Nuevo género: ")
-        new_mail = input("Nuevo correo: ")
-        new_telephone = int(input("Nuevo teléfono: "))
-        new_birth = int(input("Nueva fecha de nacimiento: "))
-        new_address = input("Nueva dirección: ")
+        new_name = input("ingrese el nuevo nombre \n")
+        textValidatorU(new_name,"el nuevo nombre \n")
+        new_genre = input("ingrese el nuevo genero \n")
+        textValidatorU(new_genre, "nuevo genero\n")
+        genreValidator(new_genre, "nuevo genero: masculino o femenino\n")
+        new_mail = input("ingrese el nuevo correo " + " dominio y el @ \n")
+        textValidatorU(new_mail, "correo  \n")
+        emailValidator( new_mail,"correo \n")
+        new_telephone = input("Nuevo telefono: " + "Debe contener entre 1 y 10 dígitos") 
+        phoneValidator(new_telephone, "nuevo numero de telefono\n")
+        new_birth = input("nueva fecha de nacimiento: " + "Formato DD/MM/YYYY")
+        dateValidator(new_birth, "nuevo fecha de nacimiento\n")
+        new_address = input("ingrese la nueva direccion " + "Máximo 30 caracteres\n")
+        textValidatorU(new_address, "direccion  \n")
+        addressValidator(new_address, "direccion \n")
         updateEmergencyContact(patient)
         updatePolicy(patient)
         if new_name:
@@ -112,8 +124,11 @@ def updatePatient(hospital,id):
 
 def updateEmergencyContact(patient):
     new_name = input("Nuevo nombre de contacto de emergencia: ")
+    textValidator(new_name,"el nuevo nombre \n")
     new_relationship = input("Nueva relación con el paciente: ")
-    new_telephone = input("Nuevo teléfono del contacto de emergencia: ")
+    textValidator(new_relationship,"nueva relacion con el paciente \n")
+    new_telephone = input("Nuevo telefono de contacto de emergencia: " + "Debe contener entre 1 y 10 dígitos") 
+    phoneValidator(new_telephone, "nuevo numero de telefono\n")
     
     if new_name:
         patient.emergencyContact.name = new_name
@@ -124,9 +139,13 @@ def updateEmergencyContact(patient):
 
 def updatePolicy(patient):
     new_insuranceCompany = input("Nuevo nombre del la compañia: ")
+    textValidator(new_insuranceCompany,"el nuevo nombre \n")
     new_policynumber = input("Nuevo numero de poliza: ")
+    numberValidator(new_policynumber," nuevo numero de poliza \n")
     new_statePolicy = input("Nuevo estado de la poliza: ")
+    textValidator(new_statePolicy,"nuevo estado de la poliza \n")
     new_termPolicy = input("Nueva fecha de termino de poliza: ")
+    textValidator(new_termPolicy,"nueva fecha de finalizacion de poliza \n")
 
     if new_insuranceCompany :
         patient.policy.insuranceCompany = new_insuranceCompany 
