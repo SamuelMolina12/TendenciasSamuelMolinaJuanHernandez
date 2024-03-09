@@ -48,7 +48,8 @@ def createOrder(hospital, orderId, patientId, doctorId,date):
         raise Exception("no existe el paciente")   
     order= models.Order(orderId, patientId, doctorId,date) 
     hospital.orders.append(order)
-    print("Exito")
+    return order  
+    
      
 def createMedicine(hospital,orderId, itemMedicine, medicineName, medicineDose, durationMedication, medicineCost):
     order = None

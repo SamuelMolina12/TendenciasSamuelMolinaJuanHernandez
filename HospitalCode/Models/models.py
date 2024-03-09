@@ -96,7 +96,7 @@ class Order():
         self.patientId = patientId
         self.doctorId = doctorId
         self.date = date
-        self.medicines = Medicine
+        self.medicines = []
         self.procedure = []
         self.diagnosticHelp = []
 
