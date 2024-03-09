@@ -52,16 +52,17 @@ def showHistoryClinicQuery(hospital,patientId):
 
 
 def createOrder(hospital, patientId, doctorId):
+
     orderId = len(hospital.orders)
     date = datetime.date.today()
-    doctorService.createOrder(hospital, orderId, patientId, doctorId, date)
+    order = doctorService.createOrder(hospital, orderId, patientId, doctorId, date)
     procedure = "N/A"
     medicine = "N/A"
     
     helpDiagnostic = input("¿Requiere ayuda diagnóstica?: ").lower()
     if helpDiagnostic == 'si':
         createDiagnosticHelp(hospital, orderId)
-
+        return order
     else:
             
         print("Seleccione una opción:")
@@ -78,7 +79,7 @@ def createOrder(hospital, patientId, doctorId):
             createMedicine(hospital, orderId)
         else:
             print("Opción no válida. Debe seleccionar 1, 2 o 3.")
-
+ 
 
 
 
@@ -138,21 +139,28 @@ def showOrder(hospital, orderId):
         if o.orderId == orderId:
             order = o
             break
-
+    orders = None
+    for a in order.diagnosticHelp:
+        if a.orderId == orderId:
+            order = a
+            break
     if order:
         print(f"ID de la Orden: {order.orderId}")
         print(f"ID del Paciente: {order.patientId}")
         print(f"ID del Doctor: {order.doctorId}")
         print(f"Fecha de la Orden: {order.date}")
 
-        if order.medicines:
-            print("Medicamentos:")
-            print(f"Item: {medicines.itemMedicine}")
-            print(f"Nombre: {medicines.medicineName}")
-            print(f"Dosis: {medicines.medicineDose}")
-            print(f"Duración: {medicines.durationMedication}")
-            print(f"Costo: {medicines.medicineCost}")
+        if order.diagnosticHelp:
+            print("Ayuda Diagnóstica:")
+            print(f"Ítem del Diagnóstico: {order.diagnosticHelp.itemDiagnostic}")
+            print(f"Nombre del Diagnóstico: {order.diagnosticHelp.nameDiagnostic}")
+            print(f"Cantidad: {order.diagnosticHelp.quantity}")
+            print(f"Costo: {order.diagnosticHelp.diagnosticCost}")
+            print(f"Requiere Especialista: {order.diagnosticHelp.requiresSpecialistD}")
+            if order.diagnosticHelp.requiresSpecialistD.lower() == 'si':
+                print(f"   ID del Especialista: {order.diagnosticHelp.specialistId}")
             print()
+
 
     else:
         print("No se encontró ninguna orden con ese ID.")
