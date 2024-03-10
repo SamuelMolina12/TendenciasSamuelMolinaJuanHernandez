@@ -27,44 +27,51 @@ def showPatient(hospital, id):
         print("Paciente no encontrado.")
 
 
-def createHistoryClinicQuery(hospital,patientId,doctorId):
+def createHistoryClinicQuery(hospital, patientId, doctorId):
     
-    consultationReason = input("ingrese la razon de la consulta \n")
-    textValidator(consultationReason,"razon de la consulta ")
-    symptomatology = input("ingrese los sintomas \n")
-    textValidator(symptomatology,"la sintomas")
-    diagnosis =input("ingrese el diagnostico \n")
-    textValidator(diagnosis,"diagnostico")
-    order= createOrder(hospital, patientId, doctorId)
-    doctorService.createHistoryClinicQuery(hospital,patientId,doctorId,consultationReason,symptomatology,diagnosis,order)
-   
+    consultationReason = input("Ingrese la razón de la consulta: ")
+    textValidator(consultationReason, "razón de la consulta")
+    symptomatology = input("Ingrese los síntomas: ")
+    textValidator(symptomatology, "los síntomas")
+    order = createOrder(hospital, patientId, doctorId)
+    orderd = vars(order)
+    print(orderd)
+    if 'itemDiagnostic' in orderd.keys():
+        diagnosis = "N/A" 
+    else:
+        diagnosis = input("Ingrese el diagnóstico: ")
+        textValidator(diagnosis, "diagnóstico")
+    doctorService.createHistoryClinicQuery(hospital, patientId, doctorId, consultationReason, symptomatology, diagnosis, orderd)
 
-def showHistoryClinicQuery(hospital,patientId):
-    doctorService.showHistoryClinicQuery(hospital,patientId)
+def showHistoryClinicQuery(hospital, patientId):
+    doctorService.showHistoryClinicQuery(hospital, patientId)
     patient_history = hospital.historyClinic.get(str(patientId))
     print("Historial clinico para el paciente:")
     for visit_date, visit_details in patient_history.items():
         print(f"Fecha: {visit_date}")
         for key, value in visit_details.items():
-            print(f"{key}: {value}")
+            if key == 'order':
+                print("Orden:")
+                for order_key, order_value in value.items():
+                    print(f"  {order_key}: {order_value}")
+            else:
+                print(f"{key}: {value}")
         print("")
 
 
 
-def createOrder(hospital, patientId, doctorId):
 
+
+def createOrder(hospital, patientId, doctorId):
     orderId = len(hospital.orders)
     date = datetime.date.today()
     order = doctorService.createOrder(hospital, orderId, patientId, doctorId, date)
-    procedure = "N/A"
-    medicine = "N/A"
     
     helpDiagnostic = input("¿Requiere ayuda diagnóstica?: ").lower()
     if helpDiagnostic == 'si':
         createDiagnosticHelp(hospital, orderId)
-        return order
+        return hospital.orders[-1] if hospital.orders else None
     else:
-            
         print("Seleccione una opción:")
         print("1. Crear procedimiento")
         print("2. Crear medicina")
@@ -72,14 +79,17 @@ def createOrder(hospital, patientId, doctorId):
         option = input("Ingrese el número correspondiente a la opción deseada: ")
         if option == '1':
             createProcedure(hospital, orderId)
+            return hospital.orders[-1] if hospital.orders else None 
         elif option == '2':
             createMedicine(hospital, orderId)
+            return hospital.orders[-1] if hospital.orders else None 
         elif option == '3':
             createProcedure(hospital, orderId)
             createMedicine(hospital, orderId)
+            return hospital.orders[-2:] if hospital.orders else None 
         else:
             print("Opción no válida. Debe seleccionar 1, 2 o 3.")
- 
+
 
 
 
@@ -94,8 +104,7 @@ def createMedicine(hospital,orderId):
     durationMedication = input("ingrese la duracion de la medicacion \n")
     textValidator(durationMedication,"duracion ")
     medicineCost = input("ingrese el costo de la medicina \n")
-    textValidator(medicineCost,"costo")
-       
+    textValidator(medicineCost,"costo")       
     doctorService.createMedicine(hospital,orderId,itemMedicine,medicineName,medicineDose,durationMedication,medicineCost) 
 
 def createProcedure(hospital,orderId):
@@ -114,7 +123,9 @@ def createProcedure(hospital,orderId):
     textValidator(requiresSpecialistP,"especialista ")
     if requiresSpecialistP.lower() == 'si':
        specialistId = input("Ingrese el ID del especialista: ")   
-    
+    else:
+         requiresSpecialistP= "no"
+         specialistId = "N/A"
     doctorService.createProcedure(hospital,orderId,itemProcedure,nameProcedure,numberRepeated,frequencyRepeated,procedureCost,requiresSpecialistP,specialistId) 
     
 def createDiagnosticHelp(hospital, orderId):
@@ -131,6 +142,9 @@ def createDiagnosticHelp(hospital, orderId):
     textValidator(requiresSpecialistD, "especialista para el diagnóstico")
     if requiresSpecialistD == 'si':
         specialistId = input("Ingrese el ID del especialista: ")
+    else:
+         requiresSpecialistD= "no"
+         specialistId = "N/A"    
     doctorService.createDiagnosticHelp(hospital,orderId, itemDiagnostic, nameDiagnostic, quantity, diagnosticCost, requiresSpecialistD, specialistId)
       
 def showOrder(hospital, orderId):
@@ -139,17 +153,14 @@ def showOrder(hospital, orderId):
         if o.orderId == orderId:
             order = o
             break
-    orders = None
-    for a in order.diagnosticHelp:
-        if a.orderId == orderId:
-            order = a
-            break
+
     if order:
         print(f"ID de la Orden: {order.orderId}")
         print(f"ID del Paciente: {order.patientId}")
         print(f"ID del Doctor: {order.doctorId}")
         print(f"Fecha de la Orden: {order.date}")
 
+        # Mostrar ayuda diagnóstica si está presente
         if order.diagnosticHelp:
             print("Ayuda Diagnóstica:")
             print(f"Ítem del Diagnóstico: {order.diagnosticHelp.itemDiagnostic}")
@@ -161,7 +172,32 @@ def showOrder(hospital, orderId):
                 print(f"   ID del Especialista: {order.diagnosticHelp.specialistId}")
             print()
 
+        # Mostrar procedimientos si están presentes
+        if order.procedures:
+            print("Procedimientos:")
+            for procedure in order.procedures:
+                print(f"Item del Procedimiento: {procedure.itemProcedure}")
+                print(f"Nombre del Procedimiento: {procedure.nameProcedure}")
+                print(f"Número de Repeticiones: {procedure.numberRepeated}")
+                print(f"Frecuencia de Repeticiones: {procedure.frequencyRepeated}")
+                print(f"Costo del Procedimiento: {procedure.procedureCost}")
+                print(f"Requiere Especialista: {procedure.requiresSpecialistP}")
+                if procedure.requiresSpecialistP.lower() == 'si':
+                    print(f"   ID del Especialista: {procedure.specialistId}")
+                print()
+
+        # Mostrar medicinas si están presentes
+        if order.medicines:
+            print("Medicinas:")
+            for medicine in order.medicines:
+                print(f"Item de la Medicina: {medicine.itemMedicine}")
+                print(f"Nombre de la Medicina: {medicine.medicineName}")
+                print(f"Dosis de la Medicina: {medicine.medicineDose}")
+                print(f"Duración de la Medicación: {medicine.durationMedication}")
+                print(f"Costo de la Medicina: {medicine.medicineCost}")
+                print()
 
     else:
         print("No se encontró ninguna orden con ese ID.")
+
   

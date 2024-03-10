@@ -43,7 +43,7 @@ class Policy():
         self.termPolicy=termPolicy
 
 class ClinicalAppointment():
-    def __init__(self,id, date, hour, doctor,appointmentType):
+    def _init__(self,id, date, hour, doctor,appointmentType):
         self.id = id
         self.date = date
         self.hour = hour
@@ -99,6 +99,7 @@ class Order():
         self.medicines = []
         self.procedure = []
         self.diagnosticHelp = []
+        
 
 
 

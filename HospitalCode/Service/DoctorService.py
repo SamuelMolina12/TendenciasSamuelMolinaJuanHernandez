@@ -13,6 +13,14 @@ def validateId1(hospital,id):
             return id
     return None
 
+def ValidateOrder(hospital,orderId):
+    for order in hospital.orders:
+        if order.orderId==orderId:
+            return orderId
+    return None
+
+
+
 
 def createHistoryClinicQuery(hospital,patientId,doctorId,consultationReason,symptomatology,diagnosis,order):
     patient = validateId(hospital,patientId)
@@ -48,7 +56,7 @@ def createOrder(hospital, orderId, patientId, doctorId,date):
         raise Exception("no existe el paciente")   
     order= models.Order(orderId, patientId, doctorId,date) 
     hospital.orders.append(order)
-    return order  
+      
     
      
 def createMedicine(hospital,orderId, itemMedicine, medicineName, medicineDose, durationMedication, medicineCost):
@@ -63,6 +71,7 @@ def createMedicine(hospital,orderId, itemMedicine, medicineName, medicineDose, d
     order.medicines.append(medicine)
     hospital.orders.append(medicine)
 
+
 def createProcedure(hospital,orderId,itemProcedure,nameProcedure,numberRepeated,frequencyRepeated,procedureCost,requiresSpecialistP,specialistId):
     order = None
     for o in hospital.orders:
@@ -74,7 +83,7 @@ def createProcedure(hospital,orderId,itemProcedure,nameProcedure,numberRepeated,
     procedure = models.Procedure(orderId,itemProcedure,nameProcedure,numberRepeated,frequencyRepeated,procedureCost,requiresSpecialistP,specialistId)
     order.procedure.append(procedure)
     hospital.orders.append(procedure)
-
+    
 def createDiagnosticHelp(hospital,orderId, itemDiagnostic, nameDiagnostic, quantity, diagnosticCost, requiresSpecialistD, specialistId):
     order = None
     for o in hospital.orders:
