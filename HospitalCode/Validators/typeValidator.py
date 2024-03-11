@@ -11,7 +11,7 @@ def textValidator(string, element):
 #         raise Exception(element + "no es un valor valido")
 
 def numberValidator(string,element):
-    textValidator(string,element)
+    
     try:
         return int(string)
     except:
@@ -19,7 +19,7 @@ def numberValidator(string,element):
 
 
 def passwordValidator(password,element):
-    textValidator(password,element)
+    
     
     if len(password) < 8:
         raise ValueError("La contraseña debe tener al menos 8 caracteres")
@@ -37,9 +37,7 @@ def passwordValidator(password,element):
 
 
 def usernameValidator(userName, element):
-    textValidator(userName,element)
-
-
+    
     if not re.match(r"^[a-zA-Z0-9]{1,15}$", userName):
         print("Error: El campo " + element + " debe contener solo letras y números y tener entre 1 y 15 caracteres.")
         return False
@@ -47,15 +45,23 @@ def usernameValidator(userName, element):
 
 
 def emailValidator(mail, element):
-    textValidator(mail,element)
+   
     
     if not re.match(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", mail):
         print("Error: El campo " + element + " no es un correo electrónico válido.")
+        
         return False
     
     return mail
 
 
+def validateYesNo(input_str):
+    while True:
+        userInput = input(input_str).lower()
+        if userInput == 'si' or userInput == 'no':
+            return userInput
+        else:
+            print("Por favor, responda con 'si' o 'no'.")
 
 
 def phoneValidator(thelephone, element):
@@ -70,7 +76,7 @@ def phoneValidator(thelephone, element):
 
 
 def genreValidator(genre,element):
-    textValidator(genre,element)
+    
     
     genreValid = ["masculino", "femenino"]
     if genre.lower() not in genreValid:

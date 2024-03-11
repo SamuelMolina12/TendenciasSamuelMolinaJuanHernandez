@@ -13,6 +13,14 @@ def validateId1(hospital,id):
             return id
     return None
 
+def ValidateOrder(hospital,orderId):
+    for order in hospital.orders:
+        if order.orderId==orderId:
+            return orderId
+    return None
+
+
+
 
 def createHistoryClinicQuery(hospital,patientId,doctorId,consultationReason,symptomatology,diagnosis,order):
     patient = validateId(hospital,patientId)
@@ -42,52 +50,32 @@ def showHistoryClinicQuery(hospital, patientId):
     if not patient_history:
         raise Exception("No hay historial clinico para este paciente.")
     
-def createOrder(hospital, orderId, patientId, doctorId,date):
+def createOrder(hospital, orderId, patientId, doctorId,date,diagnosticHelp,medicines,procedure):
     patientId = validateId1(hospital,patientId)
     if not patientId:
         raise Exception("no existe el paciente")   
-    order= models.Order(orderId, patientId, doctorId,date) 
+    order= models.Order(orderId, patientId, doctorId,date,diagnosticHelp,medicines,procedure) 
     hospital.orders.append(order)
-    return order  
+    return order 
     
      
 def createMedicine(hospital,orderId, itemMedicine, medicineName, medicineDose, durationMedication, medicineCost):
-    order = None
-    for o in hospital.orders:
-        if o.orderId == orderId:
-            order = o
-            break
-    if order is None:
-        raise Exception("No se encontró ninguna orden con ese ID")
     medicine = models.Medicine(orderId, itemMedicine, medicineName, medicineDose, durationMedication, medicineCost)
-    order.medicines.append(medicine)
-    hospital.orders.append(medicine)
+    hospital.medicines.append(medicine)
+    return medicine
+   
+
 
 def createProcedure(hospital,orderId,itemProcedure,nameProcedure,numberRepeated,frequencyRepeated,procedureCost,requiresSpecialistP,specialistId):
-    order = None
-    for o in hospital.orders:
-        if o.orderId == orderId:
-            order = o
-            break
-    if order is None:
-        raise Exception("No se encontró ninguna orden con ese ID")
     procedure = models.Procedure(orderId,itemProcedure,nameProcedure,numberRepeated,frequencyRepeated,procedureCost,requiresSpecialistP,specialistId)
-    order.procedure.append(procedure)
-    hospital.orders.append(procedure)
+    hospital.procedures.append(procedure)
+    return procedure
 
+    
 def createDiagnosticHelp(hospital,orderId, itemDiagnostic, nameDiagnostic, quantity, diagnosticCost, requiresSpecialistD, specialistId):
-    order = None
-    for o in hospital.orders:
-        if o.orderId == orderId:
-            order = o
-            break
-    if order is None:
-        raise Exception("No se encontró ninguna orden con ese ID")    
     diagnosticHelp = models.DiagnosticHelp(orderId,itemDiagnostic, nameDiagnostic, quantity, diagnosticCost, requiresSpecialistD, specialistId)
-    order.diagnosticHelp.append(diagnosticHelp)
-    hospital.orders.append(diagnosticHelp)
-
-
+    hospital.diagnosticHelp.append(diagnosticHelp)
+    return diagnosticHelp
     
 
 
