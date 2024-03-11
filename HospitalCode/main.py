@@ -5,8 +5,7 @@ from Menus import HumanRMenu,StaffAdminMenu,DoctorMenu,NurseMenu
 
 hospital=models.Hospital()
 
-admin=models.Employer("samuel",5,"masculino","samuelgmail.com","30004399", "22/09/2002","calle 64A", "admin","samuelito","mini")
-hospital.persons.append(admin)
+
 rh=models.Employer("samuel",1,"masculino","samuelgmail.com","30004399", "22/09/2002","calle 64A", "RecursosHumanos","rh","1")
 hospital.persons.append(rh)
 doctor=models.Employer("juan",2,"masculino","juangmail.com","20004399", "24/89/2004","calle 64A", "doctor","doc","1")

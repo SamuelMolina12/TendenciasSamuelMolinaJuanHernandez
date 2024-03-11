@@ -91,14 +91,14 @@ class DiagnosticHelp():
 
 
 class Order():
-    def __init__(self, orderId, patientId, doctorId,date):
+    def __init__(self, orderId, patientId, doctorId,date,diagnosticHelp,medicines,procedure):
         self.orderId = orderId
         self.patientId = patientId
         self.doctorId = doctorId
         self.date = date
-        self.medicines = []
-        self.procedure = []
-        self.diagnosticHelp = []
+        self.medicines = medicines
+        self.procedure = procedure
+        self.diagnosticHelp = diagnosticHelp
         
 
 
@@ -108,7 +108,11 @@ class Hospital():
         self.persons = [] 
         self.patient = [] 
         self.orders = []
-        self.clinicalAppointment= []       
+        self.clinicalAppointment= []   
+        self.emergencyContact=[]
+        self.policy = []   
         self.historyVisits = {}   
         self.historyClinic = {}
-       
+        self.medicines = []
+        self.diagnosticHelp = []
+        self.procedures = []
