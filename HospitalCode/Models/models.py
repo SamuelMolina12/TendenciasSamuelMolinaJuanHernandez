@@ -43,7 +43,7 @@ class Policy():
         self.termPolicy=termPolicy
 
 class ClinicalAppointment():
-    def _init__(self,id, date, hour, doctor,appointmentType):
+    def __init__(self,id, date, hour, doctor,appointmentType):
         self.id = id
         self.date = date
         self.hour = hour
@@ -52,10 +52,16 @@ class ClinicalAppointment():
 
         
 class Billing():
-    def __init__(self,patientId):
-        self.patientId=patientId
-        self.Poliicy=Policy
-       
+    def __init__(self, patientId, patientName, patient_id, patient_birth, doctorName, policy, order, cost):
+        self.patientId = patientId
+        self.patient_name = patientName
+        self.patient_id = patient_id
+        self.patient_birth = patient_birth
+        self.doctorName = doctorName
+        self.policy = policy
+        self.order = order
+        self.cost = cost
+
 
 class Medicine():
     def __init__(self,orderId,itemMedicine,medicineName,medicineDose,durationMedication,medicineCost):       
