@@ -110,3 +110,29 @@ def dateValidator(birth, element):
         print("Error: El campo " + element + " no está en el formato DD/MM/YYYY o no es una fecha válida.")
         return False
     return birth
+
+
+
+def costValidator(cost, element):
+    try:
+        cost = cost.replace('.', '').replace(',', '')
+        cost = float(cost)
+        if cost <= 0:
+            raise ValueError
+    except ValueError:
+        raise ValueError(element + " no es un valor válido.")
+    return cost
+
+def policyStateValidator(state, element):
+    valid_states = ["activa", "inactiva"]
+    if state.lower() not in valid_states:
+        raise ValueError("El estado de la póliza debe ser 'activa' o 'inactiva'.")
+    return state.lower()
+
+def timeValidator(time_str, element):
+    try:
+        datetime.strptime(time_str, '%H:%M')
+    except ValueError:
+        raise ValueError("El formato de la hora para {} no es válido. Debe ser en formato de 24 horas (por ejemplo, '13:45').".format(element))
+    return time_str
+

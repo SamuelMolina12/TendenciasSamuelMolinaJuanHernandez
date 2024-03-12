@@ -35,7 +35,7 @@ def managePatient(hospital,id):
         if option=="5":
            showClinicalAppointment(hospital,id)
         if option=="6":
-            pass
+            createBilling(hospital,id)
         if option == "7":
             print("cerrando sesion")
             return 
@@ -70,5 +70,10 @@ def createClinicalAppointment(hospital,id):
 def showClinicalAppointment(hospital,id):
     try:
         StaffAdminValidator.showClinicalAppointment(hospital, id)
+    except Exception as error:
+        print(str(error))
+def createBilling(hospital,id):
+    try:
+        StaffAdminValidator.createBilling(hospital,id)
     except Exception as error:
         print(str(error))

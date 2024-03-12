@@ -1,5 +1,5 @@
 import Validators.TypeValidator as validators
-
+import Models.models as models
 import Service.StaffAdminService as staffAdminService
 
 
@@ -41,9 +41,9 @@ def createPolicy(hospital,patientId):
     validators.textValidator(insuranceCompany, "nombre de la compañia \n")
     policynumber = validators.numberValidator(input("Ingrese el numero de poliza: \n"), "Numero de poliza")
     statePolicy = input("Ingrese el estado de la poliza: \n")
-    validators.textValidator(statePolicy, "estado de la poliza \n")
+    validators.policyStateValidator(statePolicy, "estado de la poliza \n")
     termPolicy = input("Ingrese la fecha de terminacion de la poliza: \n")
-    validators.textValidator(termPolicy, "fecha de \n")
+    validators.dateValidator(termPolicy, "fecha de \n")
     staffAdminService.createPolicy(hospital,patientId,insuranceCompany,policynumber,statePolicy,termPolicy)
 
 def showPatient(hospital, id):
@@ -185,9 +185,9 @@ def updatePolicy(patient):
 def createClinicalAppointment(hospital,id):
     patientId = id
     date= input("Ingrese la fecha de la cita:\n")
-    validators.textValidator(date, "fecha  \n")
+    validators.dateValidator(date, "fecha  \n")
     hour = input("ingrese la hora de la cita\n")
-    validators.textValidator(hour, "hora de\n")
+    validators.timeValidator(hour, "hora de\n")
     doctor = input("Ingrese el nombre del doctor al que se le asignara la cita:\n")
     validators.textValidator(doctor, "correo  \n")
     appointmentType = input("ingrese el tipo de cita\n")
@@ -208,6 +208,48 @@ def showClinicalAppointment(hospital,id):
             print() 
     else:
         print("No hay citas programadas")
+
+
+
+def createBilling(hospital, patientId):
+    try:
+       
+        patient = None
+        for p in hospital.patient:
+            if p.id == patientId:
+                patient = p
+                break
+
+        if patient is None:
+            raise Exception("No se encontró ningún paciente con ese ID")
+
+        doctorName = input("Ingrese el nombre del doctor: ")
+        validators.textValidator(doctorName, "nombre del doctor")
+
+       
+        policy = None
+        for pol in hospital.policy:
+            if pol.patientId == patientId:
+                policy = pol
+                break
+
+        if policy is None:
+            raise Exception("El paciente no tiene ninguna póliza asociada")
+
+       
+        orders = [order for order in hospital.orders if order.patientId == patientId]
+
+        cost = input("Ingrese el costo: ")
+        validators.costValidator(cost, "costo")
+
+        billing = models.Billing(patientId, patient.name, patient.id, patient.birth, doctorName, policy, orders, cost)
+        
+        billing = vars(billing)
+        print (billing)
+        return billing
+        
+    except Exception as error:
+        print(str(error))
 
 
 

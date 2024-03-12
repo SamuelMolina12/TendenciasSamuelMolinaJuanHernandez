@@ -58,7 +58,6 @@ def updateUser(hospital,id):
             return user
     return None
 
-
 def createClinicalAppointment(hospital,patientId,date,hour,doctor,appointmentType):
     appointment = validateId(hospital,patientId)
     if not appointment:
@@ -71,3 +70,16 @@ def validateClinicalAppointment(hospital,id):
         if appointment.id==id:
             return appointment
     return None
+
+
+def createBilling(hospital,patientId,doctorName,policy,order ,cost):
+    patient = None
+    for p in hospital.patient:
+        if p.id == patientId:
+            patient = p
+            break
+    
+    if patient is None:
+        raise Exception("No se encontró ningún paciente con ese ID")
+    billing = models.Billing(patientId,patientId,doctorName,policy,order,cost)
+    return billing
