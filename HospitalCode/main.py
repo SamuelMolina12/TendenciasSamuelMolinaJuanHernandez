@@ -8,7 +8,7 @@ hospital=models.Hospital()
 
 rh=models.Employer("samuel",1,"masculino","samuelgmail.com","30004399", "22/09/2002","calle 64A", "RecursosHumanos","rh","1")
 hospital.persons.append(rh)
-doctor=models.Employer("juan",2,"masculino","juangmail.com","20004399", "24/89/2004","calle 64A", "doctor","doc","1")
+doctor=models.Employer("doc",2,"masculino","juangmail.com","20004399", "24/89/2004","calle 64A", "doctor","doc","1")
 hospital.persons.append(doctor)
 nurse=models.Employer("soto",3,"masculino","juanmigmail.com","33004399", "24/30/2005","carrera 64A", "enfermera","enf","1")
 hospital.persons.append(nurse)
@@ -17,8 +17,10 @@ hospital.persons.append(adminStaff)
 # ----------
 patient =models.Patient(id=1, name="Juan", genre="masculino", mail="juan@example.com",telephone="123456789", birth="01/01/1990", address="Calle Principal 123")
 emergency_contact=models.EmergencyContact(patientId=patient.id,name="María", relationship="esposa", telephone="987654321")
+hospital.emergencyContact.append(emergency_contact)
 patient.emergencyContact = emergency_contact
 policy = models.Policy(patientId=1, insuranceCompany="Seguros XYZ", policynumber="ABC123",statePolicy="activo", termPolicy="01/01/2025")
+hospital.policy.append(policy)
 patient.policy = policy
 hospital.patient.append(patient)
 # ---------

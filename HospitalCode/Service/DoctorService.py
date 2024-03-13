@@ -35,7 +35,7 @@ def createHistoryClinicQuery(hospital,patientId,doctorId,consultationReason,symp
     newhistoryClinic["order"]=order     
     hospital.historyClinic[str(patientId)][date] = newhistoryClinic
   
-
+   
 
 
 

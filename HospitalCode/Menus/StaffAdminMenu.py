@@ -64,6 +64,7 @@ def updatePatient(hospital,id):
 def createClinicalAppointment(hospital,id):
     try:
         StaffAdminValidator.createClinicalAppointment(hospital, id)
+        print("Se creo exitosamente la historia clinica")
     except Exception as error:
         print(str(error))
 
