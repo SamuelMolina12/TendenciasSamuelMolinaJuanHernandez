@@ -122,3 +122,4 @@ class Hospital():
         self.medicines = []
         self.diagnosticHelp = []
         self.procedures = []
+        self.paidOrders = []

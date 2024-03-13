@@ -12,7 +12,7 @@ def nurseMenu(hospital,user):
             showHistoryVisitsQuery(hospital,id)
         elif option == "3":
             id = int(input("Ingrese el ID del paciente: "))
-            createHistoryVisitsQuery(hospital,id)                           
+            createHistoryVisitsQuery(hospital,id,user)                           
         elif option == "4":
             
             return
@@ -25,9 +25,10 @@ def showPatient(hospital,id):
     except Exception as error:
         print(str(error))              
 
-def createHistoryVisitsQuery(hospital,id):
+def createHistoryVisitsQuery(hospital,id,user):
     try:
-        NurseTypeValidator.createHistoryVisitsQuery(hospital,id)
+        nurseId = user.id
+        NurseTypeValidator.createHistoryVisitsQuery(hospital,id,nurseId)
         print("se creo nueva visita correctamente")
     except Exception as error:
         print(str(error))
@@ -36,6 +37,7 @@ def createHistoryVisitsQuery(hospital,id):
 
 def showHistoryVisitsQuery(hospital,id):
     try:
+       
         NurseTypeValidator.showHistoryVisitsQuery(hospital,id)
     except Exception as error:
         print(str(error))

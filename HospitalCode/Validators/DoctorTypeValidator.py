@@ -35,7 +35,6 @@ def createHistoryClinicQuery(hospital, patientId, doctorId):
     validators.textValidator(symptomatology, "los síntomas")
     order = createOrder(hospital, patientId, doctorId)
     orderd = vars(order)
-    print(orderd)
     if not orderd.get('diagnosticHelp'):
         diagnosis = input("Ingrese el diagnóstico: ")
         validators.textValidator(diagnosis, "diagnóstico")
@@ -191,7 +190,7 @@ def createMedicine(hospital,orderId):
     validators.costValidator(medicineCost,"costo")       
     medicine=doctorService.createMedicine(hospital,orderId,itemMedicine,medicineName,medicineDose,durationMedication,medicineCost) 
     medicine = vars(medicine)
-    print(medicine)
+
     return medicine
 
 def createProcedure(hospital,orderId):
@@ -214,7 +213,6 @@ def createProcedure(hospital,orderId):
          specialistId = "N/A"
     procedure=doctorService.createProcedure(hospital,orderId,itemProcedure,nameProcedure,numberRepeated,frequencyRepeated,procedureCost,requiresSpecialistP,specialistId)
     procedure = vars(procedure)
-    print(procedure)
     return procedure 
     
 def createDiagnosticHelp(hospital, orderId):
@@ -237,6 +235,5 @@ def createDiagnosticHelp(hospital, orderId):
 
     diagnosticHelp=doctorService.createDiagnosticHelp(hospital,orderId, itemDiagnostic, nameDiagnostic, quantity, diagnosticCost, requiresSpecialistD, specialistId)
     diagnosticHelp = vars(diagnosticHelp)
-    print(diagnosticHelp)
     return diagnosticHelp
       
