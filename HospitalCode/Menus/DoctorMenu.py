@@ -45,16 +45,3 @@ def showHistoryClinicQuery(hospital,patientId):
     except Exception as error:
         print(str(error))
 
-# def   createOrder(hospital,patientId,user):
-#     try:
-#         doctorId = user.id
-#         DoctorTypeValidator.createOrder(hospital,patientId,doctorId)
-#         print("se ha creado la orden")
-#     except Exception as error:
-#         print(str(error))
-
-# def showOrder(hospital,orderId):
-#     try:
-#         DoctorTypeValidator.showOrder(hospital,orderId)
-#     except Exception as error:
-#         print(str(error))
