@@ -129,7 +129,11 @@ def createOrder(hospital, patientId, doctorId):
     diagnosticHelp = []
 
     while True:
-        printOptions()
+        print("Seleccione una opción:")
+        print("1. Agregar procedimiento")
+        print("2. Agregar medicina")
+        print("3. Agregar ayuda diagnóstica")
+        print("4. Finalizar")
         option = input("Ingrese el número correspondiente a la opción deseada: ")
 
         if option == '1':
@@ -146,12 +150,6 @@ def createOrder(hospital, patientId, doctorId):
     order = doctorService.createOrder(hospital, orderId, patientId, doctorId, date, diagnosticHelp, medicines, procedures)
     return order
 
-def printOptions():
-    print("Seleccione una opción:")
-    print("1. Agregar procedimiento")
-    print("2. Agregar medicina")
-    print("3. Agregar ayuda diagnóstica")
-    print("4. Finalizar")
 
 def addProcedure(diagnosticHelp, procedures, hospital, orderId):
     if diagnosticHelp:
