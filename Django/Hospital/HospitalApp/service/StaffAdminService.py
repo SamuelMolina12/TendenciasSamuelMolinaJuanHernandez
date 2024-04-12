@@ -22,14 +22,15 @@ def createPatient( id, name, genre, mail, telephone, birth, address):
         raise Exception("Ya existe una persona con esa cédula registrada")
     patient = models.Patient(id, name, genre, mail, telephone, birth, address)
     patient.save()
+    return patient.id
 
    
 
 
 def createEmergencyContact(name, relationship, telephone, patientId):
-    emergencyContact = models.Patient.objects.filter(id=patientId)
-    if not emergencyContact.exists():
-        raise Exception("No existe un paciente con esa cédula registrada")
+    # emergencyContact = models.Patient.objects.filter(id=patientId)
+    # if not emergencyContact.exists():
+    #     raise Exception("No existe un paciente con esa cédula registrada")
     
 
     emergencyContact = models.EmergencyContact(name=name, relationship=relationship, telephone=telephone, patient_id=patientId)
@@ -39,9 +40,9 @@ def createEmergencyContact(name, relationship, telephone, patientId):
     
 def createPolicy(insuranceCompany, policynumber, statePolicy, termPolicy,patientId):
 
-    policy = models.Patient.objects.filter(id=patientId)
-    if not policy.exists():
-        raise Exception("No existe un paciente con esa cédula registrada")
+    # policy = models.Patient.objects.filter(id=patientId)
+    # if not policy.exists():
+    #     raise Exception("No existe un paciente con esa cédula registrada")
     
     policy = models.Policy(insuranceCompany=insuranceCompany, policynumber=policynumber, statePolicy=statePolicy, termPolicy=termPolicy, patient_id=patientId)
     policy.save()
@@ -60,12 +61,13 @@ def createPolicy(insuranceCompany, policynumber, statePolicy, termPolicy,patient
 #             return user
 #     return None
 
-# def createClinicalAppointment(hospital,patientId,date,hour,doctor,appointmentType):
-#     appointment = validateId(hospital,patientId)
-#     if not appointment:
-#         raise Exception("no hay un paciente con esa cedula")
-#     appointment = models.ClinicalAppointment(patientId,date,hour,doctor,appointmentType)
-#     hospital.clinicalAppointment.append(appointment)
+def createClinicalAppointment(date,hour,doctor,appointmentType,patientId):
+    appointment = models.Patient.objects.filter(id=patientId)
+    if not appointment.exists():
+         raise Exception("No existe un paciente con esa cédula registrada")
+    
+    appointment = models.ClinicalAppointment(date=date, hour=hour, doctor=doctor, appointmentType=appointmentType,patient_id=patientId)
+    appointment.save()
 
 # def validateClinicalAppointment(hospital,id):
 #     for appointment in hospital.clinicalAppointment:

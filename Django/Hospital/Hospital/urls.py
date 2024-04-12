@@ -16,19 +16,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from HospitalApp.views import EmployerView,PatientView,EmergencyContactView,PolicyView
+from HospitalApp.views import EmployerView,PatientView,ClinicalAppointmentView
 urlpatterns = [
     path('admin/', admin.site.urls),
   
-    path("hospital/employer",EmployerView.as_view(),name="employers post"),
-    path("hospital/employer/<id>",EmployerView.as_view(),name="employers get put and delete"),
+    path("hospital/employer", EmployerView.as_view(), name="employers_post"),
+    path("hospital/employer/<int:id>", EmployerView.as_view(), name="employers_get_put_delete"),
 
     path("hospital/patient",PatientView.as_view(),name="patients post"),
     path("hospital/patient/<id>",PatientView.as_view(),name="patients get put and delete"),
 
-    path("hospital/emergencyContact",EmergencyContactView.as_view(),name="emergencyContacts post"),
-    path("hospital/emergencyContact/<id>",EmergencyContactView.as_view(),name="emergencyContacts get put and delete"),
+    # path("hospital/emergencyContact",EmergencyContactView.as_view(),name="emergencyContacts post"),
+    # path("hospital/emergencyContact/<id>",EmergencyContactView.as_view(),name="emergencyContacts get put and delete"),
 
-    path("hospital/policy",PolicyView.as_view(),name="policies post"),
-    path("hospital/policy/<id>",PolicyView.as_view(),name="policies get put and delete")
+    # path("hospital/policy",PolicyView.as_view(),name="policies post"),
+    # path("hospital/policy/<id>",PolicyView.as_view(),name="policies get put and delete")
+
+    path("hospital/clinicalAppointment",ClinicalAppointmentView.as_view(),name="clinicalAppointments post"),
+    path("hospital/clinicalAppointment/<id>",ClinicalAppointmentView.as_view(),name="clinicalAppointments get put and delete"),
 ]

@@ -27,18 +27,40 @@ def createUser(name,id,genre,mail,telephone,birth,address,role,userName,password
     user=models.Employer(id,name,genre,mail,telephone,birth,address,role,userName,password)
     user.save()
 
-# def deleteUser(hospital,id):
-#     for user in hospital.persons:
-#         if user.id == id:
-#             return True
-#     return False
 
-# def updateUser(hospital,id):
-#     for user in hospital.persons:
-#         if user.id == int(id):
-#             return user
-#     return None
-  
-# def findUsersByRole(hospital, role):
-#     users = hospital.persons
-#     return [user for user in users if user.role == role]
+
+
+def getUsers():
+    return models.Employer.objects.all()
+
+
+def getUser(id):
+    try:
+        return models.Employer.objects.get(id=id)
+    except models.Employer.DoesNotExist:
+        return None
+
+
+def deleteUser(id):
+    employer = models.Employer.objects.filter(id=id).first()
+    if employer:
+        employer.delete()
+    else:
+        raise Exception("Empleado no encontrado")
+
+
+def updateUser(id, name, genre, mail, telephone, birth, address, role, userName, password):
+    employer = models.Employer.objects.filter(id=id).first()
+    if employer:
+        employer.name = name
+        employer.genre = genre
+        employer.mail = mail
+        employer.telephone = telephone
+        employer.birth = birth
+        employer.address = address
+        employer.role = role
+        employer.userName = userName
+        employer.password = password
+        employer.save()
+    else:
+        raise Exception("Empleado no encontrado")

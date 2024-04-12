@@ -46,15 +46,17 @@ def createEmergencyContact(name,relationship,telephone,patientId):
 
     staffAdminService.createEmergencyContact(name,relationship,telephone,patientId)
 
-def createPolicy(insuranceCompany,policynumber,statePolicy,termPolicy,patientId,):
+def createPolicy(insuranceCompany,policynumber,statePolicy,termPolicy,patientId):
 
    
     validators.textValidator(insuranceCompany, "nombre de la compañia \n")
     policynumber = validators.numberValidator(policynumber, "Numero de poliza")
 
-    validators.policyStateValidator(statePolicy, "estado de la poliza \n")
+    if statePolicy == "Inactiva":
+        termPolicy = "N/A"
+    else:
+        termPolicy = validators.policyTermValidator(termPolicy, "fecha de \n")
 
-    termPolicy=validators.policyTermValidator(termPolicy, "fecha de \n")
 
     staffAdminService.createPolicy(insuranceCompany,policynumber,statePolicy,termPolicy,patientId)
 
@@ -194,18 +196,21 @@ def createPolicy(insuranceCompany,policynumber,statePolicy,termPolicy,patientId,
     
 #     patient.policy.termPolicy =newTermPolicy if newTermPolicy else patient.policy.termPolicy
 
-# def createClinicalAppointment(hospital,id):
-#     patientId = id
-#     date= input("Ingrese la fecha de la cita: Formato (DD/MM/YYYY)\n")
-#     validators.dateValidator(date, "fecha  \n")
-#     hour = input("ingrese la hora de la cita: formato 24 horas\n")
-#     validators.timeValidator(hour, "hora de\n")
-#     doctor = input("Ingrese el nombre del doctor al que se le asignara la cita:\n")
-#     validators.textValidator(doctor, "correo  \n")
-#     appointmentType = input("ingrese el tipo de cita\n")
-#     validators.textValidator(appointmentType, "direccion de\n")
-#     staffAdminService.createClinicalAppointment(hospital,patientId,date,hour, doctor,appointmentType)
-#     print("Cita medica creada con exito")
+def createClinicalAppointment (date, hour, doctor, appointmentType,patientId):
+  
+
+    validators.dateValidator(date, "fecha  \n")
+
+    validators.timeValidator(hour, "hora de\n")
+
+
+    validators.textValidator(doctor, "nombre del doctor  \n")
+    
+    validators.textValidator(appointmentType, "tipo de cita\n")
+
+    staffAdminService.createClinicalAppointment( date, hour, doctor, appointmentType,patientId)
+  
+
 
 # def showClinicalAppointment(hospital,id):
 #     patientId = id

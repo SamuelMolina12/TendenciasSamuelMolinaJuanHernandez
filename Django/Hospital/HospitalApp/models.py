@@ -25,7 +25,7 @@ class Patient(models.Model):
     # policy=[]
 
 class EmergencyContact(models.Model):
-    id=models.AutoField(primary_key=True, default=1)
+    id=models.AutoField(primary_key=True)
     patient=models.ForeignKey(Patient,on_delete=models.CASCADE)
     name=models.CharField(max_length=30)
     relationship=models.CharField(max_length=30)
@@ -33,7 +33,7 @@ class EmergencyContact(models.Model):
     
 
 class Policy(models.Model):
-    id=models.AutoField(primary_key=True, default=1)
+    id=models.AutoField(primary_key=True)
     patient=models.ForeignKey(Patient,on_delete=models.CASCADE)
     insuranceCompany=models.CharField(max_length=30)
     policynumber=models.CharField(max_length=30)
@@ -41,10 +41,10 @@ class Policy(models.Model):
     termPolicy=models.CharField(max_length=30)
 
 class ClinicalAppointment(models.Model):
-    id = models.AutoField(primary_key=True, default=1)
+    id = models.AutoField(primary_key=True)
     patient=models.ForeignKey(Patient,on_delete=models.CASCADE)
-    date = models.DateField()
-    hour = models.TimeField()
+    date = models.CharField(max_length=30)
+    hour = models.CharField(max_length=30)
     doctor = models.CharField(max_length=30)
     appointmentType = models.CharField(max_length=30)
 
