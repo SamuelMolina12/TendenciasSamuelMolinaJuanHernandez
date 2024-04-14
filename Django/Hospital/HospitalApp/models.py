@@ -70,9 +70,9 @@ class Billing(models.Model):
 
 
 class Medicine(models.Model):  
-    id= models.AutoField(primary_key=True, default=1)   
-    order =models.ForeignKey(Order,on_delete=models.CASCADE)
-    itemMedicine = models.IntegerField()
+    id= models.AutoField(primary_key=True)   
+    # order =models.ForeignKey(Order,on_delete=models.CASCADE)
+    # itemMedicine = models.IntegerField()
     medicineName = models.CharField(max_length=30)
     medicineDose = models.CharField(max_length=30)
     durationMedication = models.CharField(max_length=30)
@@ -80,9 +80,9 @@ class Medicine(models.Model):
 
 
 class Procedure(models.Model):
-    id=models.AutoField(primary_key=True, default=1)
-    order = models.ForeignKey(Order,on_delete=models.CASCADE)
-    itemProcedure = models.IntegerField()
+    id=models.AutoField(primary_key=True)
+    # order = models.ForeignKey(Order,on_delete=models.CASCADE)
+    # itemProcedure = models.IntegerField()
     nameProcedure =  models.CharField(max_length=30)
     numberRepeated =  models.CharField(max_length=30)
     frequencyRepeated =  models.CharField(max_length=30)
@@ -92,9 +92,9 @@ class Procedure(models.Model):
 
 
 class DiagnosticHelp(models.Model):
-    id = models.AutoField(primary_key=True, default=2)
-    order = models.ForeignKey(Order,on_delete=models.CASCADE)
-    itemDiagnostic = models.IntegerField()
+    id = models.AutoField(primary_key=True)
+    # order = models.ForeignKey(Order,on_delete=models.CASCADE)
+    # itemDiagnostic = models.IntegerField()
     nameDiagnostic = models.CharField(max_length=30)
     quantity = models.CharField(max_length=30)
     diagnosticCost = models.FloatField()

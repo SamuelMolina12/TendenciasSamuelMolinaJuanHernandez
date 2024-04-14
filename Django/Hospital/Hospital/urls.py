@@ -16,13 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from HospitalApp.views import EmployerView,PatientView,ClinicalAppointmentView
+from HospitalApp.views import EmployerView,PatientView,ClinicalAppointmentView,MedicineView,ProcedureView,DiagnosticHelpView
 urlpatterns = [
     path('admin/', admin.site.urls),
-  
+# Empleado-----  
     path("hospital/employer", EmployerView.as_view(), name="employers_post"),
     path("hospital/employer/<int:id>", EmployerView.as_view(), name="employers_get_put_delete"),
-
+#--------
+#Paciente---------
     path("hospital/patient",PatientView.as_view(),name="patients post"),
     path("hospital/patient/<id>",PatientView.as_view(),name="patients get put and delete"),
 
@@ -34,4 +35,16 @@ urlpatterns = [
 
     path("hospital/clinicalAppointment",ClinicalAppointmentView.as_view(),name="clinicalAppointments post"),
     path("hospital/clinicalAppointment/<id>",ClinicalAppointmentView.as_view(),name="clinicalAppointments get put and delete"),
+#-----------------
+
+#Inventario ----------
+    path("hospital/medicine",MedicineView.as_view(),name="medicines post"),
+    path("hospital/medicine/<id>",MedicineView.as_view(),name="medicines get put and delete"),
+    path("hospital/procedure",ProcedureView.as_view(),name="procedures post"),
+    path("hospital/procedure/<id>",ProcedureView.as_view(),name="procedures get put and delete"),    
+    path("hospital/diagnosticHelp",DiagnosticHelpView.as_view(),name="diagnosticaids post"),
+    path("hospital/diagnosticHelp/<id>",DiagnosticHelpView.as_view(),name="diagnosticaids get put and delete"), 
+#------
+
+
 ]
