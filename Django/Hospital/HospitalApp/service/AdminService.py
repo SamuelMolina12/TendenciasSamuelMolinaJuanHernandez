@@ -3,20 +3,6 @@ import HospitalApp.models as models
 
 
 
-# def validateId(hospital,id):
-#     for person in hospital.persons:
-#         if person.id==id:
-#             return person
-#     return None
-
-
-
-# def validateUserName(hospital,userName):
-#     for person in hospital.persons:
-#         if person.userName==userName:
-#             return person
-#     return None
-
 def createUser(name,id,genre,mail,telephone,birth,address,role,userName,password):
     user=models.Employer.objects.filter(id=id)
     if user.exists():
