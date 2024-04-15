@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.views import View
-import HospitalApp.validators.PersonTypeValidator as PersonValidator
+import HospitalApp.validators.AdminTypeValidator as AdminValidator
 import HospitalApp.validators.StaffAdminValidator as StaffAdminValidator
-import HospitalApp.validators.InfoSupportTypeValidator as InfoValidator
+import HospitalApp.validators.InfoSupportValidator as InfoValidator
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http.response import JsonResponse
@@ -17,29 +17,26 @@ class EmployerView(View):
         return super().dispatch(request, *args, **kwargs)
    
     def get(self, request, id=None):
-        employers = [PersonValidator.getUser(id)] if id else PersonValidator.getUsers()
-        status = 200 if employers else 404
-        employers = [{
-            "id": employer.id, 
-            "name": employer.name, 
-            "genre": employer.genre, 
-            "mail": employer.mail, 
-            "telephone": employer.telephone,
-            "birth": employer.birth, 
-            "address": employer.address, 
-            "role": employer.role, 
-            "userName": employer.userName,
-            "password": employer.password
-            } for employer in employers]
-    
-        return JsonResponse(employers, status=status, safe=False)
+        try:
+            employers = [AdminValidator.getUser(id)] if id else AdminValidator.getUsers()
+            employers = [{"id": employer.id, "name": employer.name,"genre":employer.genre,"mail":employer.mail, "telephone": employer.telephone,
+            "birth":employer.birth, "address":employer.address, "role":employer.role, "userName":employer.userName,"password":employer.password} for employer in employers]
+            status = 204 if employers else 404
+        except Exception as error:
+            message = str(error)
+            status = 400
+            response = {"message": message}
+            return JsonResponse(response, status=status)
+        else:
+            return JsonResponse(employers, status=status, safe=False)
+
 
         
  
     def post(self,request):
         body=json.loads(request.body)
         try:
-            PersonValidator.createUser(body["name"],body["id"],body["genre"],body["mail"],body["telephone"],body["birth"],body["address"],body["role"],body["userName"],body["password"])
+            AdminValidator.createUser(body["name"],body["id"],body["genre"],body["mail"],body["telephone"],body["birth"],body["address"],body["role"],body["userName"],body["password"])
             message="se ha creado el Empleado exitosamente"
             status=204
         except Exception as error:
@@ -48,29 +45,11 @@ class EmployerView(View):
         response = {"message":message}
         return JsonResponse(response,status=status)
  
-    def put(self,request, id):  # Agrega el parámetro 'id' aquí
+    def put(self,request, id): 
         if id:
-            body = json.loads(request.body)
-            try:
-                PersonValidator.updateUser(
-                    id,  # Pasa el 'id' aquí
-                    body["name"],
-                    body["genre"],
-                    body["mail"],
-                    body["telephone"],
-                    body["birth"],
-                    body["address"],
-                    body["role"],
-                    body["userName"],
-                    body["password"]
-                )
-                message = "Empleado actualizado exitosamente"
-                status = 204
-            except Exception as error:
-                message = str(error)
-                status = 400
+           putUser(self,request, id)
         else:
-            message = "Se requiere el parámetro 'id' para actualizar un empleado"
+            message = "Se requiere el  'id' para actualizar un empleado"
             status = 400
         
         response = {"message": message}
@@ -78,9 +57,26 @@ class EmployerView(View):
 
 
  
+    def put(self, request, id):
+        if id:
+            message, status = self.putUser(request, id)
+        
+        response = {"message": message}
+        return JsonResponse(response, status=status)
+
+    def putUser(self,request, id):
+        body = json.loads(request.body)
+        try:
+            AdminValidator.updateUser(id, body["name"],body["genre"],body["mail"],body["telephone"],body["birth"],body["address"],body["role"],body["userName"],body["password"])
+            message = "Empleado actualizado exitosamente"
+            status = 204
+        except Exception as error:
+            message = str(error)
+            status = 400
+        return message, status
     def delete(self, request, id):
         try:
-            PersonValidator.deleteUser(id)
+            AdminValidator.deleteUser(id)
             message = "Empleado eliminado exitosamente"
             status = 204
         except Exception as error:
@@ -88,7 +84,9 @@ class EmployerView(View):
             status = 400
         
         response = {"message": message}
-        return JsonResponse(response, status=status)
+        return JsonResponse(response, status=status)    
+  
+
 
 class PatientView(View):
     @method_decorator(csrf_exempt)
@@ -202,14 +200,27 @@ class ClinicalAppointmentView(View):
 #         pass
 
 #inventario ------------
+
+      #medicina
 class MedicineView(View):
    
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args: any, **kwargs: any):
         return super().dispatch(request, *args, **kwargs)
    
-    def get(self,request):
-        pass
+    def get(self, request, id=None):
+        try:
+            medicines = [InfoValidator.getMedicine(id)] if id else InfoValidator.getMedicines()
+            medicines = [{"id": medicine.id, "medicineName": medicine.medicineName,"medicineDose":medicine.medicineDose,"durationMedication": medicine.durationMedication,
+            "medicineCost":medicine.medicineCost} for medicine in medicines]
+            status = 204 if medicines else 404
+        except Exception as error:
+            message = str(error)
+            status = 400
+            response = {"message": message}
+            return JsonResponse(response, status=status)
+        else:
+            return JsonResponse(medicines, status=status, safe=False)
  
     def post(self,request):
         body=json.loads(request.body)
@@ -223,25 +234,61 @@ class MedicineView(View):
         response = {"message":message}
         return JsonResponse(response,status=status)
  
-    def put(self,request):
-        pass
- 
-    def delete(self,request):
-        pass
+    def put(self, request, id):
+        if id:
+            message, status = self.UpdateMedicine(request, id)
+        response = {"message": message}
+        return JsonResponse(response, status=status)
 
+    def UpdateMedicine(self,request, id):
+        body = json.loads(request.body)
+        try:
+            InfoValidator.updateMedicine(id,body["medicineName"],body["medicineDose"],body["durationMedication"],body["medicineCost"])
+            message = "Medicina actualizada exitosamente"
+            status = 204
+        except Exception as error:
+            message = str(error)
+            status = 400
+        return message, status
+ 
+    def delete(self, request, id):
+        try:
+            InfoValidator.deleteMedicine(id)
+            message = "Medicina Eliminada exitosamente"
+            status = 204
+        except Exception as error:
+            message = str(error)
+            status = 400
+        
+        response = {"message": message}
+        return JsonResponse(response, status=status)
+
+
+         ##Procedimiento
 class ProcedureView(View):
    
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args: any, **kwargs: any):
         return super().dispatch(request, *args, **kwargs)
    
-    def get(self,request):
-        pass
+    def get(self, request, id=None):
+        try:
+            procedures = [InfoValidator.getProcedure(id)] if id else InfoValidator.getProcedures()
+            procedures = [{"id": procedure.id, "procedureName": procedure.procedureName,"numberRepeated":procedure.numberRepeated,"frequencyRepeated": procedure.frequencyRepeated,
+            "procedureCost":procedure.procedureCost,"requiresSpecialistP":procedure.requiresSpecialistP,"specialistId":procedure.specialistId} for procedure in procedures]
+            status = 204 if procedures else 404
+        except Exception as error:
+            message = str(error)
+            status = 400
+            response = {"message": message}
+            return JsonResponse(response, status=status)
+        else:
+            return JsonResponse(procedures, status=status, safe=False)
  
     def post(self,request):
         body=json.loads(request.body)
         try: 
-            InfoValidator.createProcedure(body["nameProcedure"],body["numberRepeated"],body["frequencyRepeated"],body["procedureCost"],body["requiresSpecialistP"],body["specialistId"])
+            InfoValidator.createProcedure(body["procedureName"],body["numberRepeated"],body["frequencyRepeated"],body["procedureCost"],body["requiresSpecialistP"],body["specialistId"])
             message="se ha creado el procedimiento exitosamente"
             status=204
         except Exception as error:
@@ -250,26 +297,60 @@ class ProcedureView(View):
         response = {"message":message}
         return JsonResponse(response,status=status)
  
-    def put(self,request):
-        pass
+    def put(self, request, id):
+        if id:
+            message, status = self.UpdateProcedure(request, id)
+        response = {"message": message}
+        return JsonResponse(response, status=status)
+
+    def UpdateProcedure(self,request, id):
+        body = json.loads(request.body)
+        try:
+            InfoValidator.updateProcedure(id,body["procedureName"],body["numberRepeated"],body["frequencyRepeated"],body["procedureCost"],body["requiresSpecialistP"],body["specialistId"])
+            message = "procedimiento actualizado exitosamente"
+            status = 204
+        except Exception as error:
+            message = str(error)
+            status = 400
+        return message, status
  
-    def delete(self,request):
-        pass
+    def delete(self, request, id):
+        try:
+            InfoValidator.deleteProcedure(id)
+            message = "Procedimiento eliminado exitosamente"
+            status = 204
+        except Exception as error:
+            message = str(error)
+            status = 400
+        
+        response = {"message": message}
+        return JsonResponse(response, status=status)
 
-
+      #Ayudas Diagnosticas
 class DiagnosticHelpView(View):
    
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args: any, **kwargs: any):
         return super().dispatch(request, *args, **kwargs)
    
-    def get(self,request):
-        pass
+    def get(self, request, id=None):
+        try:
+            diagnoses = [InfoValidator.getDiagnosticHelp(id)] if id else InfoValidator.getDiagnosticaids()
+            diagnoses = [{"id": diagnostic.id, "diagnosticName": diagnostic.diagnosticName,"quantity":diagnostic.quantity,"diagnosticCost": diagnostic.diagnosticCost,
+            "requiresSpecialistD":diagnostic.requiresSpecialistD,"specialistId":diagnostic.specialistId} for diagnostic in diagnoses]
+            status = 204 if diagnoses else 404
+        except Exception as error:
+            message = str(error)
+            status = 400
+            response = {"message": message}
+            return JsonResponse(response, status=status)
+        else:
+            return JsonResponse(diagnoses, status=status, safe=False)
  
     def post(self,request):
         body=json.loads(request.body)
         try: 
-            InfoValidator.createDiagnosticHelp(body["nameDiagnostic"],body["quantity"],body["diagnosticCost"],body["requiresSpecialistD"],body["specialistId"])
+            InfoValidator.createDiagnosticHelp(body["diagnosticName"],body["quantity"],body["diagnosticCost"],body["requiresSpecialistD"],body["specialistId"])
             message="se ha creado la ayuda diagnostica exitosamente"
             status=204
         except Exception as error:
@@ -278,9 +359,40 @@ class DiagnosticHelpView(View):
         response = {"message":message}
         return JsonResponse(response,status=status)
  
-    def put(self,request):
-        pass
+    def put(self, request, id):
+        if id:
+            message, status = self.UpdateDiagnosticHelp(request, id)
+        response = {"message": message}
+        return JsonResponse(response, status=status)
+
+    def UpdateDiagnosticHelp(self,request, id):
+        body = json.loads(request.body)
+        try:
+            InfoValidator.updateDiagnosticHelp(id,body["diagnosticName"],body["quantity"],body["diagnosticCost"],body["requiresSpecialistD"],body["specialistId"])
+            message = "Ayuda Diagnstica actualizada exitosamente"
+            status = 204
+        except Exception as error:
+            message = str(error)
+            status = 400
+        return message, status
  
-    def delete(self,request):
-        pass
+    def delete(self, request, id):
+        try:
+            InfoValidator.deleteDiagnosticHelp(id)
+            message = "ayuda diagnostica eliminada exitosamente"
+            status = 204
+        except Exception as error:
+            message = str(error)
+            status = 400
+        
+        response = {"message": message}
+        return JsonResponse(response, status=status)
 #---------
+
+
+
+
+
+
+#Funciones 
+

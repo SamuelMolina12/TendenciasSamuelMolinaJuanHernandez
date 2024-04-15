@@ -39,11 +39,11 @@ urlpatterns = [
 
 #Inventario ----------
     path("hospital/medicine",MedicineView.as_view(),name="medicines post"),
-    path("hospital/medicine/<id>",MedicineView.as_view(),name="medicines get put and delete"),
+    path("hospital/medicine/<int:id>",MedicineView.as_view(),name="medicines get put and delete"),
     path("hospital/procedure",ProcedureView.as_view(),name="procedures post"),
-    path("hospital/procedure/<id>",ProcedureView.as_view(),name="procedures get put and delete"),    
+    path("hospital/procedure/<int:id>",ProcedureView.as_view(),name="procedures get put and delete"),    
     path("hospital/diagnosticHelp",DiagnosticHelpView.as_view(),name="diagnosticaids post"),
-    path("hospital/diagnosticHelp/<id>",DiagnosticHelpView.as_view(),name="diagnosticaids get put and delete"), 
+    path("hospital/diagnosticHelp/<int:id>",DiagnosticHelpView.as_view(),name="diagnosticaids get put and delete"), 
 #------
 
 

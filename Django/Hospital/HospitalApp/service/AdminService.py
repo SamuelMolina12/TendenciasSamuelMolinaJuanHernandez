@@ -17,14 +17,19 @@ def createUser(name,id,genre,mail,telephone,birth,address,role,userName,password
 
 
 def getUsers():
-    return models.Employer.objects.all()
-
+    employers = models.Employer.objects.all()
+    if employers:
+        return employers
+    else:
+        raise Exception("No hay  empleados para mostrar")
 
 def getUser(id):
-    try:
-        return models.Employer.objects.get(id=id)
-    except models.Employer.DoesNotExist:
-        return None
+    employer = models.Employer.objects.filter(id=id).first()
+    if employer:
+        return employer
+    else:
+        raise Exception("No hay un empleado con ese id")
+
 
 
 def deleteUser(id):
