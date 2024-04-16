@@ -45,16 +45,6 @@ class EmployerView(View):
         response = {"message":message}
         return JsonResponse(response,status=status)
  
-    def put(self,request, id): 
-        if id:
-           putUser(self,request, id)
-        else:
-            message = "Se requiere el  'id' para actualizar un empleado"
-            status = 400
-        
-        response = {"message": message}
-        return JsonResponse(response, status=status)
-
 
  
     def put(self, request, id):
@@ -87,19 +77,41 @@ class EmployerView(View):
         return JsonResponse(response, status=status)    
   
 
-
+#Paciente---------------------
 class PatientView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args: any, **kwargs: any):
         return super().dispatch(request, *args, **kwargs)
    
-    def get(self,request):
-        pass
+    def get(self, request, id=None):
+        try:
+            patients = [StaffAdminValidator.getPatient(id)] if id else StaffAdminValidator.getPatients()
+            patients = [{"id": patient.id, "name": patient.name,"mail":patient.mail, "genre": patient.genre,"telephone": patient.telephone,
+            "birth":patient.birth} for patient in patients]
+            if not id is None:
+                emergencies = StaffAdminValidator.getEmergencyContact(id)
+                if emergencies:       
+                    for patient, emergency in zip(patients, emergencies):
+                        patient["emergencyContact"] = {"emergencyContactId": emergency.id,"nameC": emergency.name,"relationship": emergency.relationship,"telephoneC": emergency.telephone,}
+                policies = StaffAdminValidator.getPolicy(id)
+                if policies:       
+                    for patient, policy in zip(patients, policies):
+                        patient["Policy"] = {"Policy": policy.id,"insuranceCompany": policy.insuranceCompany,"policyNumber": policy.policyNumber,"statePolicy": policy.statePolicy,"termPolicy": policy.termPolicy}
+                                
+
+            status = 204 if patients else 404
+        except Exception as error:
+            message = str(error)
+            status = 400
+            response = {"message": message}
+            return JsonResponse(response, status=status)
+        else:
+            return JsonResponse(patients, status=status, safe=False)
  
     def post(self, request):
         body = json.loads(request.body)
         try:
-            StaffAdminValidator.createPatient(body["id"],body["name"],body["genre"],body["mail"],body["telephone"],body["birth"],body["address"])
+            StaffAdminValidator.createPatient(body["id"],body["name"],body["mail"],body["genre"],body["telephone"],body["birth"],body["address"])
             StaffAdminValidator.createPolicy(body["insuranceCompany"],body["policyNumber"],body["statePolicy"],body["termPolicy"],body["id"])
             StaffAdminValidator.createEmergencyContact(body["nameC"],body["relationship"],body["telephoneC"],body["id"])
             message = "Se ha creado el paciente exitosamente"
@@ -110,11 +122,35 @@ class PatientView(View):
         response = {"message": message}
         return JsonResponse(response, status=status)
  
-    def put(self,request):
-        pass
+    def put(self, request, id):
+        if id:
+            message, status = self.putPatient(request, id)
+        
+        response = {"message": message}
+        return JsonResponse(response, status=status)
+
+    def putPatient(self,request, id):
+        body = json.loads(request.body)
+        try:
+            StaffAdminValidator.updatePatient(id, body["name"],body["genre"],body["mail"],body["telephone"],body["birth"],body["address"],body["role"],body["userName"],body["password"])
+            message = "Empleado actualizado exitosamente"
+            status = 204
+        except Exception as error:
+            message = str(error)
+            status = 400
+        return message, status
  
-    def delete(self,request):
-        pass
+    def delete(self, request, id):
+        try:
+            StaffAdminValidator.deletePatient(id) 
+            message = "Paciente eliminado exitosamente"
+            status = 204
+        except Exception as error:
+            message = str(error)
+            status = 400
+        
+        response = {"message": message}
+        return JsonResponse(response, status=status)
 
 
 class ClinicalAppointmentView(View):
@@ -198,7 +234,7 @@ class ClinicalAppointmentView(View):
  
 #     def delete(self,request):
 #         pass
-
+#-------------------------
 #inventario ------------
 
       #medicina

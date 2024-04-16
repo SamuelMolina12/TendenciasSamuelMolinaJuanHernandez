@@ -16,11 +16,11 @@ def validateDoctorName(hospital, doctorName):
 
 
 
-def createPatient( id, name, genre, mail, telephone, birth, address):
+def createPatient(id, name, mail,genre, telephone, birth, address):
     patient = models.Patient.objects.filter(id=id)
     if patient.exists():
         raise Exception("Ya existe una persona con esa cédula registrada")
-    patient = models.Patient(id, name, genre, mail, telephone, birth, address)
+    patient = models.Patient(id, name, mail,genre, telephone, birth, address)
     patient.save()
     return patient.id
 
@@ -38,28 +38,18 @@ def createEmergencyContact(name, relationship, telephone, patientId):
 
 
     
-def createPolicy(insuranceCompany, policynumber, statePolicy, termPolicy,patientId):
+def createPolicy(insuranceCompany, policyNumber, statePolicy, termPolicy,patientId):
 
     # policy = models.Patient.objects.filter(id=patientId)
     # if not policy.exists():
     #     raise Exception("No existe un paciente con esa cédula registrada")
     
-    policy = models.Policy(insuranceCompany=insuranceCompany, policynumber=policynumber, statePolicy=statePolicy, termPolicy=termPolicy, patient_id=patientId)
+    policy = models.Policy(insuranceCompany=insuranceCompany, policyNumber=policyNumber, statePolicy=statePolicy, termPolicy=termPolicy, patient_id=patientId)
     policy.save()
 
 
 
-# def deletePatient(hospital,id):
-#     for user in hospital.patient:
-#         if user.id == id:
-#             return True
-#     return False
 
-# def updateUser(hospital,id):
-#     for user in hospital.patient:
-#         if user.id == int(id):
-#             return user
-#     return None
 
 def createClinicalAppointment(date,hour,doctor,appointmentType,patientId):
     appointment = models.Patient.objects.filter(id=patientId)
@@ -69,27 +59,35 @@ def createClinicalAppointment(date,hour,doctor,appointmentType,patientId):
     appointment = models.ClinicalAppointment(date=date, hour=hour, doctor=doctor, appointmentType=appointmentType,patient_id=patientId)
     appointment.save()
 
-# def validateClinicalAppointment(hospital,id):
-#     for appointment in hospital.clinicalAppointment:
-#         if appointment.id==id:
-#             return appointment
-#     return None
+def getPatients():
+    patient = models.Patient.objects.all()
+    if patient:
+        return patient
+    else:
+        raise Exception("No hay pacientes para mostrar")
+
+def getPatient(id):
+    patient = models.Patient.objects.filter(id=id).first()
+    if patient:
+        return patient
+    else:
+        raise Exception("No hay un paciente con ese id")
+    
 
 
-# def validatePatient(hospital, patientId):
-#     for p in hospital.patient:
-#         if p.id == patientId:
-#             return p
-#     raise Exception("No se encontró ningún paciente con ese ID")
+def getEmergencyContact(id):
+    emergencyContact = models.EmergencyContact.objects.filter(patient_id=id)
+    return list(emergencyContact)
 
-# def createBilling(hospital, patientId, doctorName, policy, orders, cost):
-#     if not validateDoctorName(hospital, doctorName):
-#         raise Exception("El nombre del doctor ingresado no es válido")
-#     for order in orders:       
-#         hospital.paidOrders.append(order)
+def getPolicy(id):
+    policy = models.Policy.objects.filter(patient_id=id)
+    return list(policy)  
 
-#     patient = validatePatient(hospital, patientId)
-#     orders = vars(order)
-#     billing = models.Billing(patientId, patient.name, patient.id, patient.birth, doctorName, policy, orders, cost)
-#     billing = vars(billing)
-#     return billing
+
+
+def deletePatient(id):
+    patient = models.Patient.objects.filter(id=id).first()
+    if patient:
+        patient.delete()
+    else:
+        raise Exception("paciente no encontrado")

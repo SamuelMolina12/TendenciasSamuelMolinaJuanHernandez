@@ -36,7 +36,7 @@ class Policy(models.Model):
     id=models.AutoField(primary_key=True)
     patient=models.ForeignKey(Patient,on_delete=models.CASCADE)
     insuranceCompany=models.CharField(max_length=30)
-    policynumber=models.CharField(max_length=30)
+    policyNumber=models.CharField(max_length=30)
     statePolicy=models.CharField(max_length=30)
     termPolicy=models.CharField(max_length=30)
 
