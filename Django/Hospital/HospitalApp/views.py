@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.views import View
-import HospitalApp.validators.AdminTypeValidator as AdminValidator
 import HospitalApp.validators.StaffAdminValidator as StaffAdminValidator
+import HospitalApp.Rolviews.StaffAdminView as staffAdminView
 import HospitalApp.validators.InfoSupportValidator as InfoValidator
+import HospitalApp.Rolviews.AdminView as AdminView
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http.response import JsonResponse
@@ -17,104 +18,36 @@ class EmployerView(View):
         return super().dispatch(request, *args, **kwargs)
    
     def get(self, request, id=None):
-        try:
-            employers = [AdminValidator.getUser(id)] if id else AdminValidator.getUsers()
-            employers = [{"id": employer.id, "name": employer.name,"genre":employer.genre,"mail":employer.mail, "telephone": employer.telephone,
-            "birth":employer.birth, "address":employer.address, "role":employer.role, "userName":employer.userName,"password":employer.password} for employer in employers]
-            status = 204 if employers else 404
-        except Exception as error:
-            message = str(error)
-            status = 400
-            response = {"message": message}
-            return JsonResponse(response, status=status)
-        else:
-            return JsonResponse(employers, status=status, safe=False)
+        return AdminView.getEmployers(self, request, id)
 
+    def post(self, request):
+        return AdminView.createEmployer(self,request)
 
-        
- 
-    def post(self,request):
-        body=json.loads(request.body)
-        try:
-            AdminValidator.createUser(body["name"],body["id"],body["genre"],body["mail"],body["telephone"],body["birth"],body["address"],body["role"],body["userName"],body["password"])
-            message="se ha creado el Empleado exitosamente"
-            status=204
-        except Exception as error:
-            message=str(error)
-            status=400
-        response = {"message":message}
-        return JsonResponse(response,status=status)
- 
-    def put(self,request, id): 
-        if id:
-           putUser(self,request, id)
-        else:
-            message = "Se requiere el  'id' para actualizar un empleado"
-            status = 400
-        
-        response = {"message": message}
-        return JsonResponse(response, status=status)
-
-
- 
     def put(self, request, id):
-        if id:
-            message, status = self.putUser(request, id)
-        
-        response = {"message": message}
-        return JsonResponse(response, status=status)
+        return AdminView.updateEmployer(self,request, id)
 
-    def putUser(self,request, id):
-        body = json.loads(request.body)
-        try:
-            AdminValidator.updateUser(id, body["name"],body["genre"],body["mail"],body["telephone"],body["birth"],body["address"],body["role"],body["userName"],body["password"])
-            message = "Empleado actualizado exitosamente"
-            status = 204
-        except Exception as error:
-            message = str(error)
-            status = 400
-        return message, status
     def delete(self, request, id):
-        try:
-            AdminValidator.deleteUser(id)
-            message = "Empleado eliminado exitosamente"
-            status = 204
-        except Exception as error:
-            message = str(error)
-            status = 400
-        
-        response = {"message": message}
-        return JsonResponse(response, status=status)    
+        return AdminView.deleteEmployer(self,request, id)
+
   
 
-
+#Paciente---------------------
 class PatientView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args: any, **kwargs: any):
         return super().dispatch(request, *args, **kwargs)
    
-    def get(self,request):
-        pass
+    def get(self, request, id=None):
+        return staffAdminView.getPatient(self, request, id)
  
     def post(self, request):
-        body = json.loads(request.body)
-        try:
-            StaffAdminValidator.createPatient(body["id"],body["name"],body["genre"],body["mail"],body["telephone"],body["birth"],body["address"])
-            StaffAdminValidator.createPolicy(body["insuranceCompany"],body["policyNumber"],body["statePolicy"],body["termPolicy"],body["id"])
-            StaffAdminValidator.createEmergencyContact(body["nameC"],body["relationship"],body["telephoneC"],body["id"])
-            message = "Se ha creado el paciente exitosamente"
-            status = 204
-        except Exception as error:
-            message = str(error)
-            status = 400
-        response = {"message": message}
-        return JsonResponse(response, status=status)
+        return staffAdminView.createPatient(self,request)
  
-    def put(self,request):
-        pass
+    def put(self, request, id):
+        return staffAdminView.updatePatient(self,request, id)
  
-    def delete(self,request):
-        pass
+    def delete(self, request, id):
+        return staffAdminView.deletePatient(self,request, id)
 
 
 class ClinicalAppointmentView(View):
@@ -198,7 +131,7 @@ class ClinicalAppointmentView(View):
  
 #     def delete(self,request):
 #         pass
-
+#-------------------------
 #inventario ------------
 
       #medicina

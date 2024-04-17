@@ -40,7 +40,7 @@ def deleteUser(id):
         raise Exception("Empleado no encontrado")
 
 
-def updateUser(id, name, genre, mail, telephone, birth, address, role, userName, password):
+def updateUser(id, name, mail,genre, telephone, birth, address, role, userName, password):
     employer = models.Employer.objects.filter(id=id).first()
     if employer:
         employer.name = name

@@ -25,7 +25,7 @@ urlpatterns = [
 #--------
 #Paciente---------
     path("hospital/patient",PatientView.as_view(),name="patients post"),
-    path("hospital/patient/<id>",PatientView.as_view(),name="patients get put and delete"),
+    path("hospital/patient/<int:id>",PatientView.as_view(),name="patients get put and delete"),
 
     # path("hospital/emergencyContact",EmergencyContactView.as_view(),name="emergencyContacts post"),
     # path("hospital/emergencyContact/<id>",EmergencyContactView.as_view(),name="emergencyContacts get put and delete"),
