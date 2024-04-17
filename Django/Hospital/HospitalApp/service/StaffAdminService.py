@@ -91,3 +91,36 @@ def deletePatient(id):
         patient.delete()
     else:
         raise Exception("paciente no encontrado")
+    
+def updatePatient( id,name, mail,genre, telephone, birth, address):
+    patient = models.Patient.objects.filter(id=id).first()
+    if patient:
+        patient.name = name
+        patient.genre = genre
+        patient.mail = mail
+        patient.telephone = telephone
+        patient.birth = birth
+        patient.address = address
+        patient.save()
+    else:
+        raise Exception("Paciente no encontrado")
+def updatePolicy(insuranceCompany, policyNumber, statePolicy, termPolicy,patientId):
+    policy = models.Policy.objects.filter(patient_id=patientId).first()
+    if policy:
+        policy.insuranceCompany = insuranceCompany
+        policy.policyNumber = policyNumber
+        policy.statePolicy = statePolicy
+        policy.termPolicy = termPolicy
+        policy.save()
+    else:
+        raise Exception("Poliza no encontrada")
+    
+def updateEmergencyContact(name, relationship, telephone, patientId):
+    emergency = models.EmergencyContact.objects.filter(patient_id=patientId).first()
+    if emergency:
+        emergency.name = name
+        emergency.relationship = relationship
+        emergency.telephone = telephone
+        emergency.save()
+    else:
+        raise Exception("Contacto de emergencia no encontrado")            

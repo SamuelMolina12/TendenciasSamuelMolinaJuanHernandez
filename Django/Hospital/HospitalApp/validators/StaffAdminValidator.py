@@ -97,3 +97,53 @@ def deletePatient(id):
     clinicHistory={"_id":str(id),"historias":{}}
     collection.delete_one(clinicHistory)
     return staffAdminService.deletePatient(id)
+
+
+
+def updatePatient(id, name, mail,genre, telephone, birth, address):
+    validators.textValidator(name, "nombre  \n")
+
+
+    validators.textValidator(genre, "genero de\n")
+    validators.genreValidator(genre, "genero de\n")
+
+    
+    validators.textValidator(mail, "correo  \n")
+    validators.emailValidator(mail,"correo \n")
+
+    telephone = validators.phoneValidator(telephone, "numero telefonico ")
+
+    birth = validators.dateValidator(birth,"fecha de nacimiento de")
+
+    
+
+    validators.textValidator(address, "direccion de    \n")
+    validators.addressValidator(address, "direccion de  \n")
+
+   
+
+    return staffAdminService.updatePatient(id, name, mail,genre, telephone, birth, address)
+
+def updatePolicy(insuranceCompany,policyNumber,statePolicy,termPolicy,patientId):
+    validators.textValidator(insuranceCompany, "nombre de la compañia \n")
+    policyNumber = validators.numberValidator(policyNumber, "Numero de poliza")
+
+    if statePolicy == "Inactiva":
+        termPolicy = "N/A"
+    else:
+        termPolicy = validators.policyTermValidator(termPolicy, "fecha de \n")
+
+   
+    return staffAdminService.updatePolicy(insuranceCompany,policyNumber,statePolicy,termPolicy,patientId)
+
+def updateEmergencyContact(name,relationship,telephone,patientId):
+    
+    validators.textValidator(name,"Nombre del contacto")
+
+   
+    validators.textValidator(relationship,"Relacion del contacto de emergencia")
+
+    telephone = validators.phoneValidator(telephone, "numero telefonico ")
+
+    
+    return staffAdminService.updateEmergencyContact(name,relationship,telephone,patientId)
