@@ -1,6 +1,5 @@
 
 import HospitalApp.validators.AdminTypeValidator as AdminValidator
-import HospitalApp.validators.StaffAdminValidator as staffAdminValidator
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http.response import JsonResponse
@@ -44,8 +43,7 @@ def updateEmployer(self, request, id):
     except Exception as error:
         message = str(error)
         status = 400
-    response = {"message": message}
-    return JsonResponse(response, status=status)
+    return JsonResponse({"message": message}, status=status)
 
    
 

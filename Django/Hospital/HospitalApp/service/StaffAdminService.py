@@ -22,7 +22,9 @@ def createPatient(id, name, mail,genre, telephone, birth, address):
         raise Exception("Ya existe una persona con esa cédula registrada")
     patient = models.Patient(id, name, mail,genre, telephone, birth, address)
     patient.save()
+    
     return patient.id
+   
 
    
 
@@ -59,6 +61,12 @@ def createClinicalAppointment(date,hour,doctor,appointmentType,patientId):
     appointment = models.ClinicalAppointment(date=date, hour=hour, doctor=doctor, appointmentType=appointmentType,patient_id=patientId)
     appointment.save()
 
+
+
+
+
+
+
 def getPatients():
     patient = models.Patient.objects.all()
     if patient:
@@ -83,6 +91,12 @@ def getPolicy(id):
     policy = models.Policy.objects.filter(patient_id=id)
     return list(policy)  
 
+def getClinicalAppointment(id):
+    appointments = models.ClinicalAppointment.objects.filter(patient_id=id)
+    if appointments.exists():
+        return appointments
+    else:
+        raise Exception("No hay citas médicas para este paciente")
 
 
 def deletePatient(id):
@@ -92,6 +106,14 @@ def deletePatient(id):
     else:
         raise Exception("paciente no encontrado")
     
+def deleteClinicalAppointment(id):
+    appointment = models.ClinicalAppointment.objects.filter(id=id).first()
+    if appointment:
+        appointment.delete()
+    else:
+        raise Exception("cita medica no encontrada")
+
+
 def updatePatient( id,name, mail,genre, telephone, birth, address):
     patient = models.Patient.objects.filter(id=id).first()
     if patient:

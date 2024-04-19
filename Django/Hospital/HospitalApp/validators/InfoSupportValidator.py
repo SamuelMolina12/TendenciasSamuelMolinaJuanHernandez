@@ -41,19 +41,19 @@ def updateMedicine(id,medicineName,medicineDose,durationMedication,medicineCost)
 
 
 #Procedimiento -----------
-def createProcedure(procedureName, numberRepeated, frequencyRepeated, procedureCost, requiresSpecialistP, specialistId):
+def createProcedure(procedureName, numberRepeated, frequencyRepeated, procedureCost, requiresSpecialistP, specialist_id):
     validators.textValidator(procedureName, "procedimiento")
     validators.textValidator(numberRepeated, "numero")
     validators.textValidator(frequencyRepeated, "frecuencia ")  
 
     if requiresSpecialistP:
-        validators.numberValidator(specialistId, "id especialista")
+        validators.numberValidator(specialist_id, "id especialista")
     else:  
-        specialistId = "N/A"
+        specialist_id = None
 
     procedureCost = float(procedureCost)
     
-    infoService.createProcedure(procedureName, numberRepeated, frequencyRepeated, procedureCost, requiresSpecialistP, specialistId)
+    infoService.createProcedure(procedureName, numberRepeated, frequencyRepeated, procedureCost, requiresSpecialistP, specialist_id)
 
 def getProcedure(id):
     return infoService.getProcedure(id)
@@ -65,37 +65,36 @@ def deleteProcedure(id):
     return infoService.deleteProcedure(id) 
 
 
-def updateProcedure(id,procedureName, numberRepeated, frequencyRepeated, procedureCost, requiresSpecialistP, specialistId):
+def updateProcedure(id,procedureName, numberRepeated, frequencyRepeated, procedureCost, requiresSpecialistP, specialist_id):
     validators.textValidator(procedureName, "procedimiento")
     validators.textValidator(numberRepeated, "numero")
     validators.textValidator(frequencyRepeated, "frecuencia ")  
 
     if requiresSpecialistP:
-        validators.numberValidator(specialistId, "id especialista")
+        validators.numberValidator(specialist_id, "id especialista")
     else:  
-        specialistId = "N/A"
+        specialist_id = None
 
     procedureCost = float(procedureCost)
 
-    return infoService.updateProcedure(id, procedureName, numberRepeated, frequencyRepeated, procedureCost, requiresSpecialistP, specialistId) 
+    return infoService.updateProcedure(id, procedureName, numberRepeated, frequencyRepeated, procedureCost, requiresSpecialistP, specialist_id) 
 #----------------------
 
 
 
 #Ayuda diagnostica -----------
-def createDiagnosticHelp(diagnosticName,quantity,diagnosticCost,requiresSpecialistD,specialistId):
+def createDiagnosticHelp(diagnosticName,quantity,diagnosticCost,requiresSpecialistD,specialist_id):
     validators.textValidator(diagnosticName, "procedimiento")
     validators.textValidator(quantity, "cantidad") 
 
     if requiresSpecialistD:
- 
-        validators.numberValidator(specialistId, "id especialista")
-    else:      
-        specialistId = "N/A"
+        validators.numberValidator(specialist_id, "id especialista")
+    else:  
+        specialist_id = None
 
     diagnosticCost = float(diagnosticCost)
     
-    infoService.createDiagnosticHelp(diagnosticName,quantity,diagnosticCost,requiresSpecialistD,specialistId)
+    infoService.createDiagnosticHelp(diagnosticName,quantity,diagnosticCost,requiresSpecialistD,specialist_id)
 
 
 def getDiagnosticHelp(id):
@@ -107,17 +106,16 @@ def getDiagnosticaids():
 def deleteDiagnosticHelp(id):
     return infoService.deleteDiagnosticHelp(id) 
 
-def updateDiagnosticHelp(id,diagnosticName,quantity,diagnosticCost,requiresSpecialistD,specialistId):
+def updateDiagnosticHelp(id,diagnosticName,quantity,diagnosticCost,requiresSpecialistD,specialist_id):
     validators.textValidator(diagnosticName, "procedimiento")
     validators.textValidator(quantity, "cantidad") 
 
     if requiresSpecialistD:
- 
-        validators.numberValidator(specialistId, "id especialista")
-    else:      
-        specialistId = "N/A"
+        validators.numberValidator(specialist_id, "id especialista")
+    else:  
+        specialist_id = None
 
     diagnosticCost = float(diagnosticCost)
 
-    return infoService.updateDiagnosticHelp(id,diagnosticName,quantity,diagnosticCost,requiresSpecialistD,specialistId) 
+    return infoService.updateDiagnosticHelp(id,diagnosticName,quantity,diagnosticCost,requiresSpecialistD,specialist_id) 
 #----------------------

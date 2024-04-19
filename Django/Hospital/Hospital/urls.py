@@ -16,35 +16,44 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from HospitalApp.views import EmployerView,PatientView,ClinicalAppointmentView,MedicineView,ProcedureView,DiagnosticHelpView
+from HospitalApp.views import EmployerView,PatientView,ClinicalAppointmentView,MedicineView,ProcedureView,DiagnosticHelpView,HistoryClinicView,HistoryVisitsView,SpecialistView,Billing
 urlpatterns = [
     path('admin/', admin.site.urls),
 # Empleado-----  
-    path("hospital/employer", EmployerView.as_view(), name="employers_post"),
-    path("hospital/employer/<int:id>", EmployerView.as_view(), name="employers_get_put_delete"),
+    path("hospital/admin/employer", EmployerView.as_view(), name="employers post"),
+    path("hospital/admin/employer/<int:id>", EmployerView.as_view(), name="employers get put delete"),
+    path("hospital/admin/specialist",SpecialistView.as_view(), name="specialist post"),
+    path("hospital/admin/specialist/<int:id>",SpecialistView.as_view(), name="specialist get put delete"),    
 #--------
 #Paciente---------
     path("hospital/patient",PatientView.as_view(),name="patients post"),
     path("hospital/patient/<int:id>",PatientView.as_view(),name="patients get put and delete"),
-
-    # path("hospital/emergencyContact",EmergencyContactView.as_view(),name="emergencyContacts post"),
-    # path("hospital/emergencyContact/<id>",EmergencyContactView.as_view(),name="emergencyContacts get put and delete"),
-
-    # path("hospital/policy",PolicyView.as_view(),name="policies post"),
-    # path("hospital/policy/<id>",PolicyView.as_view(),name="policies get put and delete")
-
-    path("hospital/clinicalAppointment",ClinicalAppointmentView.as_view(),name="clinicalAppointments post"),
-    path("hospital/clinicalAppointment/<id>",ClinicalAppointmentView.as_view(),name="clinicalAppointments get put and delete"),
+   #CitaMedica
+    path("hospital/patient/clinicalAppointment",ClinicalAppointmentView.as_view(),name="clinicalAppointments post"),
+    path("hospital/patient/clinicalAppointment/<id>",ClinicalAppointmentView.as_view(),name="clinicalAppointments get put and delete"),
+   #Historia Clinica
+    path("hospital/patient/historyClinic",HistoryClinicView.as_view(),name="historyClinic post"),
+    path("hospital/patient/historyClinic/<id>",HistoryClinicView.as_view(),name="historyClinic get put and delete"),    
+   #Historia de visitas
+    path("hospital/patient/historyVisit",HistoryVisitsView.as_view(),name="historyVisits post"),
+    path("hospital/patient/historyVisit/<id>",HistoryVisitsView.as_view(),name="historyVisits get put and delete"),     
+   #Factura
+    path("hospital/patient/billing",Billing.as_view(),name="billings post"),
+    path("hospital/patient/billing/<id>",Billing.as_view(),name="billing get put and delete"),     
 #-----------------
 
 #Inventario ----------
-    path("hospital/medicine",MedicineView.as_view(),name="medicines post"),
-    path("hospital/medicine/<int:id>",MedicineView.as_view(),name="medicines get put and delete"),
-    path("hospital/procedure",ProcedureView.as_view(),name="procedures post"),
-    path("hospital/procedure/<int:id>",ProcedureView.as_view(),name="procedures get put and delete"),    
-    path("hospital/diagnosticHelp",DiagnosticHelpView.as_view(),name="diagnosticaids post"),
-    path("hospital/diagnosticHelp/<int:id>",DiagnosticHelpView.as_view(),name="diagnosticaids get put and delete"), 
+    #medicina
+    path("hospital/inventory/medicine",MedicineView.as_view(),name="medicines post"),
+    path("hospital/inventory/medicine/<int:id>",MedicineView.as_view(),name="medicines get put and delete"),
+    #procedimiento
+    path("hospital/inventory/procedure",ProcedureView.as_view(),name="procedures post"),
+    path("hospital/inventory/procedure/<int:id>",ProcedureView.as_view(),name="procedures get put and delete"),  
+    #Ayudas diagnosticas
+    path("hospital/inventory/diagnosticHelp",DiagnosticHelpView.as_view(),name="diagnosticaids post"),
+    path("hospital/inventory/diagnosticHelp/<int:id>",DiagnosticHelpView.as_view(),name="diagnosticaids get put and delete"), 
 #------
 
 
 ]
+
