@@ -33,18 +33,21 @@ urlpatterns = [
     # path("hospital/policy",PolicyView.as_view(),name="policies post"),
     # path("hospital/policy/<id>",PolicyView.as_view(),name="policies get put and delete")
 
-    path("hospital/clinicalAppointment",ClinicalAppointmentView.as_view(),name="clinicalAppointments post"),
-    path("hospital/clinicalAppointment/<id>",ClinicalAppointmentView.as_view(),name="clinicalAppointments get put and delete"),
+    path("hospital/patient/clinicalAppointment",ClinicalAppointmentView.as_view(),name="clinicalAppointments post"),
+    path("hospital/patient/clinicalAppointment/<id>",ClinicalAppointmentView.as_view(),name="clinicalAppointments get put and delete"),
 #-----------------
 
 #Inventario ----------
-    path("hospital/medicine",MedicineView.as_view(),name="medicines post"),
-    path("hospital/medicine/<int:id>",MedicineView.as_view(),name="medicines get put and delete"),
-    path("hospital/procedure",ProcedureView.as_view(),name="procedures post"),
-    path("hospital/procedure/<int:id>",ProcedureView.as_view(),name="procedures get put and delete"),    
-    path("hospital/diagnosticHelp",DiagnosticHelpView.as_view(),name="diagnosticaids post"),
-    path("hospital/diagnosticHelp/<int:id>",DiagnosticHelpView.as_view(),name="diagnosticaids get put and delete"), 
+    path("hospital/inventory/medicine",MedicineView.as_view(),name="medicines post"),
+    path("hospital/inventory/medicine/<int:id>",MedicineView.as_view(),name="medicines get put and delete"),
+    path("hospital/inventory/procedure",ProcedureView.as_view(),name="procedures post"),
+    path("hospital/inventory/procedure/<int:id>",ProcedureView.as_view(),name="procedures get put and delete"),    
+    path("hospital/inventory/diagnosticHelp",DiagnosticHelpView.as_view(),name="diagnosticaids post"),
+    path("hospital/inventory/diagnosticHelp/<int:id>",DiagnosticHelpView.as_view(),name="diagnosticaids get put and delete"), 
 #------
-
+    # path("hospital/PatientInfo",PatientInfoView.as_view(),name="PatientInfo post"),
+    # path("hospital/PatientInfo/<int:id>",PatientInfoView.as_view(),name="PatientInfo get put and delete"),
+#-----------------
 
 ]
+

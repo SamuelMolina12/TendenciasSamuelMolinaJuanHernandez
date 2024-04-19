@@ -92,12 +92,18 @@ def getEmergencyContact(id):
 def getPolicy(id):
     return staffAdminService.getPolicy(id)
 
+def getClinicalAppointment(id):
+    return staffAdminService.getClinicalAppointment(id)
+
+
 
 def deletePatient(id):
     clinicHistory={"_id":str(id),"historias":{}}
     collection.delete_one(clinicHistory)
     return staffAdminService.deletePatient(id)
 
+def deleteClinicalAppointment(id):
+    return staffAdminService.deleteClinicalAppointment(id)
 
 
 def updatePatient(id, name, mail,genre, telephone, birth, address):
