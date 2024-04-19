@@ -48,9 +48,13 @@ def updateMedicine(id, medicineName, medicineDose, durationMedication, medicineC
 
 #Procedimiento -----------
 
-def createProcedure(procedureName,numberRepeated,frequencyRepeated,procedureCost,requiresSpecialistP,specialistId):
-
-    procedure = models.Procedure(procedureName=procedureName, numberRepeated=numberRepeated, frequencyRepeated=frequencyRepeated, procedureCost=procedureCost, requiresSpecialistP=requiresSpecialistP, specialistId=specialistId)
+def createProcedure(procedureName,numberRepeated,frequencyRepeated,procedureCost,requiresSpecialistP,specialist_id):
+    if not specialist_id  is None:
+        procedure = models.Specialist.objects.filter(id=specialist_id)
+        if not procedure:
+           raise Exception("No existe un especialista con ese id") 
+       
+    procedure = models.Procedure(procedureName=procedureName, numberRepeated=numberRepeated, frequencyRepeated=frequencyRepeated, procedureCost=procedureCost, requiresSpecialistP=requiresSpecialistP, specialist_id=specialist_id)
     procedure.save()
 
 def getProcedures():
@@ -75,7 +79,14 @@ def deleteProcedure(id):
     else:
         raise Exception("procedimiento no encontrado")
 
-def updateProcedure(id,procedureName,numberRepeated,frequencyRepeated,procedureCost,requiresSpecialistP,specialistId):
+def updateProcedure(id, procedureName, numberRepeated, frequencyRepeated, procedureCost, requiresSpecialistP, specialist_id):
+    if specialist_id is not None:
+        specialist = models.Specialist.objects.filter(id=specialist_id).first()
+        if not specialist:
+            raise Exception("No existe un especialista con ese id")
+    else:
+        specialist = None
+
     procedure = models.Procedure.objects.filter(id=id).first()
     if procedure:
         procedure.procedureName = procedureName
@@ -83,17 +94,21 @@ def updateProcedure(id,procedureName,numberRepeated,frequencyRepeated,procedureC
         procedure.frequencyRepeated = frequencyRepeated
         procedure.procedureCost = procedureCost
         procedure.requiresSpecialistP = requiresSpecialistP
-        procedure.specialistId = specialistId        
+        procedure.specialist = specialist 
         procedure.save()
     else:
-        raise Exception("procedimiento no encontrado")
+        raise Exception("Procedimiento no encontrado")
+
 #-------------
 
 #Diagnostico de ayuda -----------
 
-def createDiagnosticHelp(diagnosticName,quantity,diagnosticCost,requiresSpecialistD,specialistId):
-
-    diagnosticHelp = models.DiagnosticHelp(diagnosticName=diagnosticName,quantity=quantity,diagnosticCost=diagnosticCost,requiresSpecialistD=requiresSpecialistD,specialistId=specialistId)
+def createDiagnosticHelp(diagnosticName,quantity,diagnosticCost,requiresSpecialistD,specialist_id):
+    if not specialist_id  is None:
+        diagnosticHelp = models.Specialist.objects.filter(id=specialist_id)
+        if not diagnosticHelp:
+           raise Exception("No existe un especialista con ese id")
+    diagnosticHelp = models.DiagnosticHelp(diagnosticName=diagnosticName,quantity=quantity,diagnosticCost=diagnosticCost,requiresSpecialistD=requiresSpecialistD,specialist_id=specialist_id)
     diagnosticHelp.save()
 
 def getDiagnosticaids():
@@ -118,15 +133,23 @@ def deleteDiagnosticHelp(id):
     else:
         raise Exception("Ayuda diagnostica no encontrada")
 
-def updateDiagnosticHelp(id,diagnosticName,quantity,diagnosticCost,requiresSpecialistD,specialistId):
+def updateDiagnosticHelp(id, diagnosticName, quantity, diagnosticCost, requiresSpecialistD, specialist_id):
+    if specialist_id is not None:
+        specialist = models.Specialist.objects.filter(id=specialist_id).first()
+        if not specialist:
+            raise Exception("No existe un especialista con ese id")
+    else:
+        specialist = None
+
     diagnostic = models.DiagnosticHelp.objects.filter(id=id).first()
     if diagnostic:
         diagnostic.diagnosticName = diagnosticName
         diagnostic.quantity = quantity
         diagnostic.diagnosticCost = diagnosticCost
         diagnostic.requiresSpecialistD = requiresSpecialistD
-        diagnostic.specialistId = specialistId        
+        diagnostic.specialist = specialist  
         diagnostic.save()
     else:
-        raise Exception("Ayuda diagnostica no encontrada")    
+        raise Exception("Ayuda diagnostica no encontrada")
+    
 #-------------

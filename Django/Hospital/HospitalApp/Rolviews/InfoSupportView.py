@@ -64,7 +64,7 @@ def deleteMedicine(self, request, id):
 def getProcedure(self, request, id=None):
     try:
         procedures = [infoValidator.getProcedure(id)] if id else infoValidator.getProcedures()
-        procedures = [{"id": procedure.id, "procedureName": procedure.procedureName,"numberRepeated":procedure.numberRepeated,"frequencyRepeated": procedure.frequencyRepeated,"procedureCost":procedure.procedureCost,"requiresSpecialistP":procedure.requiresSpecialistP,"specialistId":procedure.specialistId} for procedure in procedures]
+        procedures = [{"id": procedure.id, "procedureName": procedure.procedureName,"numberRepeated":procedure.numberRepeated,"frequencyRepeated": procedure.frequencyRepeated,"procedureCost":procedure.procedureCost,"requiresSpecialistP":procedure.requiresSpecialistP,"specialist_id":procedure.specialist_id} for procedure in procedures]
         status = 204 if procedures else 404
     except Exception as error:
         message = str(error)
@@ -77,7 +77,7 @@ def getProcedure(self, request, id=None):
 def createProcedure(self,request):
     body=json.loads(request.body)
     try: 
-        infoValidator.createProcedure(body["procedureName"],body["numberRepeated"],body["frequencyRepeated"],body["procedureCost"],body["requiresSpecialistP"],body["specialistId"])
+        infoValidator.createProcedure(body["procedureName"],body["numberRepeated"],body["frequencyRepeated"],body["procedureCost"],body["requiresSpecialistP"],body["specialist_id"])
         message="se ha creado el procedimiento exitosamente"
         status=204
     except Exception as error:
@@ -89,7 +89,7 @@ def createProcedure(self,request):
 def updateProcedure(self, request, id): 
     body = json.loads(request.body)
     try:
-        infoValidator.updateProcedure(id,body["procedureName"],body["numberRepeated"],body["frequencyRepeated"],body["procedureCost"],body["requiresSpecialistP"],body["specialistId"])
+        infoValidator.updateProcedure(id,body["procedureName"],body["numberRepeated"],body["frequencyRepeated"],body["procedureCost"],body["requiresSpecialistP"],body["specialist_id"])
         message = "procedimiento actualizado exitosamente"
         status = 204
     except Exception as error:
@@ -116,7 +116,7 @@ def deleteProcedure(self, request, id):
 def getDiagnosticHelp(self, request, id=None):
     try:
         diagnoses = [infoValidator.getDiagnosticHelp(id)] if id else infoValidator.getDiagnosticaids()
-        diagnoses = [{"id": diagnostic.id, "diagnosticName": diagnostic.diagnosticName,"quantity":diagnostic.quantity,"diagnosticCost": diagnostic.diagnosticCost,"requiresSpecialistD":diagnostic.requiresSpecialistD,"specialistId":diagnostic.specialistId} for diagnostic in diagnoses]
+        diagnoses = [{"id": diagnostic.id, "diagnosticName": diagnostic.diagnosticName,"quantity":diagnostic.quantity,"diagnosticCost": diagnostic.diagnosticCost,"requiresSpecialistD":diagnostic.requiresSpecialistD,"specialist_id":diagnostic.specialist_id} for diagnostic in diagnoses]
         status = 204 if diagnoses else 404
     except Exception as error:
         message = str(error)
@@ -130,7 +130,7 @@ def getDiagnosticHelp(self, request, id=None):
 def createDiagnosticHelp(self,request):
     body=json.loads(request.body)
     try: 
-        infoValidator.createDiagnosticHelp(body["diagnosticName"],body["quantity"],body["diagnosticCost"],body["requiresSpecialistD"],body["specialistId"])
+        infoValidator.createDiagnosticHelp(body["diagnosticName"],body["quantity"],body["diagnosticCost"],body["requiresSpecialistD"],body["specialist_id"])
         message="se ha creado la ayuda diagnostica exitosamente"
         status=204
     except Exception as error:
@@ -142,7 +142,7 @@ def createDiagnosticHelp(self,request):
 def updateDiagnosticHelp(self, request, id):
     body = json.loads(request.body)
     try:
-        infoValidator.updateDiagnosticHelp(id,body["diagnosticName"],body["quantity"],body["diagnosticCost"],body["requiresSpecialistD"],body["specialistId"])
+        infoValidator.updateDiagnosticHelp(id,body["diagnosticName"],body["quantity"],body["diagnosticCost"],body["requiresSpecialistD"],body["specialist_id"])
         message = "Ayuda Diagnstica actualizada exitosamente"
         status = 204
     except Exception as error:

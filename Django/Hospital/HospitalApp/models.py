@@ -12,6 +12,9 @@ class Employer(models.Model):
     role=models.CharField(max_length=30)
     userName=models.CharField(max_length=30)
     password=models.CharField(max_length=30)
+class Specialist(models.Model):
+    id = models.AutoField(primary_key=True)
+    nameSpecialist = models.CharField(max_length=30)
 
 class Patient(models.Model):
     id=models.BigIntegerField(primary_key=True)
@@ -57,7 +60,7 @@ class Order(models.Model):
 
 
 class Billing(models.Model):
-    id = models.AutoField(primary_key=True, default=1)
+    id = models.AutoField(primary_key=True)
     patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
     # patient_name = patientName
     # patient = patient_id
@@ -88,7 +91,7 @@ class Procedure(models.Model):
     frequencyRepeated =  models.CharField(max_length=30)
     procedureCost =  models.FloatField()
     requiresSpecialistP = models.BooleanField()
-    specialistId = models.CharField(max_length=30)                    
+    specialist = models.ForeignKey(Specialist,on_delete=models.CASCADE,null=True)                    
 
 
 class DiagnosticHelp(models.Model):
@@ -99,6 +102,11 @@ class DiagnosticHelp(models.Model):
     quantity = models.CharField(max_length=30)
     diagnosticCost = models.FloatField()
     requiresSpecialistD = models.BooleanField()
-    specialistId = models.CharField(max_length=30)
+    specialist = models.ForeignKey(Specialist,on_delete=models.CASCADE,null=True)  
+
+
+    
+    
+
 
 

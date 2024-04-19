@@ -16,7 +16,7 @@ from django.http.response import JsonResponse
 import json
 
 
-
+# Empleados/especialistas
 class EmployerView(View):
    
     @method_decorator(csrf_exempt)
@@ -34,9 +34,26 @@ class EmployerView(View):
 
     def delete(self, request, id):
         return AdminView.deleteEmployer(self,request, id)
+    
+class SpecialistView(View):
+   
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args: any, **kwargs: any):
+        return super().dispatch(request, *args, **kwargs)
+   
+    def get(self, request, id=None):
+        pass
 
+    def post(self, request):
+        pass
+
+    def put(self, request, id):
+        pass
+
+    def delete(self, request, id):
+        pass
   
-
+#------
 #Paciente---------------------
 class PatientView(View):
     @method_decorator(csrf_exempt)
@@ -74,8 +91,56 @@ class ClinicalAppointmentView(View):
     def delete(self,request,id):
        return staffAdminView.deleteClinicalAppointment(self, request, id)
 
+class HistoryClinicView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args: any, **kwargs: any):
+        return super().dispatch(request, *args, **kwargs)
+   
+    def get(self, request, id=None):
+        pass
+ 
+    def post(self, request):
+        pass
+ 
+    def put(self, request, id):
+        pass
+ 
+    def delete(self, request, id):
+        pass
+    
+class HistoryVisitsView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args: any, **kwargs: any):
+        return super().dispatch(request, *args, **kwargs)
+   
+    def get(self, request, id=None):
+        pass
+ 
+    def post(self, request):
+        pass
+ 
+    def put(self, request, id):
+       pass
+ 
+    def delete(self, request, id):
+        pass 
 
-
+class Billing(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args: any, **kwargs: any):
+        return super().dispatch(request, *args, **kwargs)
+   
+    def get(self, request, id=None):
+        pass
+ 
+    def post(self, request):
+        pass
+ 
+    def put(self, request, id):
+        pass
+ 
+    def delete(self, request, id):
+        pass
 
 #-------------------------
 #inventario ------------
@@ -143,3 +208,4 @@ class DiagnosticHelpView(View):
 #---------
 
 
+   
