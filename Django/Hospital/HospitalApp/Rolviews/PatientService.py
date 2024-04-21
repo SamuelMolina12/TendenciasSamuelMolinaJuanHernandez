@@ -1,5 +1,5 @@
 
-import HospitalApp.validators.StaffAdminValidator as staffAdminValidator
+import HospitalApp.validators.PatientValidator as staffAdminValidator
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http.response import JsonResponse
@@ -130,3 +130,18 @@ def deleteClinicalAppointment(self,request,id):
         
     response = {"message": message}
     return JsonResponse(response, status=status)
+#-----
+
+
+#---- Historia clinica
+def createHistoryClinic(self,request):
+    body=json.loads(request.body)
+    try: 
+        staffAdminValidator.createClinicalAppointment(body["date"],body["hour"],body["doctor"],body["appointmentType"],body["patientId"])
+        message="se ha creado la cita exitosamente"
+        status=204
+    except Exception as error:
+        message=str(error)
+        status=400
+    response = {"message":message}
+    return JsonResponse(response,status=status)

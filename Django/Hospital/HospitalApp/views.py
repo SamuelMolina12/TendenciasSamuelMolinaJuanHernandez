@@ -1,15 +1,12 @@
 from django.shortcuts import render
 from django.views import View
 
-import HospitalApp.validators.InfoSupportValidator as InfoValidator
-import HospitalApp.validators.NurseValidator as nurseValidator
-import HospitalApp.validators.AdminTypeValidator as AdminValidator
-import HospitalApp.validators.StaffAdminValidator as staffAdminValidator
 
 
-import HospitalApp.Rolviews.StaffAdminView as staffAdminView
-import HospitalApp.Rolviews.AdminView as AdminView
-import HospitalApp.Rolviews.InfoSupportView as InfoView
+
+import HospitalApp.Rolviews.PatientService as patientView
+import HospitalApp.Rolviews.EmployerView as employerView
+import HospitalApp.Rolviews.InventoryView as inventoryView
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http.response import JsonResponse
@@ -24,16 +21,16 @@ class EmployerView(View):
         return super().dispatch(request, *args, **kwargs)
    
     def get(self, request, id=None):
-        return AdminView.getEmployers(self, request, id)
+        return employerView.getEmployers(self, request, id)
 
     def post(self, request):
-        return AdminView.createEmployer(self,request)
+        return employerView.createEmployer(self,request)
 
     def put(self, request, id):
-        return AdminView.updateEmployer(self,request, id)
+        return employerView.updateEmployer(self,request, id)
 
     def delete(self, request, id):
-        return AdminView.deleteEmployer(self,request, id)
+        return employerView.deleteEmployer(self,request, id)
     
 class SpecialistView(View):
    
@@ -61,16 +58,16 @@ class PatientView(View):
         return super().dispatch(request, *args, **kwargs)
    
     def get(self, request, id=None):
-        return staffAdminView.getPatient(self, request, id)
+        return patientView.getPatient(self, request, id)
  
     def post(self, request):
-        return staffAdminView.createPatient(self,request)
+        return patientView.createPatient(self,request)
  
     def put(self, request, id):
-        return staffAdminView.updatePatient(self,request, id)
+        return patientView.updatePatient(self,request, id)
  
     def delete(self, request, id):
-        return staffAdminView.deletePatient(self,request, id)
+        return patientView.deletePatient(self,request, id)
 
 
 class ClinicalAppointmentView(View):
@@ -80,16 +77,16 @@ class ClinicalAppointmentView(View):
         return super().dispatch(request, *args, **kwargs)
    
     def get(self,request,id):
-        return staffAdminView.getClinicalAppointment(self, request, id)
+        return patientView.getClinicalAppointment(self, request, id)
  
     def post(self,request):
-        return staffAdminView.createClinicalAppointment(self, request)
+        return patientView.createClinicalAppointment(self, request)
     
     def put(self,request):
         pass
  
     def delete(self,request,id):
-       return staffAdminView.deleteClinicalAppointment(self, request, id)
+       return patientView.deleteClinicalAppointment(self, request, id)
 
 class HistoryClinicView(View):
     @method_decorator(csrf_exempt)
@@ -100,7 +97,7 @@ class HistoryClinicView(View):
         pass
  
     def post(self, request):
-        pass
+        return patientView.createHistoryClinic(self, request)
  
     def put(self, request, id):
         pass
@@ -153,17 +150,17 @@ class MedicineView(View):
         return super().dispatch(request, *args, **kwargs)
    
     def get(self, request, id=None):
-        return InfoView.getMedicine(self, request, id)
+        return inventoryView.getMedicine(self, request, id)
 
  
     def post(self,request):
-        return InfoView.createMedicine(self, request)
+        return inventoryView.createMedicine(self, request)
  
     def put(self, request, id):
-        return InfoView.updateMedicine(self, request, id)    
+        return inventoryView.updateMedicine(self, request, id)    
  
     def delete(self, request, id):
-        return InfoView.deleteMedicine(self, request, id)  
+        return inventoryView.deleteMedicine(self, request, id)  
 
 
          ##Procedimiento
@@ -174,17 +171,17 @@ class ProcedureView(View):
         return super().dispatch(request, *args, **kwargs)
    
     def get(self, request, id=None):
-        return InfoView.getProcedure(self, request, id)
+        return inventoryView.getProcedure(self, request, id)
  
     def post(self,request):
-        return InfoView.createProcedure(self, request)
+        return inventoryView.createProcedure(self, request)
  
     def put(self, request, id):
-        return InfoView.updateProcedure(self, request, id)
+        return inventoryView.updateProcedure(self, request, id)
 
  
     def delete(self, request, id):
-        return InfoView.deleteProcedure(self, request, id)
+        return inventoryView.deleteProcedure(self, request, id)
 
       #Ayudas Diagnosticas
 class DiagnosticHelpView(View):
@@ -194,16 +191,16 @@ class DiagnosticHelpView(View):
         return super().dispatch(request, *args, **kwargs)
    
     def get(self, request, id=None):
-        return InfoView.getDiagnosticHelp(self, request, id)
+        return inventoryView.getDiagnosticHelp(self, request, id)
     
     def post(self,request):
-        return InfoView.createDiagnosticHelp(self, request)
+        return inventoryView.createDiagnosticHelp(self, request)
 
     def put(self, request, id):
-        return InfoView.updateDiagnosticHelp(self, request, id)
+        return inventoryView.updateDiagnosticHelp(self, request, id)
 
     def delete(self, request, id):
-        return InfoView.deleteDiagnosticHelp(self, request, id)
+        return inventoryView.deleteDiagnosticHelp(self, request, id)
 
 #---------
 

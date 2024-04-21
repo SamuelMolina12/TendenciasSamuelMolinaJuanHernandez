@@ -1,5 +1,5 @@
 
-import HospitalApp.validators.AdminTypeValidator as AdminValidator
+import HospitalApp.validators.EmployerValidator as AdminValidator
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http.response import JsonResponse

@@ -1,4 +1,4 @@
-import HospitalApp.validators.InfoSupportValidator as infoValidator
+import HospitalApp.validators.InventoryValidator as infoValidator
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http.response import JsonResponse

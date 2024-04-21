@@ -1,5 +1,5 @@
 import HospitalApp.validators.TypeValidator as validators
-import HospitalApp.service.InfoSupportService as infoService
+import HospitalApp.service.InventoryService as infoService
 
 
 
