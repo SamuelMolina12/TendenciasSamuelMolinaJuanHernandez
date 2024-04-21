@@ -14,6 +14,8 @@ import json
 
 
 # Empleados/especialistas
+
+
 class EmployerView(View):
    
     @method_decorator(csrf_exempt)
@@ -49,7 +51,17 @@ class SpecialistView(View):
 
     def delete(self, request, id):
         pass
-  
+ 
+class LoginView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args: any, **kwargs: any):
+        return super().dispatch(request, *args, **kwargs)
+    
+    def post(self,request):
+        return employerView.postLogin(self,request)
+    
+    def get(self,request):
+        return employerView.getLogin(self, request)       
 #------
 #Paciente---------------------
 class PatientView(View):

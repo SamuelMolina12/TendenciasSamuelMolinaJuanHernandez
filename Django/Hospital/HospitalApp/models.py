@@ -104,7 +104,10 @@ class DiagnosticHelp(models.Model):
     requiresSpecialistD = models.BooleanField()
     specialist = models.ForeignKey(Specialist,on_delete=models.CASCADE,null=True)  
 
-
+class Session(models.Model):
+    id=models.AutoField(primary_key=True)
+    token=models.CharField(max_length=200)
+    user=models.ForeignKey(Employer, on_delete=models.CASCADE)
     
     
 
