@@ -1,6 +1,6 @@
 
 import HospitalApp.validators.TypeValidator as validators
-import HospitalApp.service.AdminService as adminService
+import HospitalApp.service.EmployerService as adminService
 
 
 

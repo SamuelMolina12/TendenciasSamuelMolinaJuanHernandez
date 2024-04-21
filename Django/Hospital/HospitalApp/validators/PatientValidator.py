@@ -1,5 +1,5 @@
 import  HospitalApp.validators.TypeValidator as validators
-import  HospitalApp.service.StaffAdminService as staffAdminService
+import  HospitalApp.service.PatientService as staffAdminService
 from Hospital.conection_mongo import collection
 
 
