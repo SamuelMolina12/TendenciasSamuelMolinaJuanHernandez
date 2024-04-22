@@ -1,4 +1,5 @@
 import HospitalApp.models as models
+from Hospital.conection_mongo import collection,collectionB
 
 def validateId(hospital,id):
     for patient in hospital.patient:
@@ -22,7 +23,10 @@ def createPatient(id, name, mail,genre, telephone, birth, address):
         raise Exception("Ya existe una persona con esa cédula registrada")
     patient = models.Patient(id, name, mail,genre, telephone, birth, address)
     patient.save()
-    
+    clinicHistory={"_id":str(id),"historias":{}}
+    collection.insert_one(clinicHistory)
+    visitHistory={"_id":str(id),"historias":{}}
+    collectionB.insert_one(visitHistory)
     return patient.id
    
 
@@ -105,7 +109,12 @@ def deletePatient(id):
         patient.delete()
     else:
         raise Exception("paciente no encontrado")
-    
+    clinicHistory = {"_id": str(id), "historias": {}}
+    collection.delete_one(clinicHistory)
+    visitHistory = {"_id": str(id), "historias": {}}
+    collectionB.delete_one(visitHistory)
+
+
 def deleteClinicalAppointment(id):
     appointment = models.ClinicalAppointment.objects.filter(id=id).first()
     if appointment:
@@ -145,4 +154,48 @@ def updateEmergencyContact(name, relationship, telephone, patientId):
         emergency.telephone = telephone
         emergency.save()
     else:
-        raise Exception("Contacto de emergencia no encontrado")            
+        raise Exception("Contacto de emergencia no encontrado")
+
+
+#----- orden
+def createOrder(patient,doctor,date,medicine):
+    patient = models.Patient.objects.filter(id=patient)
+    if not patient.exists():
+         raise Exception("No existe un paciente con esa cédula registrada")
+    doctor = models.Employer.objects.filter(id=doctor,role="doctor")
+    if not doctor.exists():
+         raise Exception("No existe un doctor con esa cédula registrada")
+    medicine = models.Medicine.objects.filter(id=medicine)
+    if not medicine.exists():
+         raise Exception("No existe una medicina con ese id")       
+    order = models.Order(patient_id=patient, doctor_id=doctor, date=date, medicine_id=medicine)
+    order.save()   
+
+
+
+
+#------- historia clinica
+
+def createHistoryClinic(patient_id, date, doctor, reason, symptoms, diagnosis):
+
+    patient_history = collection.find_one({"_id": patient_id})
+    
+    if not patient_history:
+        raise Exception("El paciente no tiene historia clínica")
+    
+    histories = patient_history.get("historias", [])
+    
+    newHistory = {"date": date,"doctor": doctor,"reason": reason,"symptoms": symptoms,"diagnosis": diagnosis}
+    if not isinstance(histories, list):
+        histories = [histories] 
+    
+    histories.append(newHistory)
+
+    collection.update_one({"_id": patient_id}, {"$set": {"historias": histories}})
+
+    return newHistory
+
+
+
+
+
