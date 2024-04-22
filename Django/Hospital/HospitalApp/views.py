@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.views import View
 
+import HospitalApp.validators.PatientValidator as staffAdminValidator
 
 
-
-import HospitalApp.Rolviews.PatientService as patientView
+import HospitalApp.Rolviews.PatientView as patientView
 import HospitalApp.Rolviews.EmployerView as employerView
 import HospitalApp.Rolviews.InventoryView as inventoryView
 from django.utils.decorators import method_decorator
@@ -14,6 +14,8 @@ import json
 
 
 # Empleados/especialistas
+
+
 class EmployerView(View):
    
     @method_decorator(csrf_exempt)
@@ -49,7 +51,17 @@ class SpecialistView(View):
 
     def delete(self, request, id):
         pass
-  
+ 
+class LoginView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args: any, **kwargs: any):
+        return super().dispatch(request, *args, **kwargs)
+    
+    def post(self,request):
+        return employerView.postLogin(self,request)
+    
+    def get(self,request):
+        return employerView.getLogin(self, request)       
 #------
 #Paciente---------------------
 class PatientView(View):
@@ -87,6 +99,23 @@ class ClinicalAppointmentView(View):
  
     def delete(self,request,id):
        return patientView.deleteClinicalAppointment(self, request, id)
+       
+class OrderView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args: any, **kwargs: any):
+        return super().dispatch(request, *args, **kwargs)
+   
+    def get(self, request, id=None):
+        pass
+ 
+    def post(self, request):
+        return patientView.createOrder(self, request)
+ 
+    def put(self, request, id):
+       pass
+ 
+    def delete(self, request, id):
+        pass 
 
 class HistoryClinicView(View):
     @method_decorator(csrf_exempt)
@@ -97,7 +126,25 @@ class HistoryClinicView(View):
         pass
  
     def post(self, request):
-        return patientView.createHistoryClinic(self, request)
+        try:
+            body = json.loads(request.body)
+            patient_id = body.get("patient_id")  # Obtener patient_id del cuerpo JSON
+            date = body.get("date")
+            doctor = body.get("doctor")
+            reason = body.get("reason")
+            symptoms = body.get("symptoms")
+            diagnosis = body.get("diagnosis")
+            
+            staffAdminValidator.createHistoryClinic(patient_id, date, doctor, reason, symptoms, diagnosis)
+            
+            message = "Se ha creado la historia clínica exitosamente"
+            status = 204
+        except Exception as error:
+            message = str(error)
+            status = 400
+        
+        response = {"message": message}
+        return JsonResponse(response, status=status)
  
     def put(self, request, id):
         pass

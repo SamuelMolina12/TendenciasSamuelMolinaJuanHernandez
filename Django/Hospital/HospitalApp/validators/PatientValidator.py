@@ -1,6 +1,6 @@
 import  HospitalApp.validators.TypeValidator as validators
 import  HospitalApp.service.PatientService as staffAdminService
-from Hospital.conection_mongo import collection
+
 
 
 def createPatient(id, name, mail,genre, telephone, birth, address):
@@ -27,11 +27,8 @@ def createPatient(id, name, mail,genre, telephone, birth, address):
 
     staffAdminService.createPatient( id, name, mail,genre, telephone, birth, address)
     
-    # createEmergencyContact(id)
-   
-    # createPolicy(id)
-    clinicHistory={"_id":str(id),"historias":{}}
-    collection.insert_one(clinicHistory)
+
+
 
     
 
@@ -98,8 +95,7 @@ def getClinicalAppointment(id):
 
 
 def deletePatient(id):
-    clinicHistory={"_id":str(id),"historias":{}}
-    collection.delete_one(clinicHistory)
+
     return staffAdminService.deletePatient(id)
 
 def deleteClinicalAppointment(id):
@@ -153,3 +149,30 @@ def updateEmergencyContact(name,relationship,telephone,patientId):
 
     
     return staffAdminService.updateEmergencyContact(name,relationship,telephone,patientId)
+
+
+def createOrder(patient,doctor,date,medicine):
+
+    validators.numberValidator(patient, "nombre del doctor  \n")
+
+    validators.numberValidator(doctor, "nombre del doctor  \n")
+
+    validators.dateValidator(date, "fecha  \n")
+
+    validators.numberValidator(medicine, "nombre del doctor  \n")
+    return staffAdminService.createOrder(patient,doctor,date,medicine)
+
+def createHistoryClinic (patient_id,date, doctor,reason,symptoms,diagnosis):
+     
+    # validators.numberValidator(patient_id, "paciente")
+
+    validators.dateValidator(date, "fecha  \n")
+
+    validators.textValidator(doctor, "nombre del doctor  \n")
+    
+    validators.textValidator(reason, "razon \n")
+
+    validators.textValidator(symptoms, "razon \n")
+
+    validators.textValidator(diagnosis, "razon \n")    
+    staffAdminService.createHistoryClinic (patient_id,date, doctor,reason,symptoms,diagnosis)

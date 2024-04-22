@@ -65,3 +65,12 @@ def updateUser(id, name, genre, mail, telephone, birth, address, role, userName,
 
 
 
+
+def login(username,password):
+    validators.textValidator(username,"usuario o contraseña incorrecto")
+    validators.textValidator(password,"usuario o contraseña incorrectos")
+    return adminService.login(username,password)
+
+def getSession(token):
+    validators.textValidator(token,"token incorrecto")
+    return adminService.getSession(token)

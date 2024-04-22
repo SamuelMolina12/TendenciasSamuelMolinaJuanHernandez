@@ -16,14 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from HospitalApp.views import EmployerView,PatientView,ClinicalAppointmentView,MedicineView,ProcedureView,DiagnosticHelpView,HistoryClinicView,HistoryVisitsView,SpecialistView,Billing
+from HospitalApp.views import EmployerView,PatientView,ClinicalAppointmentView,MedicineView,ProcedureView,DiagnosticHelpView,HistoryClinicView,HistoryVisitsView,SpecialistView,Billing,LoginView,OrderView
 urlpatterns = [
     path('admin/', admin.site.urls),
 # Empleado-----  
     path("hospital/admin/employer", EmployerView.as_view(), name="employers post"),
     path("hospital/admin/employer/<int:id>", EmployerView.as_view(), name="employers get put delete"),
     path("hospital/admin/specialist",SpecialistView.as_view(), name="specialist post"),
-    path("hospital/admin/specialist/<int:id>",SpecialistView.as_view(), name="specialist get put delete"),    
+    path("hospital/admin/specialist/<int:id>",SpecialistView.as_view(), name="specialist get put delete"),  
+
+    path("login",LoginView.as_view(),name="login") , 
 #--------
 #Paciente---------
     path("hospital/patient",PatientView.as_view(),name="patients post"),
@@ -31,6 +33,9 @@ urlpatterns = [
    #CitaMedica
     path("hospital/patient/clinicalAppointment",ClinicalAppointmentView.as_view(),name="clinicalAppointments post"),
     path("hospital/patient/clinicalAppointment/<id>",ClinicalAppointmentView.as_view(),name="clinicalAppointments get put and delete"),
+    #order
+    path("hospital/patient/order",OrderView.as_view(),name="order post"),
+    path("hospital/patient/order/<id>",OrderView.as_view(),name="order get put and delete"), 
    #Historia Clinica
     path("hospital/patient/historyClinic",HistoryClinicView.as_view(),name="historyClinic post"),
     path("hospital/patient/historyClinic/<id>",HistoryClinicView.as_view(),name="historyClinic get put and delete"),    

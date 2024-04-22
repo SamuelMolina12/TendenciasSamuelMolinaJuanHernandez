@@ -1,5 +1,5 @@
 import HospitalApp.models as models
-
+import string,secrets
 
 
 
@@ -55,3 +55,29 @@ def updateUser(id, name, mail,genre, telephone, birth, address, role, userName, 
         employer.save()
     else:
         raise Exception("Empleado no encontrado")
+
+
+def login(user,password):
+    try:
+        user=models.Employer.objects.get(userName=user)
+    except:
+        raise Exception("usuario o contraseña no existe")
+    if user.password!=password:
+        raise Exception("usuario o contraseña incorrectos")
+    activeSession = models.Session.objects.filter(user=user)
+    if activeSession.exists():
+        raise Exception("ya se detecto una sesion activa")
+    chars = string.ascii_letters + string.digits
+    token = ''.join(secrets.choice(chars) for _ in range(128))
+    session=models.Session()
+    session.user=user
+    session.token=token
+    session.save()
+    return session
+
+
+def getSession(token):
+    try:
+        return models.Session.objects.get(token = token)
+    except:
+        raise Exception("token no existe")

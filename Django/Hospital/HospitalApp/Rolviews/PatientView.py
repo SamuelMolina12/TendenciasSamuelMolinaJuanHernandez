@@ -4,15 +4,21 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http.response import JsonResponse
 import json
+import HospitalApp.validators.EmployerValidator as AdminValidator
 
-
-
-
+def validateRole(role,validateRoles):
+    if role not in validateRoles:
+        raise Exception("rol no valido")
 
 
 
 def getPatient(self, request, id=None):
     try:
+        token = request.META.get('HTTP_TOKEN')
+        sesion = AdminValidator.getSession(token)
+        role=sesion.user.role
+ 
+        validateRole(role,["Personal Administrativo","Doctor","Enfermera"])         
         patients = [staffAdminValidator.getPatient(id)] if id else staffAdminValidator.getPatients()
         patientsdata = [{"id": patient.id, "name": patient.name,"mail":patient.mail, "genre": patient.genre,"telephone": patient.telephone,"birth":patient.birth,"address":patient.address} for patient in patients]
         clinicalAppointments = []    
@@ -45,8 +51,13 @@ def getPatient(self, request, id=None):
     
 
 def createPatient(self,request):
-    body = json.loads(request.body)
+
     try:
+        body = json.loads(request.body)    
+        token = request.META.get('HTTP_TOKEN')
+        sesion = AdminValidator.getSession(token)
+        role=sesion.user.role
+        validateRole(role,["Personal Administrativo"])         
         staffAdminValidator.createPatient(body["id"],body["name"],body["mail"],body["genre"],body["telephone"],body["birth"],body["address"])
         staffAdminValidator.createPolicy(body["Policy"]["insuranceCompany"],body["Policy"]["policyNumber"],body["Policy"]["statePolicy"],body["Policy"]["termPolicy"],body["id"])
         staffAdminValidator.createEmergencyContact(body["emergencyContact"]["nameC"],body["emergencyContact"]["relationship"],body["emergencyContact"]["telephoneC"],body["id"])
@@ -63,9 +74,12 @@ def createPatient(self,request):
     
 
 def updatePatient(self, request, id):
-    body = json.loads(request.body)
-    
     try:
+        body = json.loads(request.body)    
+        token = request.META.get('HTTP_TOKEN')
+        sesion = AdminValidator.getSession(token)
+        role=sesion.user.role 
+        validateRole(role,["Personal Administrativo"])   
         staffAdminValidator.updatePatient(id, body["name"],body["mail"],body["genre"],body["telephone"],body["birth"],body["address"])
         staffAdminValidator.updatePolicy(body["Policy"]["insuranceCompany"],body["Policy"]["policyNumber"],body["Policy"]["statePolicy"],body["Policy"]["termPolicy"],id)
         staffAdminValidator.updateEmergencyContact(body["emergencyContact"]["nameC"],body["emergencyContact"]["relationship"],body["emergencyContact"]["telephoneC"],id)            
@@ -79,6 +93,10 @@ def updatePatient(self, request, id):
 
 def deletePatient(self, request, id):
     try:
+        token = request.META.get('HTTP_TOKEN')
+        sesion = AdminValidator.getSession(token)
+        role=sesion.user.role 
+        validateRole(role,["Personal Administrativo"])          
         staffAdminValidator.deletePatient(id) 
         message = "Paciente eliminado exitosamente"
         status = 204
@@ -131,14 +149,29 @@ def deleteClinicalAppointment(self,request,id):
     response = {"message": message}
     return JsonResponse(response, status=status)
 #-----
+#---- orden
+def createOrder(self,request):
+    try: 
+        body=json.loads(request.body)    
+        staffAdminValidator.createOrder(body["patient"],body["doctor"],body["date"],body["medicine"])
+        message="se ha creado la cita exitosamente"
+        status=204
+    except Exception as error:
+        message=str(error)
+        status=400
+    response = {"message":message}
+    return JsonResponse(response,status=status)
+
+
+
 
 
 #---- Historia clinica
 def createHistoryClinic(self,request):
     body=json.loads(request.body)
     try: 
-        staffAdminValidator.createClinicalAppointment(body["date"],body["hour"],body["doctor"],body["appointmentType"],body["patientId"])
-        message="se ha creado la cita exitosamente"
+        staffAdminValidator.createHistoryClinic(body["patient_id"],body["date"],body["doctor"],body["reason"],body["symptoms"],body["diagnosis"])
+        message="se ha creado la historia clinica exitosamente"
         status=204
     except Exception as error:
         message=str(error)

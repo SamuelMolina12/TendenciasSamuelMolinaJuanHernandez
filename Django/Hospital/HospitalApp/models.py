@@ -51,12 +51,56 @@ class ClinicalAppointment(models.Model):
     doctor = models.CharField(max_length=30)
     appointmentType = models.CharField(max_length=30)
 
+
+
+
+
+class Medicine(models.Model):  
+    id= models.AutoField(primary_key=True)   
+
+    medicineName = models.CharField(max_length=30)
+    medicineDose = models.CharField(max_length=30)
+    durationMedication = models.CharField(max_length=30)
+    medicineCost = models.FloatField()
+
+
+class Procedure(models.Model):
+    id=models.AutoField(primary_key=True)
+    procedureName =  models.CharField(max_length=30)
+    numberRepeated =  models.CharField(max_length=30)
+    frequencyRepeated =  models.CharField(max_length=30)
+    procedureCost =  models.FloatField()
+    requiresSpecialistP = models.BooleanField()
+    specialist = models.ForeignKey(Specialist,on_delete=models.CASCADE,null=True)                    
+
+
+class DiagnosticHelp(models.Model):
+    id = models.AutoField(primary_key=True)
+
+    diagnosticName = models.CharField(max_length=30)
+    quantity = models.CharField(max_length=30)
+    diagnosticCost = models.FloatField()
+    requiresSpecialistD = models.BooleanField()
+    specialist = models.ForeignKey(Specialist,on_delete=models.CASCADE,null=True)
+
+class OrderMedicine(models.Model):
+    id = models.AutoField(primary_key=True)
+    itemMedicine = models.BigIntegerField(primary_key=True )
+    medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE, null=True, blank=True)
+    totalCost = models.FloatField()
+
+class Session(models.Model):
+    id=models.AutoField(primary_key=True)
+    token=models.CharField(max_length=200)
+    user=models.ForeignKey(Employer, on_delete=models.CASCADE)
+    
 class Order(models.Model):
     
     orderId = models.AutoField(primary_key=True, default=1)
     patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
     doctorId = models.ForeignKey(Employer,on_delete=models.CASCADE)
     date = models.DateTimeField()
+    medicine = models.ForeignKey(OrderMedicine, on_delete=models.CASCADE, null=True, blank=True)    
 
 
 class Billing(models.Model):
@@ -68,45 +112,7 @@ class Billing(models.Model):
     doctorName = models.ForeignKey(Employer,on_delete=models.CASCADE)
     policy =  models.ForeignKey(Policy,on_delete=models.CASCADE)
     order = models.ForeignKey(Order,on_delete=models.CASCADE)
-    cost = models.FloatField()
-
-
-
-class Medicine(models.Model):  
-    id= models.AutoField(primary_key=True)   
-    # order =models.ForeignKey(Order,on_delete=models.CASCADE)
-    # itemMedicine = models.IntegerField()
-    medicineName = models.CharField(max_length=30)
-    medicineDose = models.CharField(max_length=30)
-    durationMedication = models.CharField(max_length=30)
-    medicineCost = models.FloatField()
-
-
-class Procedure(models.Model):
-    id=models.AutoField(primary_key=True)
-    # order = models.ForeignKey(Order,on_delete=models.CASCADE)
-    # itemProcedure = models.IntegerField()
-    procedureName =  models.CharField(max_length=30)
-    numberRepeated =  models.CharField(max_length=30)
-    frequencyRepeated =  models.CharField(max_length=30)
-    procedureCost =  models.FloatField()
-    requiresSpecialistP = models.BooleanField()
-    specialist = models.ForeignKey(Specialist,on_delete=models.CASCADE,null=True)                    
-
-
-class DiagnosticHelp(models.Model):
-    id = models.AutoField(primary_key=True)
-    # order = models.ForeignKey(Order,on_delete=models.CASCADE)
-    # itemDiagnostic = models.IntegerField()
-    diagnosticName = models.CharField(max_length=30)
-    quantity = models.CharField(max_length=30)
-    diagnosticCost = models.FloatField()
-    requiresSpecialistD = models.BooleanField()
-    specialist = models.ForeignKey(Specialist,on_delete=models.CASCADE,null=True)  
-
-
-    
-    
+    cost = models.FloatField()   
 
 
 
