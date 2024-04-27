@@ -89,12 +89,9 @@ def updateProcedure(id, procedureName, procedureCost, ):
 
 #Diagnostico de ayuda -----------
 
-def createDiagnosticHelp(diagnosticName,quantity,diagnosticCost,requiresSpecialistD,specialist_id):
-    if not specialist_id  is None:
-        diagnosticHelp = models.Specialist.objects.filter(id=specialist_id)
-        if not diagnosticHelp:
-           raise Exception("No existe un especialista con ese id")
-    diagnosticHelp = models.DiagnosticHelp(diagnosticName=diagnosticName,quantity=quantity,diagnosticCost=diagnosticCost,requiresSpecialistD=requiresSpecialistD,specialist_id=specialist_id)
+def createDiagnosticHelp(diagnosticName,diagnosticCost):
+
+    diagnosticHelp = models.DiagnosticHelp(diagnosticName=diagnosticName,diagnosticCost=diagnosticCost)
     diagnosticHelp.save()
 
 def getDiagnosticaids():

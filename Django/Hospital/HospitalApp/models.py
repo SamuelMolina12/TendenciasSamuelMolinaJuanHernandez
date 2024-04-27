@@ -78,11 +78,10 @@ class DiagnosticHelp(models.Model):
 
 
 class Order(models.Model):
-    
     id = models.AutoField(primary_key=True)
     patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
-    doctorId = models.ForeignKey(Employer,on_delete=models.CASCADE)
-    date = models.DateTimeField()
+    doctor = models.ForeignKey(Employer,on_delete=models.CASCADE)
+    date = models.CharField(max_length=30)
 
 class OrderMedicine(models.Model):
     id = models.AutoField(primary_key=True)

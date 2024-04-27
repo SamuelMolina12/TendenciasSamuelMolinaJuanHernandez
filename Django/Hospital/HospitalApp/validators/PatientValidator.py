@@ -151,16 +151,73 @@ def updateEmergencyContact(name,relationship,telephone,patientId):
     return staffAdminService.updateEmergencyContact(name,relationship,telephone,patientId)
 
 
-def createOrder(patient,doctor,date,medicine):
+#Ordenes
 
-    validators.numberValidator(patient, "nombre del doctor  \n")
+def createOrder(patient,doctor,date):
+
+    validators.numberValidator(patient, "cedula paciente  \n")
 
     validators.numberValidator(doctor, "nombre del doctor  \n")
 
     validators.dateValidator(date, "fecha  \n")
+    
+    return staffAdminService.createOrder(patient,doctor,date)
 
-    validators.numberValidator(medicine, "nombre del doctor  \n")
-    return staffAdminService.createOrder(patient,doctor,date,medicine)
+def createOrderMedicine(itemMedicine,medicineDose,medicine_id,order_id):
+
+    validators.numberValidator(itemMedicine, "item Medicina \n")
+
+    validators.textValidator(medicineDose, "dosis \n")
+
+    validators.numberValidator(medicine_id, "id de la medicina  \n")
+
+    validators.numberValidator(order_id,"id d ela orden")
+
+    return staffAdminService.createOrderMedicine(itemMedicine,medicineDose,medicine_id,order_id)
+
+def createOrderProcedure(itemProcedure,numberRepeated,frequencyRepeated,requiresSpecialistP,order_id,procedure_id,specialist_id):
+
+    validators.numberValidator(itemProcedure, "item Procedimiento \n")
+
+    validators.textValidator(numberRepeated, "veces que se repite \n")
+
+    validators.textValidator(frequencyRepeated, "frecuencia con la que se repite  \n")
+
+    if requiresSpecialistP:
+         validators.numberValidator(specialist_id, "id especialista")
+    else:  
+         specialist_id = None
+
+
+  
+    validators.numberValidator(order_id,"id d ela orden")
+
+    validators.numberValidator(procedure_id,"id del procedimiento")
+
+
+    return staffAdminService.createOrderProcedure(itemProcedure,numberRepeated,frequencyRepeated,requiresSpecialistP,order_id,procedure_id,specialist_id)
+
+def createOrderDiagnosticHelp(itemDiagnosticHelp,quantity,requiresSpecialistD,diagnosticHelp_id,order_id,specialist_id):
+
+    validators.numberValidator(itemDiagnosticHelp, "item ayuda diagnostica \n")
+
+    validators.textValidator(quantity, "Cantidad  \n")
+
+    if requiresSpecialistD:
+         validators.numberValidator(specialist_id, "id especialista")
+    else:  
+         specialist_id = None
+
+    validators.numberValidator(order_id,"id d ela orden")
+
+    validators.numberValidator(diagnosticHelp_id,"id del procedimiento")
+
+
+    return staffAdminService.createOrderDiagnosticHelp(itemDiagnosticHelp,quantity,requiresSpecialistD,diagnosticHelp_id,order_id,specialist_id)
+
+
+#historias
+
 
 def createHistoryClinic (patient_id,date, doctor,reason,symptoms,diagnosis):
      

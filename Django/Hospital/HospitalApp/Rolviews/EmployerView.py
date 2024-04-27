@@ -34,10 +34,10 @@ def getEmployers(self, request, id=None):
 def createEmployer(self, request):
     try:
         body = json.loads(request.body)        
-        token = request.META.get('HTTP_TOKEN')
-        sesion = AdminValidator.getSession(token)
-        role=sesion.user.role
-        validateRole(role,["admin"])         
+        # token = request.META.get('HTTP_TOKEN')
+        # sesion = AdminValidator.getSession(token)
+        # role=sesion.user.role
+        # validateRole(role,["admin"])         
         AdminValidator.createUser(body["name"], body["id"], body["genre"], body["mail"], body["telephone"], body["birth"], body["address"], body["role"], body["userName"], body["password"])
         message = "Se ha creado el Empleado exitosamente"
         status = 204

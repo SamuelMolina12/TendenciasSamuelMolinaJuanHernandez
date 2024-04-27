@@ -158,21 +158,60 @@ def updateEmergencyContact(name, relationship, telephone, patientId):
 
 
 #----- orden
-def createOrder(patient,doctor,date,medicine):
-    patient = models.Patient.objects.filter(id=patient)
-    if not patient.exists():
-         raise Exception("No existe un paciente con esa cédula registrada")
-    doctor = models.Employer.objects.filter(id=doctor,role="doctor")
-    if not doctor.exists():
-         raise Exception("No existe un doctor con esa cédula registrada")
-    medicine = models.Medicine.objects.filter(id=medicine)
-    if not medicine.exists():
-         raise Exception("No existe una medicina con ese id")       
-    order = models.Order(patient_id=patient, doctor_id=doctor, date=date, medicine_id=medicine)
+def createOrder(patient,doctor,date):
+    patient = models.Patient.objects.get(id=patient)
+
+    doctor = models.Employer.objects.get(id=doctor,role="doctor")
+      
+    order = models.Order()
+    order.doctor=doctor
+    order.patient=patient
+    order.date=date
     order.save()   
 
+def createOrderMedicine(itemMedicine,medicineDose,medicine_id,order_id):
 
+    medicine = models.Medicine.objects.filter(id=medicine_id)
+    if not medicine.exists():
+         raise Exception("No existe una medicina con ese id")
+    order = models.Order.objects.filter(id=order_id)
+    if not order.exists():
+         raise Exception("No existe una orden con ese id")
+          
+    medicine = models.Medicine(itemMedicine=itemMedicine, medicineDose=medicineDose, medicine_id=medicine_id,order_id=order_id)
+    medicine.save()
 
+def createOrderProcedure(itemProcedure,numberRepeated,frequencyRepeated,requiresSpecialistP,order_id,procedure_id,specialist_id):
+
+    prcedure = models.Procedure.objects.filter(id=procedure_id)
+    if not prcedure.exists():
+         raise Exception("No existe un procedimiento con ese id")
+    order = models.Order.objects.filter(id=order_id)
+    if not order.exists():
+         raise Exception("No existe una orden con ese id")
+    if not specialist_id  is None:
+        diagnosticHelp = models.Specialist.objects.filter(id=specialist_id)
+        if not diagnosticHelp:
+           raise Exception("No existe un especialista con ese id")
+                  
+    prcedure = models.Procedure(itemProcedure=itemProcedure, numberRepeated=numberRepeated, frequencyRepeated=frequencyRepeated,requiresSpecialistP=requiresSpecialistP,order_id=order_id,specialist_id=specialist_id)
+    prcedure.save()
+
+def createOrderDiagnosticHelp(itemDiagnosticHelp,quantity,requiresSpecialistD,diagnosticHelp_id,order_id,specialist_id):
+
+    diagnostic = models.DiagnosticHelp.objects.filter(id=diagnosticHelp_id)
+    if not diagnostic.exists():
+         raise Exception("No existe una ayuda diagnostica con ese id")
+    order = models.Order.objects.filter(id=order_id)
+    if not order.exists():
+         raise Exception("No existe una orden con ese id")
+    if not specialist_id  is None:
+        diagnosticHelp = models.Specialist.objects.filter(id=specialist_id)
+        if not diagnosticHelp:
+           raise Exception("No existe un especialista con ese id")
+                  
+    diagnostic = models.Procedure(itemDiagnosticHelp=itemDiagnosticHelp, quantity=quantity, requiresSpecialistD=requiresSpecialistD,diagnosticHelp_id=diagnosticHelp_id,order_id=order_id,specialist_id=specialist_id)
+    diagnostic.save()
 
 #------- historia clinica
 
