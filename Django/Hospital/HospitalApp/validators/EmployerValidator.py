@@ -74,3 +74,23 @@ def login(username,password):
 def getSession(token):
     validators.textValidator(token,"token incorrecto")
     return adminService.getSession(token)
+
+#especialista
+
+def createSpecialist( nameSpecialist):
+    # print("Ingreso a la creacion del rol " + role)
+    validators.textValidator(nameSpecialist,"nombre especialista \n")
+    adminService.createSpecialist( nameSpecialist)
+
+def getSpecialist(id):
+    return adminService.getSpecialist(id)
+
+def getSpecialists():
+    return adminService.getSpecialists()
+
+def deleteSpecialist(id):
+    return adminService.deleteSpecialist(id) 
+
+def updateSpecialist(id, nameSpecialist):
+    validators.textValidator(nameSpecialist,"nombre  \n")   
+    return adminService.updateSpecialist(id, nameSpecialist)

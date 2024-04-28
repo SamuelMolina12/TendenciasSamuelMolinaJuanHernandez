@@ -41,16 +41,16 @@ class SpecialistView(View):
         return super().dispatch(request, *args, **kwargs)
    
     def get(self, request, id=None):
-        pass
+        return employerView.getSpecialists(self, request, id)
 
     def post(self, request):
-        pass
+        return employerView.createSpecialist(self,request)
 
     def put(self, request, id):
-        pass
+        return employerView.updateSpecialist(self,request, id)
 
     def delete(self, request, id):
-        pass
+        return employerView.deleteSpecialist(self,request, id)
  
 class LoginView(View):
     @method_decorator(csrf_exempt)

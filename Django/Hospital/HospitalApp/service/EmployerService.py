@@ -81,3 +81,45 @@ def getSession(token):
         return models.Session.objects.get(token = token)
     except:
         raise Exception("token no existe")
+    
+    
+#especialista
+
+def createSpecialist(nameSpecialist):
+   
+    user=models.Specialist.objects.filter(nameSpecialist=nameSpecialist)
+    if user.exists():
+        raise Exception("ya existe un usuario con ese user name")
+    user=models.Specialist(nameSpecialist=nameSpecialist)
+    user.save()    
+
+def getSpecialists():
+    Specialists = models.Specialist.objects.all()
+    if Specialists:
+        return Specialists
+    else:
+        raise Exception("No hay especialista para mostrar")
+
+def getSpecialist(id):
+    Specialist = models.Specialist.objects.filter(id=id).first()
+    if Specialist:
+        return Specialist
+    else:
+        raise Exception("No hay un especialista con ese id")
+    
+
+def deleteSpecialist(id):
+    Specialist = models.Specialist.objects.filter(id=id).first()
+    if Specialist:
+        Specialist.delete()
+    else:
+        raise Exception("Especialista no encontrado")
+    
+def updateSpecialist(id, nameSpecialist):
+    Specialist = models.Specialist.objects.filter(id=id).first()
+    if Specialist:
+        Specialist.nameSpecialist = nameSpecialist
+        
+        Specialist.save()
+    else:
+        raise Exception("Especialista no encontrado")    
