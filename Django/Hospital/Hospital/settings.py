@@ -79,7 +79,7 @@ DATABASES = {
     'default': {
         #----
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'hospitalBD' ,
+        'NAME': 'hospitalbd' ,
         'USER' : 'root',
         'PASSWORD ':'',
         'HOST': 'localhost',
