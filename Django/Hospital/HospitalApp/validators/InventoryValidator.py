@@ -68,18 +68,14 @@ def updateProcedure(id,procedureName,procedureCost):
 
 
 #Ayuda diagnostica -----------
-def createDiagnosticHelp(diagnosticName,quantity,diagnosticCost,requiresSpecialistD,specialist_id):
+def createDiagnosticHelp(diagnosticName,diagnosticCost):
     validators.textValidator(diagnosticName, "procedimiento")
-    validators.textValidator(quantity, "cantidad") 
+  
 
-    if requiresSpecialistD:
-        validators.numberValidator(specialist_id, "id especialista")
-    else:  
-        specialist_id = None
 
     diagnosticCost = float(diagnosticCost)
     
-    infoService.createDiagnosticHelp(diagnosticName,quantity,diagnosticCost,requiresSpecialistD,specialist_id)
+    infoService.createDiagnosticHelp(diagnosticName,diagnosticCost)
 
 
 def getDiagnosticHelp(id):

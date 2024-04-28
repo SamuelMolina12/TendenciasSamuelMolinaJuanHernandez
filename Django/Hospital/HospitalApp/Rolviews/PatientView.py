@@ -54,10 +54,10 @@ def createPatient(self,request):
 
     try:
         body = json.loads(request.body)    
-        token = request.META.get('HTTP_TOKEN')
-        sesion = AdminValidator.getSession(token)
-        role=sesion.user.role
-        validateRole(role,["Personal Administrativo"])         
+        # token = request.META.get('HTTP_TOKEN')
+        # sesion = AdminValidator.getSession(token)
+        # role=sesion.user.role
+        # validateRole(role,["Personal Administrativo"])         
         staffAdminValidator.createPatient(body["id"],body["name"],body["mail"],body["genre"],body["telephone"],body["birth"],body["address"])
         staffAdminValidator.createPolicy(body["Policy"]["insuranceCompany"],body["Policy"]["policyNumber"],body["Policy"]["statePolicy"],body["Policy"]["termPolicy"],body["id"])
         staffAdminValidator.createEmergencyContact(body["emergencyContact"]["nameC"],body["emergencyContact"]["relationship"],body["emergencyContact"]["telephoneC"],body["id"])
@@ -149,12 +149,12 @@ def deleteClinicalAppointment(self,request,id):
     response = {"message": message}
     return JsonResponse(response, status=status)
 #-----
-#---- orden
+#---- ordenes
 def createOrder(self,request):
     try: 
         body=json.loads(request.body)    
-        staffAdminValidator.createOrder(body["patient"],body["doctor"],body["date"],body["medicine"])
-        message="se ha creado la cita exitosamente"
+        staffAdminValidator.createOrder(body["patient"],body["doctor"],body["date"])
+        message="se ha creado la orden exitosamente"
         status=204
     except Exception as error:
         message=str(error)
@@ -162,11 +162,45 @@ def createOrder(self,request):
     response = {"message":message}
     return JsonResponse(response,status=status)
 
+def createOrderMedicine(self,request):
+    try: 
+        body=json.loads(request.body)    
+        staffAdminValidator.createOrderMedicine(body["itemMedicine"],body["medicineDose"],body["durationMedication"],body["medicine_id"],body["order_id"])
+        message="se ha creado la orden de la medicina exitosamente"
+        status=204
+    except Exception as error:
+        message=str(error)
+        status=400
+    response = {"message":message}
+    return JsonResponse(response,status=status)
 
+def createOrderProcedure(self,request):
+    try: 
+        body=json.loads(request.body)    
+        staffAdminValidator.createOrderProcedure(body["itemProcedure"],body["numberRepeated"],body["frequencyRepeated"],body["requiresSpecialistP"],body["order_id"],body["procedure_id"],body["specialist_id"])
+        message="se ha creado la orden del Procedimiento exitosamente"
+        status=204
+    except Exception as error:
+        message=str(error)
+        status=400
+    response = {"message":message}
+    return JsonResponse(response,status=status)
 
-
+def createOrderDiagnosticHelp(self,request):
+    try: 
+        body=json.loads(request.body)    
+        staffAdminValidator.createOrderDiagnosticHelp(body["itemDiagnosticHelp"],body["quantity"],body["requiresSpecialistD"],body["diagnosticHelp_id"],body["order_id"],body["specialist_id"])
+        message="se ha creado la orden del Procedimiento exitosamente"
+        status=204
+    except Exception as error:
+        message=str(error)
+        status=400
+    response = {"message":message}
+    return JsonResponse(response,status=status)
 
 #---- Historia clinica
+
+
 def createHistoryClinic(self,request):
     body=json.loads(request.body)
     try: 

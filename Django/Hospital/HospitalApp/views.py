@@ -99,7 +99,7 @@ class ClinicalAppointmentView(View):
  
     def delete(self,request,id):
        return patientView.deleteClinicalAppointment(self, request, id)
-       
+#Ordenes      
 class OrderView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args: any, **kwargs: any):
@@ -117,6 +117,58 @@ class OrderView(View):
     def delete(self, request, id):
         pass 
 
+class OrderMedicineView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args: any, **kwargs: any):
+        return super().dispatch(request, *args, **kwargs)
+   
+    def get(self, request, id=None):
+        pass
+ 
+    def post(self, request):
+        return patientView.createOrderMedicine(self, request)
+ 
+    def put(self, request, id):
+       pass
+ 
+    def delete(self, request, id):
+        pass
+
+class OrderProcedureView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args: any, **kwargs: any):
+        return super().dispatch(request, *args, **kwargs)
+   
+    def get(self, request, id=None):
+        pass
+ 
+    def post(self, request):
+        return patientView.createOrderProcedure(self, request)
+ 
+    def put(self, request, id):
+       pass
+ 
+    def delete(self, request, id):
+        pass
+
+class OrderDiagnosticHelpView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args: any, **kwargs: any):
+        return super().dispatch(request, *args, **kwargs)
+   
+    def get(self, request, id=None):
+        pass
+ 
+    def post(self, request):
+        return patientView.createOrderDiagnosticHelp(self, request)
+ 
+    def put(self, request, id):
+       pass
+ 
+    def delete(self, request, id):
+        pass
+
+#historia
 class HistoryClinicView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args: any, **kwargs: any):

@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from HospitalApp.views import EmployerView,PatientView,ClinicalAppointmentView,MedicineView,ProcedureView,DiagnosticHelpView,HistoryClinicView,HistoryVisitsView,SpecialistView,Billing,LoginView,OrderView
+from HospitalApp.views import EmployerView,PatientView,ClinicalAppointmentView,MedicineView,ProcedureView,DiagnosticHelpView,HistoryClinicView,HistoryVisitsView,SpecialistView,Billing,LoginView,OrderView,OrderMedicineView,OrderProcedureView,OrderDiagnosticHelpView
 urlpatterns = [
     path('admin/', admin.site.urls),
 # Empleado-----  
@@ -33,9 +33,18 @@ urlpatterns = [
    #CitaMedica
     path("hospital/patient/clinicalAppointment",ClinicalAppointmentView.as_view(),name="clinicalAppointments post"),
     path("hospital/patient/clinicalAppointment/<id>",ClinicalAppointmentView.as_view(),name="clinicalAppointments get put and delete"),
-    #order
+    #ordenes
     path("hospital/patient/order",OrderView.as_view(),name="order post"),
     path("hospital/patient/order/<id>",OrderView.as_view(),name="order get put and delete"), 
+        #medicina orden
+    path("hospital/patient/orderMedicine",OrderMedicineView.as_view(),name="OrderMedicine post"),
+    path("hospital/patient/orderMedicine/<id>",OrderMedicineView.as_view(),name="OrderMedicine get put and delete"), 
+        #procedimiento orden
+    path("hospital/patient/orderProcedure",OrderProcedureView.as_view(),name="OrderProcedure post"),
+    path("hospital/patient/orderProcedure/<id>",OrderProcedureView.as_view(),name="OrderProcedure get put and delete"),
+        #ayuda diagnostica orden
+    path("hospital/patient/orderDiagnosticHelp",OrderDiagnosticHelpView.as_view(),name="OrderDiagnosticHelp post"),
+    path("hospital/patient/orderDiagnosticHelp/<id>",OrderDiagnosticHelpView.as_view(),name="OrderDiagnosticHelp get put and delete"),                      
    #Historia Clinica
     path("hospital/patient/historyClinic",HistoryClinicView.as_view(),name="historyClinic post"),
     path("hospital/patient/historyClinic/<id>",HistoryClinicView.as_view(),name="historyClinic get put and delete"),    
