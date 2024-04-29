@@ -105,8 +105,8 @@ class OrderView(View):
     def dispatch(self, request, *args: any, **kwargs: any):
         return super().dispatch(request, *args, **kwargs)
    
-    def get(self, request, id=None):
-        pass
+    def get(self, request, id):
+        return patientView.getOrder(self,request,id)
  
     def post(self, request):
         return patientView.createOrder(self, request)
@@ -178,25 +178,7 @@ class HistoryClinicView(View):
         pass
  
     def post(self, request):
-        try:
-            body = json.loads(request.body)
-            patient_id = body.get("patient_id")  # Obtener patient_id del cuerpo JSON
-            date = body.get("date")
-            doctor = body.get("doctor")
-            reason = body.get("reason")
-            symptoms = body.get("symptoms")
-            diagnosis = body.get("diagnosis")
-            
-            staffAdminValidator.createHistoryClinic(patient_id, date, doctor, reason, symptoms, diagnosis)
-            
-            message = "Se ha creado la historia clínica exitosamente"
-            status = 204
-        except Exception as error:
-            message = str(error)
-            status = 400
-        
-        response = {"message": message}
-        return JsonResponse(response, status=status)
+        return patientView.createHistoryClinic(self, request)
  
     def put(self, request, id):
         pass

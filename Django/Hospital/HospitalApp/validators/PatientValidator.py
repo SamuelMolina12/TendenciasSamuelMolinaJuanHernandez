@@ -163,18 +163,34 @@ def createOrder(patient,doctor,date):
     
     return staffAdminService.createOrder(patient,doctor,date)
 
-def createOrderMedicine(itemMedicine,medicineDose,medicine_id,order_id):
+def getOrder(id):
+    return staffAdminService.getOrder(id)
+
+
+    #orden medicina
+def getOrderMedicine(id):
+    return staffAdminService.getOrderMedicine(id)
+    
+def createOrderMedicine(itemMedicine,medicineDose,durationMedication,medicine_id,order_id):
 
     validators.numberValidator(itemMedicine, "item Medicina \n")
 
     validators.textValidator(medicineDose, "dosis \n")
 
+    validators.textValidator(durationMedication, "duracion \n")
+
     validators.numberValidator(medicine_id, "id de la medicina  \n")
 
     validators.numberValidator(order_id,"id d ela orden")
 
-    return staffAdminService.createOrderMedicine(itemMedicine,medicineDose,medicine_id,order_id)
+    return staffAdminService.createOrderMedicine(itemMedicine,medicineDose,durationMedication,medicine_id,order_id)
 
+
+    #order procedimiento
+
+def getOrderProcedure(id):
+    return staffAdminService.getOrderProcedure(id)
+   
 def createOrderProcedure(itemProcedure,numberRepeated,frequencyRepeated,requiresSpecialistP,order_id,procedure_id,specialist_id):
 
     validators.numberValidator(itemProcedure, "item Procedimiento \n")
@@ -197,6 +213,10 @@ def createOrderProcedure(itemProcedure,numberRepeated,frequencyRepeated,requires
 
     return staffAdminService.createOrderProcedure(itemProcedure,numberRepeated,frequencyRepeated,requiresSpecialistP,order_id,procedure_id,specialist_id)
 
+    #Orden ayuda dignostica
+def getOrderDiagnosticHelp(id):
+    return staffAdminService.getOrderDiagnosticHelp(id)
+    
 def createOrderDiagnosticHelp(itemDiagnosticHelp,quantity,requiresSpecialistD,diagnosticHelp_id,order_id,specialist_id):
 
     validators.numberValidator(itemDiagnosticHelp, "item ayuda diagnostica \n")
@@ -219,7 +239,7 @@ def createOrderDiagnosticHelp(itemDiagnosticHelp,quantity,requiresSpecialistD,di
 #historias
 
 
-def createHistoryClinic (patient_id,date, doctor,reason,symptoms,diagnosis):
+def createHistoryClinic(patient_id,date, doctor,reason,symptoms,diagnosis,order):
      
     # validators.numberValidator(patient_id, "paciente")
 
@@ -232,4 +252,4 @@ def createHistoryClinic (patient_id,date, doctor,reason,symptoms,diagnosis):
     validators.textValidator(symptoms, "razon \n")
 
     validators.textValidator(diagnosis, "razon \n")    
-    staffAdminService.createHistoryClinic (patient_id,date, doctor,reason,symptoms,diagnosis)
+    staffAdminService.createHistoryClinic(patient_id,date, doctor,reason,symptoms,diagnosis,order)

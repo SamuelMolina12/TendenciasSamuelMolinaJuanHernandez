@@ -150,6 +150,43 @@ def deleteClinicalAppointment(self,request,id):
     return JsonResponse(response, status=status)
 #-----
 #---- ordenes
+def getOrder(self, request, id):
+    try:
+        order = staffAdminValidator.getOrder(id)
+        orderData = {"id": order.id,"date": order.date,"doctor_id": order.doctor_id,"patient_id": order.patient_id
+        }
+
+        medicines = staffAdminValidator.getOrderMedicine(id)
+        medicinesData = []
+        if medicines:
+            for medicine in medicines:
+                medicineData = {"id": medicine.id,"itemMedicine": medicine.itemMedicine,"medicineDose": medicine.medicineDose,"durationMedication": medicine.durationMedication,"medicine_id": medicine.medicine_id,"order_id": medicine.order_id}
+                medicinesData.append(medicineData)
+        procedures = staffAdminValidator.getOrderProcedure(id)
+        proceduresData = []
+        if procedures:
+            for procedure in procedures:
+                procedureData = {"id": procedure.id,"itemProcedure": procedure.itemProcedure,"numberRepeated": procedure.numberRepeated,"frequencyRepeated": procedure.frequencyRepeated,"requiresSpecialistP": procedure.requiresSpecialistP,"order_id": procedure.order_id,"specialist_id": procedure.specialist_id}
+                proceduresData.append(procedureData)
+
+        diagnostics = staffAdminValidator.getOrderDiagnosticHelp(id)
+        diagnosticsData = []
+        if diagnostics:
+            for diagnostic in diagnostics:
+                diagnosticData = {"id": diagnostic.id,"itemDiagnosticHelp": diagnostic.itemDiagnosticHelp,"quantity": diagnostic.quantity,"requiresSpecialistD": diagnostic.requiresSpecialistD,"order_id": diagnostic.order_id,"specialist_id": diagnostic.specialist_id}
+                diagnosticsData.append(diagnosticData)   
+
+        responseData = {"order": orderData, "medicines": medicinesData,"procedures":proceduresData,"diagnosticHelp":diagnosticData}
+        status = 200 if order else 404
+    except Exception as error:
+        message = str(error)
+        status = 400
+        responseData = {"message": message}
+    return JsonResponse(responseData, status=status)
+
+    
+
+
 def createOrder(self,request):
     try: 
         body=json.loads(request.body)    
@@ -162,6 +199,11 @@ def createOrder(self,request):
     response = {"message":message}
     return JsonResponse(response,status=status)
 
+
+
+
+   
+    #ordenMedicina
 def createOrderMedicine(self,request):
     try: 
         body=json.loads(request.body)    
@@ -173,7 +215,7 @@ def createOrderMedicine(self,request):
         status=400
     response = {"message":message}
     return JsonResponse(response,status=status)
-
+    #ordenProcedimiento
 def createOrderProcedure(self,request):
     try: 
         body=json.loads(request.body)    
@@ -185,7 +227,7 @@ def createOrderProcedure(self,request):
         status=400
     response = {"message":message}
     return JsonResponse(response,status=status)
-
+    #ordenAyuda
 def createOrderDiagnosticHelp(self,request):
     try: 
         body=json.loads(request.body)    
@@ -199,12 +241,10 @@ def createOrderDiagnosticHelp(self,request):
     return JsonResponse(response,status=status)
 
 #---- Historia clinica
-
-
 def createHistoryClinic(self,request):
     body=json.loads(request.body)
     try: 
-        staffAdminValidator.createHistoryClinic(body["patient_id"],body["date"],body["doctor"],body["reason"],body["symptoms"],body["diagnosis"])
+        staffAdminValidator.createHistoryClinic(body["patient_id"],body["date"],body["doctor"],body["reason"],body["symptoms"],body["diagnosis"],body["order"])
         message="se ha creado la historia clinica exitosamente"
         status=204
     except Exception as error:
@@ -212,3 +252,6 @@ def createHistoryClinic(self,request):
         status=400
     response = {"message":message}
     return JsonResponse(response,status=status)
+
+
+
