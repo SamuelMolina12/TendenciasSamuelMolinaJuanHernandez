@@ -239,8 +239,7 @@ def createOrderDiagnosticHelp(quantity,requiresSpecialistD,diagnosticHelp_id,ord
 #historias
 
 
-def createHistoryClinic(patient_id,date, doctor,reason,symptoms,diagnosis,order):
-     
+def createHistoryClinic(patient_id,date, doctor,reason,symptoms,diagnosis,order):   
     # validators.numberValidator(patient_id, "paciente")
 
     validators.dateValidator(date, "fecha  \n")
@@ -253,3 +252,16 @@ def createHistoryClinic(patient_id,date, doctor,reason,symptoms,diagnosis,order)
 
     validators.textValidator(diagnosis, "razon \n")    
     staffAdminService.createHistoryClinic(patient_id,date, doctor,reason,symptoms,diagnosis,order)
+
+
+
+#factura
+def createBilling(patient_id,doctor_id,order_id):   
+    
+    validators.numberValidator(patient_id, "paciente")
+    
+    validators.numberValidator(doctor_id, "total \n")
+    
+    validators.numberValidator(order_id, "orden \n")
+
+    staffAdminService.createBilling(patient_id,doctor_id,order_id)

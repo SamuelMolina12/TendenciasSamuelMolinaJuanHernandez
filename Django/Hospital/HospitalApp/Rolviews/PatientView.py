@@ -254,4 +254,15 @@ def createHistoryClinic(self,request):
     return JsonResponse(response,status=status)
 
 
-
+#facturacion
+def createBilling(self,request):
+    body=json.loads(request.body)
+    try: 
+        staffAdminValidator.createBilling(body["patient_id"],body["doctor_id"],body["order_id"])
+        message="se ha creado la factura exitosamente"
+        status=204
+    except Exception as error:
+        message=str(error)
+        status=400
+    response = {"message":message}
+    return JsonResponse(response,status=status)

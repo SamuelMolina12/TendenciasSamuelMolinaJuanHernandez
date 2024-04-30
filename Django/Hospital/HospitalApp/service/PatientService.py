@@ -1,3 +1,5 @@
+from datetime import datetime
+from datetime import date
 import HospitalApp.models as models
 from Hospital.conection_mongo import collection,collectionB
 
@@ -330,8 +332,80 @@ def createHistoryClinic(patient_id, date, doctor, reason, symptoms, diagnosis, o
     return newHistory
 
 
+#factura
 
+def createBilling(patient_id, doctor_id, order_id):
 
+    dateToday = date.today()    
+    patient = models.Patient.objects.get(id=patient_id)
+    if not patient:
+        raise Exception("No existe un paciente con esa cédula registrada")
+    
+    birth = patient.birth
+    birth = datetime.strptime(birth, "%d/%m/%Y")
+ 
+    today = datetime.now()
+    age = today.year - birth.year - ((today.month, today.day) < (birth.month, birth.day)) 
+
+    doctor = models.Employer.objects.get(id=doctor_id, role="doctor")
+
+    policy = models.Policy.objects.get(patient_id=patient_id)
+
+    order = models.Order.objects.get(id=order_id, patient_id=patient_id)
+    
+    orderMedicines = models.OrderMedicine.objects.filter(order_id=order_id)
+    
+    totalCost = 0
+
+    for orderMedicine in orderMedicines:
+        medicine = models.Medicine.objects.get(id=orderMedicine.medicine_id)
+        totalCost += medicine.medicineCost
+
+    orderProcedures = models.OrderProcedure.objects.filter(order_id=order_id)
+
+    for orderProcedure in orderProcedures:
+        procedure = models.Procedure.objects.get(id=orderProcedure.procedure_id)
+        totalCost += procedure.procedureCost 
+    orderDiagnosticHelps = models.OrderDiagnosticHelp.objects.filter(order_id=order_id)
+
+    for orderDiagnosticHelp in orderDiagnosticHelps:
+        diagnosticHelp = models.DiagnosticHelp.objects.get(id=orderDiagnosticHelp.diagnosticHelp_id)
+        totalCost += diagnosticHelp.diagnosticCost       
+
+    copay = 50000
+
+    if policy.statePolicy == "Activa":
+        year=dateToday.year
+        billings = models.Billing.objects.filter(patient_id=patient_id, date__year=year)
+        totalCopayYear = sum(b.cost for b in billings)
+        if totalCopayYear > 1000000:
+            totalPay = 0
+        else:       
+            totalPay = copay
+            totalCost = totalCost + copay
+    elif policy.statePolicy == "Inactiva":
+
+        totalPay = totalCost
+    
+  
+    billing = models.Billing()
+    billing.date = dateToday
+
+    billing.patient = patient
+    billing.patientName = patient.name
+    billing.age = age
+    
+    billing.doctor = doctor
+    billing.doctorName = doctor.name
+    billing.policy = policy
+    billing.policyNumber = policy.policyNumber
+    billing.termPolicy = policy.termPolicy
+    
+    billing.order = order
+
+    billing.cost = totalCost
+    billing.totalPay = totalPay
+    billing.save()
 
 
 

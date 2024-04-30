@@ -212,7 +212,7 @@ class Billing(View):
         pass
  
     def post(self, request):
-        pass
+        return patientView.createBilling(self, request)
  
     def put(self, request, id):
         pass
