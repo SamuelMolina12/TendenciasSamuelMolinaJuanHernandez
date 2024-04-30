@@ -171,9 +171,9 @@ def getOrder(id):
 def getOrderMedicine(id):
     return staffAdminService.getOrderMedicine(id)
     
-def createOrderMedicine(itemMedicine,medicineDose,durationMedication,medicine_id,order_id):
+def createOrderMedicine(medicineDose,durationMedication,medicine_id,order_id):
 
-    validators.numberValidator(itemMedicine, "item Medicina \n")
+    # validators.numberValidator(itemMedicine, "item Medicina \n")
 
     validators.textValidator(medicineDose, "dosis \n")
 
@@ -183,7 +183,7 @@ def createOrderMedicine(itemMedicine,medicineDose,durationMedication,medicine_id
 
     validators.numberValidator(order_id,"id d ela orden")
 
-    return staffAdminService.createOrderMedicine(itemMedicine,medicineDose,durationMedication,medicine_id,order_id)
+    return staffAdminService.createOrderMedicine(medicineDose,durationMedication,medicine_id,order_id)
 
 
     #order procedimiento
@@ -191,9 +191,9 @@ def createOrderMedicine(itemMedicine,medicineDose,durationMedication,medicine_id
 def getOrderProcedure(id):
     return staffAdminService.getOrderProcedure(id)
    
-def createOrderProcedure(itemProcedure,numberRepeated,frequencyRepeated,requiresSpecialistP,order_id,procedure_id,specialist_id):
+def createOrderProcedure(numberRepeated,frequencyRepeated,requiresSpecialistP,order_id,procedure_id,specialist_id):
 
-    validators.numberValidator(itemProcedure, "item Procedimiento \n")
+    # validators.numberValidator(itemProcedure, "item Procedimiento \n")
 
     validators.textValidator(numberRepeated, "veces que se repite \n")
 
@@ -211,15 +211,15 @@ def createOrderProcedure(itemProcedure,numberRepeated,frequencyRepeated,requires
     validators.numberValidator(procedure_id,"id del procedimiento")
 
 
-    return staffAdminService.createOrderProcedure(itemProcedure,numberRepeated,frequencyRepeated,requiresSpecialistP,order_id,procedure_id,specialist_id)
+    return staffAdminService.createOrderProcedure(numberRepeated,frequencyRepeated,requiresSpecialistP,order_id,procedure_id,specialist_id)
 
     #Orden ayuda dignostica
 def getOrderDiagnosticHelp(id):
     return staffAdminService.getOrderDiagnosticHelp(id)
     
-def createOrderDiagnosticHelp(itemDiagnosticHelp,quantity,requiresSpecialistD,diagnosticHelp_id,order_id,specialist_id):
+def createOrderDiagnosticHelp(quantity,requiresSpecialistD,diagnosticHelp_id,order_id,specialist_id):
 
-    validators.numberValidator(itemDiagnosticHelp, "item ayuda diagnostica \n")
+    # validators.numberValidator(itemDiagnosticHelp, "item ayuda diagnostica \n")
 
     validators.textValidator(quantity, "Cantidad  \n")
 
@@ -233,7 +233,7 @@ def createOrderDiagnosticHelp(itemDiagnosticHelp,quantity,requiresSpecialistD,di
     validators.numberValidator(diagnosticHelp_id,"id del procedimiento")
 
 
-    return staffAdminService.createOrderDiagnosticHelp(itemDiagnosticHelp,quantity,requiresSpecialistD,diagnosticHelp_id,order_id,specialist_id)
+    return staffAdminService.createOrderDiagnosticHelp(quantity,requiresSpecialistD,diagnosticHelp_id,order_id,specialist_id)
 
 
 #historias

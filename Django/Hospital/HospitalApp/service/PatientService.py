@@ -172,7 +172,10 @@ def getOrderMedicine(id):
     else:
         raise Exception("No hay una medicina asociada a esa orden")
         
-def createOrderMedicine(itemMedicine,medicineDose,durationMedication,medicine_id,order_id):
+def createOrderMedicine(medicineDose,durationMedication,medicine_id,order_id):
+    
+
+
 
     medicine = models.Medicine.objects.filter(id=medicine_id)
     if not medicine.exists():
@@ -180,8 +183,20 @@ def createOrderMedicine(itemMedicine,medicineDose,durationMedication,medicine_id
     order = models.Order.objects.filter(id=order_id)
     if not order.exists():
          raise Exception("No existe una orden con ese id")
-          
-    medicine = models.OrderMedicine(itemMedicine=itemMedicine, medicineDose=medicineDose,durationMedication=durationMedication, medicine_id=medicine_id,order_id=order_id)
+    lastItemM = models.OrderMedicine.objects.filter(order_id=order_id).order_by('-itemMedicine').first()
+    lastItemP = models.OrderProcedure.objects.filter(order_id=order_id).order_by('-itemProcedure').first()
+    lastItemD = models.OrderDiagnosticHelp.objects.filter(order_id=order_id).order_by('-itemDiagnosticHelp').first()  
+
+    if lastItemM:
+        nextItemM = lastItemM.itemMedicine + 1
+    else:
+        nextItemM = 1
+    if lastItemP and lastItemP.itemProcedure == nextItemM:
+        nextItemM += 1
+    if lastItemD and lastItemD.itemDiagnosticHelp == nextItemM:
+        nextItemM += 1
+
+    medicine = models.OrderMedicine(itemMedicine=nextItemM, medicineDose=medicineDose,durationMedication=durationMedication, medicine_id=medicine_id,order_id=order_id)
     medicine.save()
 
 
@@ -194,7 +209,7 @@ def getOrderProcedure(id):
     else:
         raise Exception("No hay un procedimiento asociado a esa orden")
 
-def createOrderProcedure(itemProcedure,numberRepeated,frequencyRepeated,requiresSpecialistP,order_id,procedure_id,specialist_id):
+def createOrderProcedure(numberRepeated,frequencyRepeated,requiresSpecialistP,order_id,procedure_id,specialist_id):
 
     prcedure = models.Procedure.objects.filter(id=procedure_id)
     if not prcedure.exists():
@@ -206,8 +221,20 @@ def createOrderProcedure(itemProcedure,numberRepeated,frequencyRepeated,requires
         diagnosticHelp = models.Specialist.objects.filter(id=specialist_id)
         if not diagnosticHelp:
            raise Exception("No existe un especialista con ese id")
-                  
-    prcedure = models.OrderProcedure(itemProcedure=itemProcedure, numberRepeated=numberRepeated, frequencyRepeated=frequencyRepeated,requiresSpecialistP=requiresSpecialistP,order_id=order_id,procedure_id=procedure_id,specialist_id=specialist_id)
+    lastItemM = models.OrderMedicine.objects.filter(order_id=order_id).order_by('-itemMedicine').first()
+    lastItemP = models.OrderProcedure.objects.filter(order_id=order_id).order_by('-itemProcedure').first()
+    lastItemD = models.OrderDiagnosticHelp.objects.filter(order_id=order_id).order_by('-itemDiagnosticHelp').first()  
+
+    if lastItemP:
+        nextItemP = lastItemP.itemProcedure + 1
+    else:
+        nextItemP = 1
+    if lastItemM and lastItemM.itemMedicine == nextItemP:
+        nextItemP += 1
+    if lastItemD and lastItemD.itemDiagnosticHelp == nextItemP:
+        nextItemP += 1
+
+    prcedure = models.OrderProcedure(itemProcedure=nextItemP, numberRepeated=numberRepeated, frequencyRepeated=frequencyRepeated,requiresSpecialistP=requiresSpecialistP,order_id=order_id,procedure_id=procedure_id,specialist_id=specialist_id)
     prcedure.save()
     
     #orden ayuda diagnostica
@@ -219,7 +246,7 @@ def getOrderDiagnosticHelp(id):
     else:
         raise Exception("No hay un procedimiento asociado a esa orden")
 
-def createOrderDiagnosticHelp(itemDiagnosticHelp,quantity,requiresSpecialistD,diagnosticHelp_id,order_id,specialist_id):
+def createOrderDiagnosticHelp(quantity,requiresSpecialistD,diagnosticHelp_id,order_id,specialist_id):
 
     diagnostic = models.DiagnosticHelp.objects.filter(id=diagnosticHelp_id)
     if not diagnostic.exists():
@@ -231,8 +258,19 @@ def createOrderDiagnosticHelp(itemDiagnosticHelp,quantity,requiresSpecialistD,di
         diagnosticHelp = models.Specialist.objects.filter(id=specialist_id)
         if not diagnosticHelp:
            raise Exception("No existe un especialista con ese id")
-                  
-    diagnostic = models.OrderDiagnosticHelp(itemDiagnosticHelp=itemDiagnosticHelp, quantity=quantity, requiresSpecialistD=requiresSpecialistD,diagnosticHelp_id=diagnosticHelp_id,order_id=order_id,specialist_id=specialist_id)
+    lastItemM = models.OrderMedicine.objects.filter(order_id=order_id).order_by('-itemMedicine').first()
+    lastItemP = models.OrderProcedure.objects.filter(order_id=order_id).order_by('-itemProcedure').first()
+    lastItemD = models.OrderDiagnosticHelp.objects.filter(order_id=order_id).order_by('-itemDiagnosticHelp').first()  
+
+    if lastItemD:
+        nextItemD = lastItemD.itemDiagnosticHelp + 1
+    else:
+        nextItemD = 1
+    if lastItemP and lastItemP.itemProcedure == nextItemD:
+        nextItemD += 1
+    if lastItemM and lastItemM.itemMedicine == nextItemD:
+        nextItemD += 1                  
+    diagnostic = models.OrderDiagnosticHelp(itemDiagnosticHelp=nextItemD, quantity=quantity, requiresSpecialistD=requiresSpecialistD,diagnosticHelp_id=diagnosticHelp_id,order_id=order_id,specialist_id=specialist_id)
     diagnostic.save()
 
 #------- historia clinica
@@ -247,12 +285,42 @@ def createHistoryClinic(patient_id, date, doctor, reason, symptoms, diagnosis, o
     if not order:
         raise Exception("No existe una orden con ese id")
         
+    # medicinas 
+    medicines = models.OrderMedicine.objects.filter(order_id=order_id)
+    medicineList = []
+    for medicine in medicines:
+        medicineId = models.Medicine.objects.filter(id=medicine.medicine_id).first()
+        medicineInfo = {"id": medicine.id,"itemMedicine": medicine.itemMedicine,"medicineDose": medicine.medicineDose,"durationMedication": medicine.durationMedication,
+                        "medicine_id": {"id": medicineId.id,"medicineName": medicineId.medicineName,"medicineQuantity": medicineId.medicineQuantity,"medicineCost": medicineId.medicineCost}}
+        medicineList.append(medicineInfo)
+        
+    #procedimientos rent please
+    procedures = models.OrderProcedure.objects.filter(order_id=order_id)
+    procedureList = []
+    for procedure in procedures:
+        procedureId= models.Procedure.objects.filter(id=procedure.procedure_id).first()
+        specialistId= models.Specialist.objects.filter(id=procedure.specialist_id).first() 
+        procedureInfo = {"id": procedure.id,"itemProcedure": procedure.itemProcedure,"numberRepeated": procedure.numberRepeated,"frequencyRepeated": procedure.frequencyRepeated,"requiresSpecialistP": procedure.requiresSpecialistP,
+                        "procedure_id": {"id":procedureId.id,"procedureName":procedureId.procedureName,"procedureCost":procedureId.procedureCost},
+                        "specialist_id":{"id":specialistId.id if specialistId else None ,"nameSpecialist": specialistId.nameSpecialist if specialistId else None}}
+        procedureList.append(procedureInfo)
+        
+    #ayuda 
+    diagnostics = models.OrderDiagnosticHelp.objects.filter(order_id=order_id)
+    diagnosticList = []
+    for diagnostic in diagnostics:
+        diagnosticId= models.DiagnosticHelp.objects.filter(id=diagnostic.diagnosticHelp_id).first()
+        specialistId= models.Specialist.objects.filter(id=diagnostic.specialist_id).first()         
+        diagnosticInfo = {"id": diagnostic.id,"itemDiagnosticHelp": diagnostic.itemDiagnosticHelp,"quantity": diagnostic.quantity,"requiresSpecialistD": diagnostic.requiresSpecialistD,
+                        "diagnosticHelp_id":  {"id":diagnosticId.id,"diagnosticName":diagnosticId.diagnosticName,"diagnosticCost":diagnosticId.diagnosticCost},
+                        "specialist_id":{"id":specialistId.id if specialistId else None ,"nameSpecialist": specialistId.nameSpecialist if specialistId else None}}
+        diagnosticList.append(diagnosticInfo)
 
-    order = {"id": order.id,"date": order.date,"patient_id": order.patient.id,"doctor_id": order.doctor.id}
-    
-    newHistory = {"date": date,"doctor": doctor,"reason": reason,"symptoms": symptoms,"diagnosis": diagnosis,"order": order}
+    orderInfo = {"id": order.id,"date": order.date,"patient_id": order.patient.id,"doctor_id": order.doctor.id,"medicines": medicineList,"procedures": procedureList,"diagnostics": diagnosticList}
 
-    histories = patientHistory.get("historias", [])
+    newHistory = {"date": date,"doctor": doctor,"reason": reason,"symptoms": symptoms,"diagnosis": diagnosis,"order": orderInfo}
+
+    histories = patientHistory.get("historias", {})
     if not isinstance(histories, list):
         histories = [histories]
     histories.append(newHistory)

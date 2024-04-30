@@ -157,32 +157,32 @@ def getOrder(self, request, id):
         }
 
         medicines = staffAdminValidator.getOrderMedicine(id)
-        medicinesData = []
+        medicinesList = []
         if medicines:
             for medicine in medicines:
-                medicineData = {"id": medicine.id,"itemMedicine": medicine.itemMedicine,"medicineDose": medicine.medicineDose,"durationMedication": medicine.durationMedication,"medicine_id": medicine.medicine_id,"order_id": medicine.order_id}
-                medicinesData.append(medicineData)
+                medicineList = {"id": medicine.id,"itemMedicine": medicine.itemMedicine,"medicineDose": medicine.medicineDose,"durationMedication": medicine.durationMedication,"medicine_id": medicine.medicine_id,"order_id": medicine.order_id}
+                medicinesList.append(medicineList)
         procedures = staffAdminValidator.getOrderProcedure(id)
-        proceduresData = []
+        proceduresList = []
         if procedures:
             for procedure in procedures:
-                procedureData = {"id": procedure.id,"itemProcedure": procedure.itemProcedure,"numberRepeated": procedure.numberRepeated,"frequencyRepeated": procedure.frequencyRepeated,"requiresSpecialistP": procedure.requiresSpecialistP,"order_id": procedure.order_id,"specialist_id": procedure.specialist_id}
-                proceduresData.append(procedureData)
+                procedureList = {"id": procedure.id,"itemProcedure": procedure.itemProcedure,"numberRepeated": procedure.numberRepeated,"frequencyRepeated": procedure.frequencyRepeated,"requiresSpecialistP": procedure.requiresSpecialistP,"order_id": procedure.order_id,"specialist_id": procedure.specialist_id}
+                proceduresList.append(procedureList)
 
         diagnostics = staffAdminValidator.getOrderDiagnosticHelp(id)
-        diagnosticsData = []
+        diagnosticsList = []
         if diagnostics:
             for diagnostic in diagnostics:
-                diagnosticData = {"id": diagnostic.id,"itemDiagnosticHelp": diagnostic.itemDiagnosticHelp,"quantity": diagnostic.quantity,"requiresSpecialistD": diagnostic.requiresSpecialistD,"order_id": diagnostic.order_id,"specialist_id": diagnostic.specialist_id}
-                diagnosticsData.append(diagnosticData)   
+                diagnosticList = {"id": diagnostic.id,"itemDiagnosticHelp": diagnostic.itemDiagnosticHelp,"quantity": diagnostic.quantity,"requiresSpecialistD": diagnostic.requiresSpecialistD,"order_id": diagnostic.order_id,"specialist_id": diagnostic.specialist_id}
+                diagnosticsList.append(diagnosticList)   
 
-        responseData = {"order": orderData, "medicines": medicinesData,"procedures":proceduresData,"diagnosticHelp":diagnosticData}
+        response = {"order": orderData, "medicines": medicinesList,"procedures":proceduresList,"diagnosticHelp":diagnosticList}
         status = 200 if order else 404
     except Exception as error:
         message = str(error)
         status = 400
-        responseData = {"message": message}
-    return JsonResponse(responseData, status=status)
+        response = {"message": message}
+    return JsonResponse(response, status=status)
 
     
 
@@ -207,7 +207,7 @@ def createOrder(self,request):
 def createOrderMedicine(self,request):
     try: 
         body=json.loads(request.body)    
-        staffAdminValidator.createOrderMedicine(body["itemMedicine"],body["medicineDose"],body["durationMedication"],body["medicine_id"],body["order_id"])
+        staffAdminValidator.createOrderMedicine(body["medicineDose"],body["durationMedication"],body["medicine_id"],body["order_id"])
         message="se ha creado la orden de la medicina exitosamente"
         status=204
     except Exception as error:
@@ -219,7 +219,7 @@ def createOrderMedicine(self,request):
 def createOrderProcedure(self,request):
     try: 
         body=json.loads(request.body)    
-        staffAdminValidator.createOrderProcedure(body["itemProcedure"],body["numberRepeated"],body["frequencyRepeated"],body["requiresSpecialistP"],body["order_id"],body["procedure_id"],body["specialist_id"])
+        staffAdminValidator.createOrderProcedure(body["numberRepeated"],body["frequencyRepeated"],body["requiresSpecialistP"],body["order_id"],body["procedure_id"],body["specialist_id"])
         message="se ha creado la orden del Procedimiento exitosamente"
         status=204
     except Exception as error:
@@ -231,7 +231,7 @@ def createOrderProcedure(self,request):
 def createOrderDiagnosticHelp(self,request):
     try: 
         body=json.loads(request.body)    
-        staffAdminValidator.createOrderDiagnosticHelp(body["itemDiagnosticHelp"],body["quantity"],body["requiresSpecialistD"],body["diagnosticHelp_id"],body["order_id"],body["specialist_id"])
+        staffAdminValidator.createOrderDiagnosticHelp(body["quantity"],body["requiresSpecialistD"],body["diagnosticHelp_id"],body["order_id"],body["specialist_id"])
         message="se ha creado la orden del Procedimiento exitosamente"
         status=204
     except Exception as error:
