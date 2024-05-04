@@ -7,8 +7,9 @@ import HospitalApp.service.EmployerService as adminService
 def createUser( name, id, genre, mail, telephone, birth, address, role, userName, password):
     # print("Ingreso a la creacion del rol " + role)
     validators.textValidator(name,"nombre  \n")
-    id=validators.numberValidator(id,"cedula de " + role )
-
+    id=validators.numberValidator(id,"id" )
+    id= validators.documentValidator(id,"id")
+    
     validators.textValidator(userName,"usuario de   \n" )
     validators.usernameValidator(userName,"usuario de    \n" )
 
@@ -31,15 +32,18 @@ def createUser( name, id, genre, mail, telephone, birth, address, role, userName
     adminService.createUser( name, id, genre, mail, telephone, birth, address, role, userName, password)
     
 def getUser(id):
+    validators.numberValidator(id,"id")
     return adminService.getUser(id)
 
 def getUsers():
     return adminService.getUsers()
 
 def deleteUser(id):
+    validators.numberValidator(id,"id" )
     return adminService.deleteUser(id)
  
 def updateUser(id, name, genre, mail, telephone, birth, address, role, userName, password):
+    validators.numberValidator(id,"id" )
     validators.textValidator(name,"nombre  \n")
 
     validators.textValidator(userName,"usuario de   \n" )
@@ -50,7 +54,9 @@ def updateUser(id, name, genre, mail, telephone, birth, address, role, userName,
 
     validators.textValidator(mail, "correo de   \n")
     validators.emailValidator(mail, "correo de    \n")
-    telephone=validators.phoneValidator(telephone, "numero telefono")
+
+    validators.phoneValidator(telephone, "numero telefono")
+
     birth=validators.dateValidator(birth,"fecha de nacimiento de")
    
    

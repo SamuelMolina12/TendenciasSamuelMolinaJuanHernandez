@@ -94,8 +94,8 @@ class ClinicalAppointmentView(View):
     def post(self,request):
         return patientView.createClinicalAppointment(self, request)
     
-    def put(self,request):
-        pass
+    # def put(self,request):
+    #     pass
  
     def delete(self,request,id):
        return patientView.deleteClinicalAppointment(self, request, id)
@@ -105,17 +105,17 @@ class OrderView(View):
     def dispatch(self, request, *args: any, **kwargs: any):
         return super().dispatch(request, *args, **kwargs)
    
-    def get(self, request, id=None):
-        pass
+    def get(self, request, id):
+        return patientView.getOrder(self,request,id)
  
     def post(self, request):
         return patientView.createOrder(self, request)
  
-    def put(self, request, id):
-       pass
+    # def put(self, request, id):
+    #    pass
  
-    def delete(self, request, id):
-        pass 
+    # def delete(self, request, id):
+    #     pass 
 
 class OrderMedicineView(View):
     @method_decorator(csrf_exempt)
@@ -128,11 +128,11 @@ class OrderMedicineView(View):
     def post(self, request):
         return patientView.createOrderMedicine(self, request)
  
-    def put(self, request, id):
-       pass
+    # def put(self, request, id):
+    #    pass
  
-    def delete(self, request, id):
-        pass
+    # def delete(self, request, id):
+    #     pass
 
 class OrderProcedureView(View):
     @method_decorator(csrf_exempt)
@@ -145,11 +145,11 @@ class OrderProcedureView(View):
     def post(self, request):
         return patientView.createOrderProcedure(self, request)
  
-    def put(self, request, id):
-       pass
+    # def put(self, request, id):
+    #    pass
  
-    def delete(self, request, id):
-        pass
+    # def delete(self, request, id):
+    #     pass
 
 class OrderDiagnosticHelpView(View):
     @method_decorator(csrf_exempt)
@@ -162,11 +162,11 @@ class OrderDiagnosticHelpView(View):
     def post(self, request):
         return patientView.createOrderDiagnosticHelp(self, request)
  
-    def put(self, request, id):
-       pass
+    # def put(self, request, id):
+    #    pass
  
-    def delete(self, request, id):
-        pass
+    # def delete(self, request, id):
+    #     pass
 
 #historia
 class HistoryClinicView(View):
@@ -174,29 +174,11 @@ class HistoryClinicView(View):
     def dispatch(self, request, *args: any, **kwargs: any):
         return super().dispatch(request, *args, **kwargs)
    
-    def get(self, request, id=None):
-        pass
+    def get(self, request, id):
+        return patientView.getHistoryClinic(self,request,id)
  
     def post(self, request):
-        try:
-            body = json.loads(request.body)
-            patient_id = body.get("patient_id")  # Obtener patient_id del cuerpo JSON
-            date = body.get("date")
-            doctor = body.get("doctor")
-            reason = body.get("reason")
-            symptoms = body.get("symptoms")
-            diagnosis = body.get("diagnosis")
-            
-            staffAdminValidator.createHistoryClinic(patient_id, date, doctor, reason, symptoms, diagnosis)
-            
-            message = "Se ha creado la historia clínica exitosamente"
-            status = 204
-        except Exception as error:
-            message = str(error)
-            status = 400
-        
-        response = {"message": message}
-        return JsonResponse(response, status=status)
+        return patientView.createHistoryClinic(self, request)
  
     def put(self, request, id):
         pass
@@ -210,10 +192,10 @@ class HistoryVisitsView(View):
         return super().dispatch(request, *args, **kwargs)
    
     def get(self, request, id=None):
-        pass
+        return patientView.getHistoryVisits(self, request, id)
  
     def post(self, request):
-        pass
+        return patientView.createHistoryVisits(self, request)
  
     def put(self, request, id):
        pass
@@ -230,7 +212,7 @@ class Billing(View):
         pass
  
     def post(self, request):
-        pass
+        return patientView.createBilling(self, request)
  
     def put(self, request, id):
         pass

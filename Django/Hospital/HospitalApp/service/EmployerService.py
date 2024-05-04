@@ -7,6 +7,9 @@ def createUser(name,id,genre,mail,telephone,birth,address,role,userName,password
     user=models.Employer.objects.filter(id=id)
     if user.exists():
         raise Exception("ya existe una persona con esa cedula registrada")
+    patient=models.Patient.objects.filter(id=id)
+    if patient.exists():
+        raise Exception("ya existe una persona con esa cedula registrada")
     user=models.Employer.objects.filter(userName=userName)
     if user.exists():
         raise Exception("ya existe un usuario con ese user name")
@@ -41,6 +44,11 @@ def deleteUser(id):
 
 
 def updateUser(id, name, mail,genre, telephone, birth, address, role, userName, password):
+    user = models.Employer.objects.filter(userName=userName).exclude(id=id)
+    if user.exists():
+        raise Exception("Ya existe un usuario con ese nombre de usuario")
+
+
     employer = models.Employer.objects.filter(id=id).first()
     if employer:
         employer.name = name

@@ -50,10 +50,10 @@ def createEmployer(self, request):
 def updateEmployer(self, request, id):
     try:
         body = json.loads(request.body)        
-        # token = request.META.get('HTTP_TOKEN')
-        # sesion = AdminValidator.getSession(token)
-        # role=sesion.user.role
-        # validateRole(role,["admin"])
+        token = request.META.get('HTTP_TOKEN')
+        sesion = AdminValidator.getSession(token)
+        role=sesion.user.role
+        validateRole(role,["admin"])
         AdminValidator.updateUser(id, body["name"], body["genre"], body["mail"], body["telephone"], body["birth"], body["address"], body["role"], body["userName"], body["password"])
         message = "Empleado actualizado exitosamente"
         status = 204
@@ -67,10 +67,10 @@ def updateEmployer(self, request, id):
 def deleteEmployer(self, request, id):
     try:
        
-        # token = request.META.get('HTTP_TOKEN')
-        # sesion = AdminValidator.getSession(token)
-        # role=sesion.user.role
-        # validateRole(role,["admin"])        
+        token = request.META.get('HTTP_TOKEN')
+        sesion = AdminValidator.getSession(token)
+        role=sesion.user.role
+        validateRole(role,["admin"])      
         AdminValidator.deleteUser(id)
         message = "Empleado eliminado exitosamente"
         status = 204
@@ -87,6 +87,7 @@ def deleteEmployer(self, request, id):
 
 def postLogin(self,request):
     try:
+
         body=json.loads(request.body)
         session =AdminValidator.login(body["username"],body["password"])
         message="loguin exitoso"
@@ -118,10 +119,10 @@ def getLogin(self,request):
 
 def getSpecialists(self, request, id=None):
     try:
-        # token = request.META.get('HTTP_TOKEN')
-        # sesion = AdminValidator.getSession(token)
-        # role=sesion.user.role
-        # validateRole(role,["admin"])        
+        token = request.META.get('HTTP_TOKEN')
+        sesion = AdminValidator.getSession(token)
+        role=sesion.user.role
+        validateRole(role,["admin"])        
         Specialists = [AdminValidator.getSpecialist(id)] if id else AdminValidator.getSpecialists()
         Specialists = [{"id":  Specialist.id, "nameSpecialist":  Specialist.nameSpecialist} for  Specialist in  Specialists]
         status = 204 if  Specialists else 404
@@ -136,10 +137,10 @@ def getSpecialists(self, request, id=None):
 def createSpecialist(self, request):
     try:
         body = json.loads(request.body)        
-        # token = request.META.get('HTTP_TOKEN')
-        # sesion = AdminValidator.getSession(token)
-        # role=sesion.user.role
-        # validateRole(role,["admin"])         
+        token = request.META.get('HTTP_TOKEN')
+        sesion = AdminValidator.getSession(token)
+        role=sesion.user.role
+        validateRole(role,["admin"])        
         AdminValidator.createSpecialist(body["nameSpecialist"])
         message = "Se ha creado el especialista exitosamente"
         status = 204
@@ -152,10 +153,10 @@ def createSpecialist(self, request):
 def updateSpecialist(self, request, id):
     try:
         body = json.loads(request.body)        
-        # token = request.META.get('HTTP_TOKEN')
-        # sesion = AdminValidator.getSession(token)
-        # role=sesion.user.role
-        # validateRole(role,["admin"])
+        token = request.META.get('HTTP_TOKEN')
+        sesion = AdminValidator.getSession(token)
+        role=sesion.user.role
+        validateRole(role,["admin"])
         AdminValidator.updateSpecialist(id, body["nameSpecialist"])
         message = "Especialista actualizado exitosamente"
         status = 204
@@ -167,10 +168,10 @@ def updateSpecialist(self, request, id):
 def deleteSpecialist(self, request, id):
     try:
        
-        # token = request.META.get('HTTP_TOKEN')
-        # sesion = AdminValidator.getSession(token)
-        # role=sesion.user.role
-        # validateRole(role,["admin"])        
+        token = request.META.get('HTTP_TOKEN')
+        sesion = AdminValidator.getSession(token)
+        role=sesion.user.role
+        validateRole(role,["admin"])       
         AdminValidator.deleteSpecialist(id)
         message = "Especialista eliminado exitosamente"
         status = 204

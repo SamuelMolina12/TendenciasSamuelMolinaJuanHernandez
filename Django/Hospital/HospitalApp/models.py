@@ -115,21 +115,28 @@ class Session(models.Model):
     id=models.AutoField(primary_key=True)
     token=models.CharField(max_length=200)
     user=models.ForeignKey(Employer, on_delete=models.CASCADE)
-    
-
-        
-
 
 class Billing(models.Model):
     id = models.AutoField(primary_key=True)
+    date = models.CharField(max_length=30)
     patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
-    # patient_name = patientName
-    # patient = patient_id
-    # patientBirth = patient_birth
-    doctorName = models.ForeignKey(Employer,on_delete=models.CASCADE)
+    patientName = models.CharField(max_length=30)
+    age = models.IntegerField()
+
+    doctor = models.ForeignKey(Employer,on_delete=models.CASCADE)
+    doctorName = models.CharField(max_length=30)
     policy =  models.ForeignKey(Policy,on_delete=models.CASCADE)
+    policyNumber = models.IntegerField()
+    termPolicy=models.CharField(max_length=30)
+
     order = models.ForeignKey(Order,on_delete=models.CASCADE)
-    cost = models.FloatField()   
+    cost = models.FloatField() 
+    totalPay = models.FloatField()  
+
+    date = models.DateField(max_length=30)
+
+
+
 
 
 
