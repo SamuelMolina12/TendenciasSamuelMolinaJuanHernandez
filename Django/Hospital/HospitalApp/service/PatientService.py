@@ -52,11 +52,20 @@ def createPolicy(insuranceCompany, policyNumber, statePolicy, termPolicy,patient
 
 
 def createClinicalAppointment(date,hour,doctor,appointmentType,patientId):
-    appointment = models.Patient.objects.filter(id=patientId)
-    if not appointment.exists():
+
+    doctor = models.Employer.objects.filter(id=doctor,role="doctor").first()
+    if not doctor:
+        raise Exception("No existe un doctor con ese id")
+
+    appointment = models.Patient.objects.filter(id=patientId).first()
+    if not appointment:
          raise Exception("No existe un paciente con esa cédula registrada")
     
-    appointment = models.ClinicalAppointment(date=date, hour=hour, doctor=doctor, appointmentType=appointmentType,patient_id=patientId)
+    patient = models.Patient.objects.filter(id=patientId).first()
+    if not patient:
+        raise Exception("No existe un paciente con esa cédula registrada")
+    
+    appointment = models.ClinicalAppointment(date=date, hour=hour, doctor=doctor.id, appointmentType=appointmentType,patient_id=patientId)
     appointment.save()
 
 
@@ -189,8 +198,7 @@ def getOrderMedicine(id):
     medicine = models.OrderMedicine.objects.filter(order_id=id)
     if medicine:
         return medicine
-    else:
-        raise Exception("No hay una medicina asociada a esa orden")
+
         
 def createOrderMedicine(medicineDose,durationMedication,medicine_id,order_id):
     
@@ -204,6 +212,7 @@ def createOrderMedicine(medicineDose,durationMedication,medicine_id,order_id):
     order = models.Order.objects.filter(id=order_id)
     if not order.exists():
          raise Exception("No existe una orden con ese id")
+    
     lastItemM = models.OrderMedicine.objects.filter(order_id=order_id).order_by('-itemMedicine').first()
     lastItemP = models.OrderProcedure.objects.filter(order_id=order_id).order_by('-itemProcedure').first()
     lastItemD = models.OrderDiagnosticHelp.objects.filter(order_id=order_id).order_by('-itemDiagnosticHelp').first()  
@@ -227,8 +236,7 @@ def getOrderProcedure(id):
     procedure = models.OrderProcedure.objects.filter(order_id=id)
     if procedure:
         return procedure
-    else:
-        raise Exception("No hay un procedimiento asociado a esa orden")
+
 
 def createOrderProcedure(numberRepeated,frequencyRepeated,requiresSpecialistP,order_id,procedure_id,specialist_id):
 
@@ -246,6 +254,7 @@ def createOrderProcedure(numberRepeated,frequencyRepeated,requiresSpecialistP,or
         diagnosticHelp = models.Specialist.objects.filter(id=specialist_id)
         if not diagnosticHelp:
            raise Exception("No existe un especialista con ese id")
+        
     lastItemM = models.OrderMedicine.objects.filter(order_id=order_id).order_by('-itemMedicine').first()
     lastItemP = models.OrderProcedure.objects.filter(order_id=order_id).order_by('-itemProcedure').first()
     lastItemD = models.OrderDiagnosticHelp.objects.filter(order_id=order_id).order_by('-itemDiagnosticHelp').first()  
@@ -268,14 +277,14 @@ def getOrderDiagnosticHelp(id):
     diagnostic = models.OrderDiagnosticHelp.objects.filter(order_id=id)
     if diagnostic:
         return diagnostic
-    else:
-        raise Exception("No hay un procedimiento asociado a esa orden")
+
 
 def createOrderDiagnosticHelp(quantity,requiresSpecialistD,diagnosticHelp_id,order_id,specialist_id):
 
     procedure = models.OrderProcedure.objects.filter(order_id=order_id) 
     if procedure.exists():
             raise Exception("No puede haber una ayuda diagnostica si hay un procedimiento asociado a esa orden")
+    
     medicine= models.OrderMedicine.objects.filter(order_id=order_id)
     if medicine.exists():
             raise Exception("No puede haber una ayuda diagnostica si hay una medicina asociada a esa orden")
@@ -283,13 +292,16 @@ def createOrderDiagnosticHelp(quantity,requiresSpecialistD,diagnosticHelp_id,ord
     diagnostic = models.DiagnosticHelp.objects.filter(id=diagnosticHelp_id)
     if not diagnostic.exists():
          raise Exception("No existe una ayuda diagnostica con ese id")
+    
     order = models.Order.objects.filter(id=order_id)
     if not order.exists():
          raise Exception("No existe una orden con ese id")
+    
     if not specialist_id  is None:
         diagnosticHelp = models.Specialist.objects.filter(id=specialist_id)
         if not diagnosticHelp:
            raise Exception("No existe un especialista con ese id")
+        
     lastItemM = models.OrderMedicine.objects.filter(order_id=order_id).order_by('-itemMedicine').first()
     lastItemP = models.OrderProcedure.objects.filter(order_id=order_id).order_by('-itemProcedure').first()
     lastItemD = models.OrderDiagnosticHelp.objects.filter(order_id=order_id).order_by('-itemDiagnosticHelp').first()  
@@ -319,6 +331,7 @@ def getHistoryClinic(id):
 
 
 def createHistoryClinic(patient_id,doctor, reason, symptoms, diagnosis, order_id):
+    
     patientHistory = collection.find_one({"_id": patient_id})
     
     if not patientHistory:
@@ -442,7 +455,8 @@ def createHistoryVisits(patient, doctor,bloodPressure,temperature,pulse,bloodOxy
 
 def createBilling(patient_id, doctor_id, order_id):
 
-    dateToday = date.today()    
+    dateToday = date.today()  
+      
     patient = models.Patient.objects.get(id=patient_id)
     if not patient:
         raise Exception("No existe un paciente con esa cédula registrada")
@@ -472,6 +486,8 @@ def createBilling(patient_id, doctor_id, order_id):
     for orderProcedure in orderProcedures:
         procedure = models.Procedure.objects.get(id=orderProcedure.procedure_id)
         totalCost += procedure.procedureCost 
+
+
     orderDiagnosticHelps = models.OrderDiagnosticHelp.objects.filter(order_id=order_id)
 
     for orderDiagnosticHelp in orderDiagnosticHelps:

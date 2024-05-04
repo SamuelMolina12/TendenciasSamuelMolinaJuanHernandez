@@ -7,8 +7,8 @@ import HospitalApp.service.InventoryService as infoService
 def createMedicine(medicineName,medicineCost,medicineQuantity):
     validators.textValidator(medicineName,"medicina\n")
   
-    medicineCost = float(medicineCost)
-    # validators.costValidator(medicineCost,"costo")
+
+    validators.costValidator(medicineCost,"costo")
 
     validators.textValidator(medicineQuantity, "cantidad de la medicina ") 
 
@@ -29,8 +29,8 @@ def updateMedicine(id,medicineName,medicineCost,medicineQuantity):
     validators.numberValidator(id, "id de la medicina")        
     validators.textValidator(medicineName,"medicina\n")
   
-    medicineCost = float(medicineCost)
-    # validators.costValidator(medicineCost,"costo")
+
+    validators.costValidator(medicineCost,"costo")
 
     validators.textValidator(medicineQuantity, "cantidad de la medicina ") 
 
@@ -46,7 +46,7 @@ def createProcedure(procedureName,procedureCost):
 
     validators.textValidator(procedureName, "procedimiento")
 
-    procedureCost = float(procedureCost)
+    validators.costValidator(procedureCost, "costo")
     
     infoService.createProcedure(procedureName,procedureCost)
 
@@ -66,7 +66,7 @@ def updateProcedure(id,procedureName,procedureCost):
     validators.numberValidator(id, "id del procedimiento")
     validators.textValidator(procedureName, "procedimiento")
 
-    procedureCost = float(procedureCost)
+    validators.costValidator(procedureCost, "costo")
 
     return infoService.updateProcedure(id, procedureName,procedureCost) 
 #----------------------
@@ -79,7 +79,7 @@ def createDiagnosticHelp(diagnosticName,diagnosticCost):
   
 
 
-    diagnosticCost = float(diagnosticCost)
+    validators.costValidator(diagnosticCost, "costo")
     
     infoService.createDiagnosticHelp(diagnosticName,diagnosticCost)
 
@@ -99,7 +99,7 @@ def updateDiagnosticHelp(id,diagnosticName,diagnosticCost):
     validators.numberValidator(id, "id de la ayuda diagnostica")
     validators.textValidator(diagnosticName, "procedimiento")
 
-    diagnosticCost = float(diagnosticCost)
+    validators.costValidator(diagnosticCost, "costo")
 
     return infoService.updateDiagnosticHelp(id,diagnosticName,diagnosticCost) 
 #----------------------

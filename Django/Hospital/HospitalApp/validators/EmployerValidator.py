@@ -8,7 +8,8 @@ def createUser( name, id, genre, mail, telephone, birth, address, role, userName
     # print("Ingreso a la creacion del rol " + role)
     validators.textValidator(name,"nombre  \n")
     id=validators.numberValidator(id,"id" )
-
+    id= validators.documentValidator(id,"id")
+    
     validators.textValidator(userName,"usuario de   \n" )
     validators.usernameValidator(userName,"usuario de    \n" )
 

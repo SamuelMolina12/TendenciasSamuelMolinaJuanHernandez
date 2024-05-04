@@ -5,7 +5,10 @@ import  HospitalApp.service.PatientService as staffAdminService
 
 def createPatient(id, name, mail,genre, telephone, birth, address):
     id = validators.numberValidator(id,"id")
-   
+
+    
+    id= validators.documentValidator(id,"id")
+
     validators.textValidator(name, "nombre  \n")
 
 
@@ -62,14 +65,16 @@ def createPolicy(insuranceCompany,policyNumber,statePolicy,termPolicy,patientId)
 def createClinicalAppointment (date, hour, doctor, appointmentType,patientId):
   
 
-    validators.dateValidator(date, "fecha  \n")
+    validators.dateFValidator(date, "fecha  \n")
 
     validators.timeValidator(hour, "hora de\n")
 
 
-    validators.textValidator(doctor, "nombre del doctor  \n")
+    validators.numberValidator(doctor, "nombre del doctor  \n")
     
     validators.textValidator(appointmentType, "tipo de cita\n")
+
+    validators.numberValidator(patientId, "paciente\n")
 
     staffAdminService.createClinicalAppointment( date, hour, doctor, appointmentType,patientId)
   
@@ -210,6 +215,9 @@ def createOrderProcedure(numberRepeated,frequencyRepeated,requiresSpecialistP,or
 
     validators.textValidator(frequencyRepeated, "frecuencia con la que se repite  \n")
 
+    requiresSpecialistP=validators.booleanValidator(requiresSpecialistP, "requiere especialista \n")
+
+    
     if requiresSpecialistP:
          validators.numberValidator(specialist_id, "id especialista")
     else:  
@@ -234,6 +242,7 @@ def createOrderDiagnosticHelp(quantity,requiresSpecialistD,diagnosticHelp_id,ord
     # validators.numberValidator(itemDiagnosticHelp, "item ayuda diagnostica \n")
 
     validators.textValidator(quantity, "Cantidad  \n")
+    requiresSpecialistD=validators.booleanValidator(requiresSpecialistD, "requiere especialista \n")
 
     if requiresSpecialistD:
          validators.numberValidator(specialist_id, "id especialista")
@@ -265,7 +274,8 @@ def createHistoryClinic(patient_id, doctor,reason,symptoms,diagnosis,order):
 
     validators.textValidator(symptoms, "razon \n")
 
-    validators.textValidator(diagnosis, "razon \n") 
+    validators.textValidator(diagnosis, "razon \n")
+
     validators.numberValidator(order, "orden \n")   
     staffAdminService.createHistoryClinic(patient_id, doctor,reason,symptoms,diagnosis,order)
 

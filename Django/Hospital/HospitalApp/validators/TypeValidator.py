@@ -115,12 +115,11 @@ def dateValidator(birth, element):
 
 def costValidator(cost, element):
     try:
-        cost = cost.replace('.', '').replace(',', '')
         cost = float(cost)
         if cost <= 0:
-            raise ValueError
-    except ValueError:
-        raise ValueError(element + " no es un valor válido.")
+            raise Exception
+    except Exception:
+        raise Exception(element + " no es un valor válido.")
     return cost
 
 def policyStateValidator(state, element):
@@ -150,3 +149,31 @@ def policyTermValidator(termPolicy, element):
         return False
     
     return termPolicy
+
+
+def booleanValidator(value, element):
+    if value.lower() == "si":
+        return True
+    elif value.lower() == "no":
+        return False
+    else:
+        raise ValueError("El campo " + element + " debe ser 'si' o 'no'.")
+
+def documentValidator(document, element):
+
+    if document > 9999999999:
+        raise Exception ("El campo " + element + " no puede ser mayor a 10.")
+    return document
+
+def dateFValidator(date, element):
+    if date is None or date.strip() == "":
+        raise Exception("El campo " + element + " está vacío.")
+
+    try:
+        date = datetime.strptime(date, '%d/%m/%Y')
+        if date < datetime.now():
+            raise ValueError
+    except ValueError:
+        
+        raise Exception("Error: El campo " + element + " no está en el formato DD/MM/YYYY o no es una fecha válida.")
+    return date     
