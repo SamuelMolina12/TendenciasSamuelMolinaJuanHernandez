@@ -16,13 +16,12 @@ def validateRole(role,validateRoles):
 
 def getEmployers(self, request, id=None):
     try:
-        # token = request.META.get('HTTP_TOKEN')
-        # sesion = AdminValidator.getSession(token)
-        # role=sesion.user.role
-        # validateRole(role,["admin"])        
         employers = [AdminValidator.getUser(id)] if id else AdminValidator.getUsers()
-        employers = [{"id": employer.id, "name": employer.name,"genre":employer.genre,"mail":employer.mail, "telephone": employer.telephone,"birth":employer.birth, "address":employer.address, "role":employer.role, "userName":employer.userName,"password":employer.password} for employer in employers]
-        status = 204 if employers else 404
+        employers = [{"id": employer.id, "name": employer.name, "genre": employer.genre, "mail": employer.mail, "telephone": employer.telephone, "birth": employer.birth, "address": employer.address, "role": employer.role, "userName": employer.userName, "password": employer.password} for employer in employers]
+        if employers:
+            status = 200
+        else:
+            status = 404
     except Exception as error:
         message = str(error)
         status = 400

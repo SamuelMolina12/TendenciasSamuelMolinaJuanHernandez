@@ -2,19 +2,30 @@ import HospitalApp.models as models
 import string,secrets
 
 
+def createUser(name, id, genre, mail, telephone, birth, address, role, userName, password):
+    # Verificar si ya existe una persona con el mismo ID
+    if models.Employer.objects.filter(id=id).exists() or models.Patient.objects.filter(id=id).exists():
+        raise Exception("Ya existe una persona con ese ID registrado")
 
-def createUser(name,id,genre,mail,telephone,birth,address,role,userName,password):
-    user=models.Employer.objects.filter(id=id)
-    if user.exists():
-        raise Exception("ya existe una persona con esa cedula registrada")
-    patient=models.Patient.objects.filter(id=id)
-    if patient.exists():
-        raise Exception("ya existe una persona con esa cedula registrada")
-    user=models.Employer.objects.filter(userName=userName)
-    if user.exists():
-        raise Exception("ya existe un usuario con ese user name")
-    user=models.Employer(id,name,genre,mail,telephone,birth,address,role,userName,password)
-    user.save()
+    # Verificar si ya existe un usuario con el mismo nombre de usuario
+    if models.Employer.objects.filter(userName=userName).exists():
+        raise Exception("Ya existe un usuario con ese nombre de usuario")
+
+    # Crear un nuevo objeto Employer y guardarlo en la base de datos
+    new_user = models.Employer.objects.create(
+        name=name,
+        id=id,
+        genre=genre,
+        mail=mail,
+        telephone=telephone,
+        birth=birth,
+        address=address,
+        role=role,
+        userName=userName,
+        password=password
+    )
+    new_user.save()
+
 
 
 
