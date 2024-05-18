@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import { MenuSelect } from './Form';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import { FiEdit, FiEye } from 'react-icons/fi';
@@ -6,6 +6,10 @@ import { RiDeleteBin6Line, RiDeleteBinLine } from 'react-icons/ri';
 import { toast } from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import StarRate from './StarRate';
+import Updatedemployer from './Modals/UpdEmployer';
+
+
+
 
 const thclass = 'text-start text-sm font-medium py-3 px-2 whitespace-nowrap';
 const tdclass = 'text-start text-sm py-4 px-2 whitespace-nowrap';
@@ -428,52 +432,82 @@ export function PatientTable({ data, functions, used }) {
   );
 }
 
-// doctor table
-export const EmployerTable = ({ data = [], functions }) => {
+// Empleado table
 
+
+export const EmployerTable = ({ data = [], isModalOpen, selectedEmployee}) => {
+
+
+
+  
+  const DropDown1 = [
+    {
+      title: "actualizar",
+      icon: FiEye,
+      onClick: () => {
+        try {
+          
+
+        } catch (error) {
+          console.error('Error al actualizar el empleado:', error);
+          toast.error('Error al actualizar el empleado. Por favor, inténtalo de nuevo.');
+        }
+      },
+    },
+    {
+      title: "eliminar",
+      icon: RiDeleteBin6Line,
+      onClick: () => {
+        toast.error("No se pudo eliminar");
+      }
+    }
+  ];
 
   return (
-    <table className="min-w-full bg-white">
-      <thead>
-        <tr>
-          <th className="py-2">ID</th>
-          <th className="py-2">Name</th>
-          <th className="py-2">Genre</th>
-          <th className="py-2">Mail</th>
-          <th className="py-2">Telephone</th>
-          <th className="py-2">Birth</th>
-          <th className="py-2">Address</th>
-          <th className="py-2">Role</th>
-          <th className="py-2">UserName</th>
-          <th className="py-2">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((employee) => (
-          <tr key={employee.id}>
-            <td className="py-2">{employee.id}</td>
-            <td className="py-2">{employee.name}</td>
-            <td className="py-2">{employee.genre}</td>
-            <td className="py-2">{employee.mail}</td>
-            <td className="py-2">{employee.telephone}</td>
-            <td className="py-2">{employee.birth}</td>
-            <td className="py-2">{employee.address}</td>
-            <td className="py-2">{employee.role}</td>
-            <td className="py-2">{employee.userName}</td>
-            <td className="py-2">
-              <button
-                onClick={() => functions.preview(employee)}
-                className="text-blue-500"
-              >
-                Preview
-              </button>
-            </td>
+    <div> {/* Aquí se agrega el contenedor */}
+      <table className="min-w-full bg-white">
+        <thead>
+          <tr>
+            <th className="py-2">Cédula</th>
+            <th className="py-2">Nombre</th>
+            <th className="py-2">Género</th>
+            <th className="py-2">Correo</th>
+            <th className="py-2">Teléfono</th>
+            <th className="py-2">Fecha Nacimiento</th>
+            <th className="py-2">Dirección</th>
+            <th className="py-2">Rol</th>
+            <th className="py-2">Nombre de Usuario</th>
+            <th className="py-2">Acciones</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {data.map((employee) => (
+            <tr key={employee.id}>
+              <td className="py-2">{employee.id}</td>
+              <td className="py-2">{employee.name}</td>
+              <td className="py-2">{employee.genre}</td>
+              <td className="py-2">{employee.mail}</td>
+              <td className="py-2">{employee.telephone}</td>
+              <td className="py-2">{employee.birth}</td>
+              <td className="py-2">{employee.address}</td>
+              <td className="py-2">{employee.role}</td>
+              <td className="py-2">{employee.userName}</td>
+              <td className="py-2">
+                <MenuSelect datas={DropDown1} item={employee}>
+                  <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
+                    <BiDotsHorizontalRounded />
+                  </div>
+                </MenuSelect>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+    </div>
   );
 };
+
 
 // appointment table
 export function AppointmentTable({ data, functions, doctor }) {

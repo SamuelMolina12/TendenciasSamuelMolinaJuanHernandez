@@ -1,9 +1,11 @@
+// src/components/Modals/AddDoctorModal.js
+
 import React, { useState } from 'react';
 import Modal from './Modal';
-import { Button, Input, Select } from '../Form';
+import { Button, Input } from '../Form';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
-import axios from 'axios';
+import { createEmployer } from '../Datas';
 
 function AddDoctorModal({ closeModal, isOpen }) {
   const [employeeData, setEmployeeData] = useState({
@@ -26,18 +28,11 @@ function AddDoctorModal({ closeModal, isOpen }) {
 
   const handleSubmit = async () => {
     try {
-      // Convertir el objeto de datos a formato JSON
-      const requestData = JSON.stringify(employeeData);
-
-      // Realizar la solicitud POST para crear el empleado
-      const response = await axios.post('http://localhost:8000/hospital/admin/employer', requestData, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
+      // Usar la función createEmployer para hacer la solicitud POST
+      const response = await createEmployer(employeeData);
 
       // Manejar la respuesta si es necesario
-      console.log('Empleado creado:', response.data);
+      console.log('Empleado creado:', response);
       
       // Cerrar el modal después de crear el empleado
       closeModal();
@@ -135,7 +130,6 @@ function AddDoctorModal({ closeModal, isOpen }) {
         onChange={handleInputChange}
         placeholder="Ingrese la contraseña"
         color={true}
-
       />
 
       <div className="grid sm:grid-cols-2 gap-4 w-full">

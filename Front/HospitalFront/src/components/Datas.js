@@ -30,7 +30,7 @@ import {
 } from 'react-icons/md';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { BiCalendar, BiUserPlus } from 'react-icons/bi';
-
+import axios from 'axios'
 export const MenuDatas = [
   {
     title: 'Dashboard',
@@ -279,6 +279,55 @@ export const medicineData = [
     instraction: 'Before meal',
   },
 ];
+//Empleados
+export const EmployerData = async () => {
+  try {
+    const response = await axios.get('http://127.0.0.1:8000/hospital/admin/employer');
+    
+    if (Array.isArray(response.data)) {
+      return response.data;
+    } else if (typeof response.data === 'object' && response.data !== null) {
+      return [response.data];
+    } else {
+      console.error('La respuesta no es un arreglo ni un objeto válido:', response.data);
+      return [];
+    }
+  } catch (error) {
+    console.error('Error al obtener empleados:', error);
+    return [];
+  }
+};
+
+export const createEmployer = async (employeeData) => {
+  try {
+
+    const requestData = JSON.stringify(employeeData);
+
+
+    const response = await axios.post('http://localhost:8000/hospital/admin/employer', requestData, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+  
+    return response.data;
+  } catch (error) {
+    console.error('Error al crear el empleado:', error);
+    throw error;
+  }
+};
+
+export const updateEmployer = async (employeeData) => {
+  try {
+    const response = await axios.put(`http://localhost:8000/hospital/admin/employer${employeeData.id}`, JSON.stringify(employeeData));
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : error.message);
+  }
+};
+
+
 
 export const sortsDatas = {
   status: [
@@ -1368,28 +1417,7 @@ export const medicalRecodData = [
   },
 ];
 
-export const doctorsData = [
-  {
-    id: 1,
-    user: memberData[0],
-    title: 'Dr.',
-  },
-  {
-    id: 2,
-    user: memberData[1],
-    title: 'Dr.',
-  },
-  {
-    id: 3,
-    user: memberData[2],
-    title: 'Dr.',
-  },
-  {
-    id: 4,
-    user: memberData[3],
-    title: 'Dr.',
-  },
-];
+
 
 export const receptionsData = [
   {

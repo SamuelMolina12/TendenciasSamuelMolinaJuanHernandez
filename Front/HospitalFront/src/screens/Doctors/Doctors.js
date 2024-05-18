@@ -1,3 +1,5 @@
+// src/pages/Doctor/Doctor.js
+
 import React, { useState, useEffect } from 'react';
 import { MdOutlineCloudDownload } from 'react-icons/md';
 import { toast } from 'react-hot-toast';
@@ -6,12 +8,12 @@ import Layout from '../../Layout';
 import { Button } from '../../components/Form';
 import { useNavigate } from 'react-router-dom';
 import AddDoctorModal from '../../components/Modals/AddDoctorModal';
-import axios from 'axios';
 import { EmployerTable } from '../../components/Tables';
+import { EmployerData } from '../../components/Datas';
 
 function Doctor() {
   const [isOpen, setIsOpen] = useState(false);
-  const [employeesData, setEmployeesData] = useState([]);
+  const [employerData, setEmployerData] = useState([]);
   const navigate = useNavigate();
 
   const onCloseModal = () => {
@@ -23,20 +25,11 @@ function Doctor() {
   };
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/hospital/admin/employer')
-      .then(response => {
-
-        if (Array.isArray(response.data)) {
-          setEmployeesData(response.data);
-        } else if (typeof response.data === 'object' && response.data !== null) {
-          setEmployeesData([response.data]);
-        } else {
-          console.error('La respuesta no es un arreglo ni un objeto válido:', response.data);
-        }
-      })
-      .catch(error => {
-        console.error('Error al obtener empleados:', error);
-      });
+    const getData = async () => {
+      const data = await EmployerData();
+      setEmployerData(data);
+    };
+    getData();
   }, []);
 
   return (
@@ -65,7 +58,7 @@ function Doctor() {
       >
         <div className="mt-8 w-full overflow-x-scroll">
           <EmployerTable
-            data={employeesData}
+            data={employerData}
             functions={{
               preview: preview,
             }}
