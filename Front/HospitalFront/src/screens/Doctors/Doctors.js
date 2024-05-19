@@ -4,12 +4,14 @@ import Layout from '../../Layout';
 import { useNavigate } from 'react-router-dom';
 import AddDoctorModal from '../../components/Modals/AddDoctorModal';
 import Updatedemployer from '../../components/Modals/UpdEmployer';
+import DeleteEmployerModal from '../../components/Modals/DelEmployerModal'; 
 import { EmployerTable } from '../../components/Tables';
-import { EmployerData } from '../../components/Datas';
+import { EmployerData, deleteEmployer } from '../../components/Datas'; 
 
 function Doctor() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); 
   const [selectedEmployer, setSelectedEmployer] = useState(null);
   const [employerData, setEmployerData] = useState([]);
   const navigate = useNavigate();
@@ -25,10 +27,20 @@ function Doctor() {
     await getData();
   };
 
+  const onCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+    setSelectedEmployer(null);
+  };
+
   const preview = (id) => {
     const employer = employerData.find(emp => emp.id === id);
     setSelectedEmployer(employer);
     setIsUpdateModalOpen(true);
+  };
+
+  const handleDelete = async (id) => {
+    setSelectedEmployer(id);
+    setIsDeleteModalOpen(true);
   };
 
   const getData = async () => {
@@ -57,6 +69,14 @@ function Doctor() {
           employerData={selectedEmployer}
         />
       )}
+      {isDeleteModalOpen && (
+        <DeleteEmployerModal
+          closeModal={onCloseDeleteModal}
+          isOpen={isDeleteModalOpen}
+          employeeId={selectedEmployer?.id}
+          onDeleteSuccess={getData}
+        />
+      )}
       <button
         onClick={() => setIsAddModalOpen(true)}
         className="w-16 animate-bounce h-16 border border-border z-50 bg-subMain text-white rounded-full flex-colo fixed bottom-8 right-12 button-fb"
@@ -76,6 +96,7 @@ function Doctor() {
             data={employerData}
             functions={{
               preview: preview,
+              handleDelete: handleDelete, // Pasa la función de eliminación a la tabla
             }}
           />
         </div>

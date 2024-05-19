@@ -1,5 +1,3 @@
-// src/components/Modals/AddDoctorModal.js
-
 import React, { useState } from 'react';
 import Modal from './Modal';
 import { Button, Input } from '../Form';
@@ -9,7 +7,7 @@ import { createEmployer } from '../Datas';
 
 function AddDoctorModal({ closeModal, isOpen }) {
   const [employeeData, setEmployeeData] = useState({
-    id: '', // Cambiado de 'cedula' a 'id'
+    id: '',
     name: '',
     genre: '',
     mail: '',
@@ -18,8 +16,10 @@ function AddDoctorModal({ closeModal, isOpen }) {
     address: '',
     role: '',
     userName: '',
-    password: '' // Agregado campo de contraseña
+    password: ''
   });
+
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -28,17 +28,13 @@ function AddDoctorModal({ closeModal, isOpen }) {
 
   const handleSubmit = async () => {
     try {
-      // Usar la función createEmployer para hacer la solicitud POST
       const response = await createEmployer(employeeData);
-
-      // Manejar la respuesta si es necesario
       console.log('Empleado creado:', response);
-      
-      // Cerrar el modal después de crear el empleado
+      toast.success('Empleado creado con éxito');
       closeModal();
     } catch (error) {
       console.error('Error al crear el empleado:', error);
-      toast.error('Error al crear el empleado. Por favor, inténtalo de nuevo.');
+      setErrorMessage(error.response?.data?.message || 'Error al crear el empleado. Por favor, inténtalo de nuevo.');
     }
   };
 
@@ -49,11 +45,11 @@ function AddDoctorModal({ closeModal, isOpen }) {
       title="Crear Empleado"
       width="max-w-3xl"
     >
-      {/* Aquí están los campos del formulario */}
+      {/* Campos del formulario */}
       <Input
-        label="Cédula" // Cambiado de "cedula" a "Cédula"
-        name="id" // Cambiado de "cedula" a "id"
-        value={employeeData.id} // Cambiado de "cedula" a "id"
+        label="Cédula"
+        name="id"
+        value={employeeData.id}
         onChange={handleInputChange}
         placeholder="Ingrese la cédula"
         color={true}
@@ -74,6 +70,7 @@ function AddDoctorModal({ closeModal, isOpen }) {
         placeholder="Ingrese el género"
         color={true}
       />
+
       <Input
         label="Correo Electrónico"
         name="mail"
@@ -122,7 +119,6 @@ function AddDoctorModal({ closeModal, isOpen }) {
         placeholder="Ingrese el nombre de usuario"
         color={true}
       />
-      {/* Nuevo campo de contraseña */}
       <Input
         label="Contraseña"
         name="password"
@@ -131,6 +127,8 @@ function AddDoctorModal({ closeModal, isOpen }) {
         placeholder="Ingrese la contraseña"
         color={true}
       />
+
+      {errorMessage && <p className="text-red-600">{errorMessage}</p>}
 
       <div className="grid sm:grid-cols-2 gap-4 w-full">
         <button

@@ -19,6 +19,8 @@ function Updatedemployer({ closeModal, isOpen, employerData }) {
     password: '' 
   });
 
+  const [errorMessage, setErrorMessage] = useState('');
+
   useEffect(() => {
     if (employerData) {
       setUpdatedEmployerData(employerData); 
@@ -44,7 +46,7 @@ function Updatedemployer({ closeModal, isOpen, employerData }) {
       closeModal();
     } catch (error) {
       console.error('Error al actualizar el empleado:', error);
-      toast.error('Error al actualizar el empleado. Por favor, inténtalo de nuevo.');
+      setErrorMessage(error.response?.data?.message || 'Error al actualizar el empleado. Por favor, inténtalo de nuevo.');
     }
   };
 
@@ -128,6 +130,7 @@ function Updatedemployer({ closeModal, isOpen, employerData }) {
           type="password"
           color={true}
         />
+        {errorMessage && <p className="text-red-600 mt-2">{errorMessage}</p>}
         <div className="mt-4 flex justify-end">
           <Button
             label="Actualizar"

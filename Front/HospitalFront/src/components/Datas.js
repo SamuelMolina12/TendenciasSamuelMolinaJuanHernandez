@@ -49,9 +49,20 @@ export const MenuDatas = [
     icon: RiUserHeartLine,
   },
   {
-    title: 'Receptions',
+    title: 'Especialistas',
     path: '/receptions',
     icon: HiOutlineUsers,
+  },
+  {
+    title: 'Medicine',
+    path: '/medicine',
+    icon: RiMedicineBottleLine,
+  },
+  { 
+    ttle: 'Procedures',
+    path: '/procedures',
+    icon: RiStethoscopeLine,
+
   },
   {
     title: 'Appointments',
@@ -73,11 +84,7 @@ export const MenuDatas = [
     path: '/services',
     icon: MdOutlineInventory2,
   },
-  {
-    title: 'Medicine',
-    path: '/medicine',
-    icon: RiMedicineBottleLine,
-  },
+
   {
     title: 'Chats',
     path: '/chats',
@@ -342,6 +349,57 @@ export const deleteEmployer = async (id) => {
   }
 };
 
+//especialista
+export const SpecialistData = async () => {
+  try {
+    const response = await axios.get('http://127.0.0.1:8000/hospital/admin/specialist');
+    
+    if (Array.isArray(response.data)) {
+      return response.data;
+    } else if (typeof response.data === 'object' && response.data !== null) {
+      return [response.data];
+    } else {
+      console.error('La respuesta no es un arreglo ni un objeto válido:', response.data);
+      return [];
+    }
+  } catch (error) {
+    console.error('Error al obtener especialistas:', error);
+    return [];
+  }
+};
+
+
+export const createSpecialist = async (specialistData) => {
+  try {
+    const response = await axios.post('http://localhost:8000/hospital/admin/specialist', specialistData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateSpecialist = async (id, specialistData) => {
+  try {
+    const response = await axios.put(`http://localhost:8000/hospital/admin/specialist/${id}`, specialistData, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error al actualizar el especialista:', error);
+    throw error;
+  }
+};
+export const deleteSpecialist = async (id) => {
+  try {
+    const response = await axios.delete(`http://localhost:8000/hospital/admin/specialist/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error al eliminar el empleado:', error);
+    throw error;
+  }
+};
 
 export const sortsDatas = {
   status: [

@@ -54,7 +54,7 @@ def deleteUser(id):
         raise Exception("Empleado no encontrado")
 
 
-def updateUser(id, name, mail,genre, telephone, birth, address, role, userName, password):
+def updateUser(id, name, genre,mail, telephone, birth, address, role, userName, password):
     user = models.Employer.objects.filter(userName=userName).exclude(id=id)
     if user.exists():
         raise Exception("Ya existe un usuario con ese nombre de usuario")
@@ -108,7 +108,7 @@ def createSpecialist(nameSpecialist):
    
     user=models.Specialist.objects.filter(nameSpecialist=nameSpecialist)
     if user.exists():
-        raise Exception("ya existe un usuario con ese user name")
+        raise Exception("ya existe un especialista con ese nombre")
     user=models.Specialist(nameSpecialist=nameSpecialist)
     user.save()    
 
@@ -135,7 +135,12 @@ def deleteSpecialist(id):
         raise Exception("Especialista no encontrado")
     
 def updateSpecialist(id, nameSpecialist):
+    user=models.Specialist.objects.filter(nameSpecialist=nameSpecialist)
+    if user.exists():
+        raise Exception("ya existe un especialista con ese nombre")
+        
     Specialist = models.Specialist.objects.filter(id=id).first()
+
     if Specialist:
         Specialist.nameSpecialist = nameSpecialist
         

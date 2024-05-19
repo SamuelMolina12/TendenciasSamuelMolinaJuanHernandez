@@ -436,14 +436,7 @@ export function PatientTable({ data, functions, used }) {
 
 
 export const EmployerTable = ({ data = [], functions }) => {
-  const handleDelete = async (employee) => {
-    try {
-      await functions.handleDelete(employee.id); // Cambiar employee por employee.id
-    } catch (error) {
-      console.error('Error al eliminar el empleado:', error);
-      toast.error('Error al eliminar el empleado. Por favor, inténtalo de nuevo.');
-    }
-  };
+
 
   const DropDown1 = (employee) => [
     {
@@ -459,13 +452,11 @@ export const EmployerTable = ({ data = [], functions }) => {
       }
     },
     {
-      title: 'eliminar',
+      title: 'Eliminar',
       icon: RiDeleteBin6Line,
       onClick: () => {
-
-          console.log("hola")
-
-      }
+        functions.handleDelete(employee);
+      },
     }
   ];
 
@@ -500,6 +491,54 @@ export const EmployerTable = ({ data = [], functions }) => {
               <td className="py-2">{employee.userName}</td>
               <td className="py-2">
                 <MenuSelect datas={DropDown1(employee)} item={employee}>
+                  <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
+                    <BiDotsHorizontalRounded />
+                  </div>
+                </MenuSelect>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+// especialista tabla
+
+export const SpecialistTable = ({ data = [], functions }) => {
+  const DropDown1 = (specialist) => [
+    {
+      title: 'Actualizar',
+      icon: FiEye,
+      onClick: () => {
+        functions.preview(specialist);
+      },
+    },
+    {
+      title: 'Eliminar',
+      icon: RiDeleteBin6Line,
+      onClick: () => {
+        functions.handleDelete(specialist);
+      },
+    },
+  ];
+
+  return (
+    <div>
+      <table className="min-w-full bg-white">
+        <thead>
+          <tr>
+            <th className="py-2">ID</th>
+            <th className="py-2">Nombre del especialista</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((specialist) => (
+            <tr key={specialist.id}>
+              <td className="py-2">{specialist.id}</td>
+              <td className="py-2">{specialist.nameSpecialist}</td>
+              <td className="py-2">
+                <MenuSelect datas={DropDown1(specialist)} item={specialist}>
                   <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
                     <BiDotsHorizontalRounded />
                   </div>
