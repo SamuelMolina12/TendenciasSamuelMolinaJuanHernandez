@@ -6,7 +6,7 @@ import { RiDeleteBin6Line, RiDeleteBinLine } from 'react-icons/ri';
 import { toast } from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import StarRate from './StarRate';
-import Updatedemployer from './Modals/UpdEmployer';
+
 
 
 
@@ -435,36 +435,42 @@ export function PatientTable({ data, functions, used }) {
 // Empleado table
 
 
-export const EmployerTable = ({ data = [], isModalOpen, selectedEmployee}) => {
+export const EmployerTable = ({ data = [], functions }) => {
+  const handleDelete = async (employee) => {
+    try {
+      await functions.handleDelete(employee.id); // Cambiar employee por employee.id
+    } catch (error) {
+      console.error('Error al eliminar el empleado:', error);
+      toast.error('Error al eliminar el empleado. Por favor, inténtalo de nuevo.');
+    }
+  };
 
-
-
-  
-  const DropDown1 = [
+  const DropDown1 = (employee) => [
     {
-      title: "actualizar",
+      title: 'actualizar',
       icon: FiEye,
       onClick: () => {
         try {
-          
-
+          functions.preview(employee.id);
         } catch (error) {
           console.error('Error al actualizar el empleado:', error);
           toast.error('Error al actualizar el empleado. Por favor, inténtalo de nuevo.');
         }
-      },
+      }
     },
     {
-      title: "eliminar",
+      title: 'eliminar',
       icon: RiDeleteBin6Line,
       onClick: () => {
-        toast.error("No se pudo eliminar");
+
+          console.log("hola")
+
       }
     }
   ];
 
   return (
-    <div> {/* Aquí se agrega el contenedor */}
+    <div>
       <table className="min-w-full bg-white">
         <thead>
           <tr>
@@ -493,7 +499,7 @@ export const EmployerTable = ({ data = [], isModalOpen, selectedEmployee}) => {
               <td className="py-2">{employee.role}</td>
               <td className="py-2">{employee.userName}</td>
               <td className="py-2">
-                <MenuSelect datas={DropDown1} item={employee}>
+                <MenuSelect datas={DropDown1(employee)} item={employee}>
                   <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
                     <BiDotsHorizontalRounded />
                   </div>
@@ -503,11 +509,9 @@ export const EmployerTable = ({ data = [], isModalOpen, selectedEmployee}) => {
           ))}
         </tbody>
       </table>
-
     </div>
   );
 };
-
 
 // appointment table
 export function AppointmentTable({ data, functions, doctor }) {

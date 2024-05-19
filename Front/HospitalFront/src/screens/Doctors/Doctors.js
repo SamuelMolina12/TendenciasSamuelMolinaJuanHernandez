@@ -1,49 +1,64 @@
-// src/pages/Doctor/Doctor.js
-
 import React, { useState, useEffect } from 'react';
-import { MdOutlineCloudDownload } from 'react-icons/md';
-import { toast } from 'react-hot-toast';
 import { BiPlus } from 'react-icons/bi';
 import Layout from '../../Layout';
-import { Button } from '../../components/Form';
 import { useNavigate } from 'react-router-dom';
 import AddDoctorModal from '../../components/Modals/AddDoctorModal';
+import Updatedemployer from '../../components/Modals/UpdEmployer';
 import { EmployerTable } from '../../components/Tables';
 import { EmployerData } from '../../components/Datas';
 
 function Doctor() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [selectedEmployer, setSelectedEmployer] = useState(null);
   const [employerData, setEmployerData] = useState([]);
   const navigate = useNavigate();
 
-  const onCloseModal = () => {
-    setIsOpen(false);
+  const onCloseAddModal = async () => {
+    setIsAddModalOpen(false);
+    await getData();
   };
 
-  const preview = (data) => {
-    navigate(`/employees/preview/${data.id}`);
+  const onCloseUpdateModal = async () => {
+    setIsUpdateModalOpen(false);
+    setSelectedEmployer(null);
+    await getData();
+  };
+
+  const preview = (id) => {
+    const employer = employerData.find(emp => emp.id === id);
+    setSelectedEmployer(employer);
+    setIsUpdateModalOpen(true);
+  };
+
+  const getData = async () => {
+    const data = await EmployerData();
+    setEmployerData(data);
   };
 
   useEffect(() => {
-    const getData = async () => {
-      const data = await EmployerData();
-      setEmployerData(data);
-    };
     getData();
   }, []);
 
   return (
     <Layout>
-      {isOpen && (
+      {isAddModalOpen && (
         <AddDoctorModal
-          closeModal={onCloseModal}
-          isOpen={isOpen}
+          closeModal={onCloseAddModal}
+          isOpen={isAddModalOpen}
           doctor={true}
           datas={null}
         />
       )}
+      {isUpdateModalOpen && (
+        <Updatedemployer
+          closeModal={onCloseUpdateModal}
+          isOpen={isUpdateModalOpen}
+          employerData={selectedEmployer}
+        />
+      )}
       <button
-        onClick={() => setIsOpen(true)}
+        onClick={() => setIsAddModalOpen(true)}
         className="w-16 animate-bounce h-16 border border-border z-50 bg-subMain text-white rounded-full flex-colo fixed bottom-8 right-12 button-fb"
       >
         <BiPlus className="text-2xl" />

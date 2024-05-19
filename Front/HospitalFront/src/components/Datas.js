@@ -318,15 +318,29 @@ export const createEmployer = async (employeeData) => {
   }
 };
 
-export const updateEmployer = async (employeeData) => {
+export const updateEmployer = async (id, data) => {
   try {
-    const response = await axios.put(`http://localhost:8000/hospital/admin/employer${employeeData.id}`, JSON.stringify(employeeData));
+    const requestData = JSON.stringify(data);
+    const response = await axios.put(`http://localhost:8000/hospital/admin/employer/${id}`, requestData, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
     return response.data;
   } catch (error) {
-    throw new Error(error.response ? error.response.data.message : error.message);
+    console.error('Error al actualizar el empleado:', error);
+    throw error;
   }
 };
-
+export const deleteEmployer = async (id) => {
+  try {
+    const response = await axios.delete(`http://localhost:8000/hospital/admin/employer/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error al eliminar el empleado:', error);
+    throw error;
+  }
+};
 
 
 export const sortsDatas = {

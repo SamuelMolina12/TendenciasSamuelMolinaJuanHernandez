@@ -49,10 +49,10 @@ def createEmployer(self, request):
 def updateEmployer(self, request, id):
     try:
         body = json.loads(request.body)        
-        token = request.META.get('HTTP_TOKEN')
-        sesion = AdminValidator.getSession(token)
-        role=sesion.user.role
-        validateRole(role,["admin"])
+        # token = request.META.get('HTTP_TOKEN')
+        # sesion = AdminValidator.getSession(token)
+        # role=sesion.user.role
+        # validateRole(role,["admin"])
         AdminValidator.updateUser(id, body["name"], body["genre"], body["mail"], body["telephone"], body["birth"], body["address"], body["role"], body["userName"], body["password"])
         message = "Empleado actualizado exitosamente"
         status = 204

@@ -13,6 +13,7 @@ import Access from '../../components/Access';
 import { MdOutlineMarkChatUnread } from 'react-icons/md';
 import ReviewsUsed from '../../components/UsedComp/ReviewUsed';
 
+
 function DoctorProfile() {
   const [activeTab, setActiveTab] = React.useState(1);
   const [access, setAccess] = React.useState({});
