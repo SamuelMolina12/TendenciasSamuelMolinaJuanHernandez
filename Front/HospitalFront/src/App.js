@@ -63,7 +63,8 @@ const Specialist = React.lazy(() => import('./screens/Specialist'));
 const Medicine = React.lazy(() => import('./screens/Medicine'));
 //procedimiento
 const Procedure = React.lazy(() => import('./screens/Inventory/Procedure'));
-
+//Ayuda diagnostica
+const DiagnosticHelp = React.lazy(() => import('./screens/Inventory/DiagnosticHelp'));
 const NewMedicalRecode = React.lazy(() =>
   import('./screens/Patients/NewMedicalRecode')
 );
@@ -212,6 +213,15 @@ function App() {
             element={
               <Suspense fallback={<BigLoader />}>
                 <Procedure />
+              </Suspense>
+            }
+          />
+          {/* ayuda diagnostica */}
+          <Route
+            path="/inventory/diagnostichelp"
+            element={
+              <Suspense fallback={<BigLoader />}>
+                <DiagnosticHelp />
               </Suspense>
             }
           />

@@ -3,9 +3,9 @@ import Modal from './Modal';
 import { Button, Input } from '../Form';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
-import { createProcedure } from '../Datas'; // Importa la función createProcedure
+import { createProcedure, updateProcedure } from '../Datas'; // Asegúrate de que updateProcedure esté importado
 
-function AddProcedureModal({ closeModal, isOpen }) {
+function AddProcedureModal({ closeModal, isOpen, procedure }) {
   const [procedureData, setProcedureData] = useState({
     procedureName: '',
     procedureCost: ''
@@ -13,7 +13,14 @@ function AddProcedureModal({ closeModal, isOpen }) {
 
   const [errorMessage, setErrorMessage] = useState('');
 
-
+  useEffect(() => {
+    if (procedure) {
+      setProcedureData({
+        procedureName: procedure.procedureName || '',
+        procedureCost: procedure.procedureCost || ''
+      });
+    }
+  }, [procedure]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -22,12 +29,17 @@ function AddProcedureModal({ closeModal, isOpen }) {
 
   const handleSubmit = async () => {
     try {
-
-      toast.success('procedimiento creado con éxito');
+      if (procedure) {
+        await updateProcedure(procedure.id, procedureData);
+        toast.success('Procedimiento actualizado con éxito');
+      } else {
+        await createProcedure(procedureData);
+        toast.success('Procedimiento creado con éxito');
+      }
       closeModal();
     } catch (error) {
-      toast.error('Error al crear el procedimiento');
-      setErrorMessage(error.response?.data?.message || 'Error al crear el procedimiento. Por favor, inténtalo de nuevo.');
+      console.error('Error al guardar el procedimiento:', error);
+      setErrorMessage(error.response?.data?.message || 'Error al guardar el procedimiento. Por favor, inténtalo de nuevo.');
     }
   };
 
@@ -35,7 +47,7 @@ function AddProcedureModal({ closeModal, isOpen }) {
     <Modal
       closeModal={closeModal}
       isOpen={isOpen}
-      title="Crear Procedimiento"
+      title={procedure ? 'Actualizar Procedimiento' : 'Crear Procedimiento'}
       width="max-w-3xl"
     >
       <Input

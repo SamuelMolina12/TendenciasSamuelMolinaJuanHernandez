@@ -3,12 +3,12 @@ import Modal from './Modal';
 import { Button } from '../Form';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
-import { deleteEmployer } from '../Datas'; // Debes cambiar esta línea
+import { deleteEmployer } from '../Datas'; 
 
 function DeleteEmployerModal({ closeModal, isOpen, employeeId, onDeleteSuccess }) {
   const handleDelete = async () => {
     try {
-      await deleteEmployer(employeeId); // Debes cambiar esta línea
+      await deleteEmployer(employeeId); 
       toast.success('Empleado eliminado con éxito');
       onDeleteSuccess();
       closeModal();

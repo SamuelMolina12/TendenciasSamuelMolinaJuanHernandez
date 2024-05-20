@@ -158,13 +158,16 @@ def deleteProcedure(self, request, id):
 #Ayudas diagnosticas
 def getDiagnosticHelp(self, request, id=None):
     try:
-        token = request.META.get('HTTP_TOKEN')
-        sesion = AdminValidator.getSession(token)
-        role=sesion.user.role
-        validateRole(role,["Soporte de informacion"])        
+        # token = request.META.get('HTTP_TOKEN')
+        # sesion = AdminValidator.getSession(token)
+        # role=sesion.user.role
+        # validateRole(role,["Soporte de informacion"])        
         diagnoses = [infoValidator.getDiagnosticHelp(id)] if id else infoValidator.getDiagnosticaids()
-        diagnoses = [{"id": diagnostic.id, "diagnosticName": diagnostic.diagnosticName,"quantity":diagnostic.quantity,"diagnosticCost": diagnostic.diagnosticCost,"requiresSpecialistD":diagnostic.requiresSpecialistD,"specialist_id":diagnostic.specialist_id} for diagnostic in diagnoses]
-        status = 204 if diagnoses else 404
+        diagnoses = [{"id": diagnostic.id, "diagnosticName": diagnostic.diagnosticName,"diagnosticCost": diagnostic.diagnosticCost} for diagnostic in diagnoses]
+        if diagnoses:
+            status = 200
+        else:
+            status = 404    
     except Exception as error:
         message = str(error)
         status = 400
@@ -178,10 +181,10 @@ def createDiagnosticHelp(self,request):
     
     try:
         body=json.loads(request.body)
-        token = request.META.get('HTTP_TOKEN')
-        sesion = AdminValidator.getSession(token)
-        role=sesion.user.role
-        validateRole(role,["Soporte de informacion"])         
+        # token = request.META.get('HTTP_TOKEN')
+        # sesion = AdminValidator.getSession(token)
+        # role=sesion.user.role
+        # validateRole(role,["Soporte de informacion"])         
         infoValidator.createDiagnosticHelp(body["diagnosticName"],body["diagnosticCost"])
         message="se ha creado la ayuda diagnostica exitosamente"
         status=204
@@ -194,10 +197,10 @@ def createDiagnosticHelp(self,request):
 def updateDiagnosticHelp(self, request, id):  
     try:
         body = json.loads(request.body)    
-        token = request.META.get('HTTP_TOKEN')
-        sesion = AdminValidator.getSession(token)
-        role=sesion.user.role
-        validateRole(role,["Soporte de informacion"])        
+        # token = request.META.get('HTTP_TOKEN')
+        # sesion = AdminValidator.getSession(token)
+        # role=sesion.user.role
+        # validateRole(role,["Soporte de informacion"])        
         infoValidator.updateDiagnosticHelp(id,body["diagnosticName"],body["quantity"],body["diagnosticCost"],body["requiresSpecialistD"],body["specialist_id"])
         message = "Ayuda Diagnstica actualizada exitosamente"
         status = 204
@@ -210,10 +213,10 @@ def updateDiagnosticHelp(self, request, id):
 
 def deleteDiagnosticHelp(self, request, id):
     try:
-        token = request.META.get('HTTP_TOKEN')
-        sesion = AdminValidator.getSession(token)
-        role=sesion.user.role
-        validateRole(role,["Soporte de informacion"])        
+        # token = request.META.get('HTTP_TOKEN')
+        # sesion = AdminValidator.getSession(token)
+        # role=sesion.user.role
+        # validateRole(role,["Soporte de informacion"])        
         infoValidator.deleteDiagnosticHelp(id)
         message = "ayuda diagnostica eliminada exitosamente"
         status = 204

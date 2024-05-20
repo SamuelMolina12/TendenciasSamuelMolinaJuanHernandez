@@ -436,20 +436,13 @@ export function PatientTable({ data, functions, used }) {
 
 
 export const EmployerTable = ({ data = [], functions }) => {
-
-
   const DropDown1 = (employee) => [
     {
-      title: 'actualizar',
+      title: 'Actualizar',
       icon: FiEye,
       onClick: () => {
-        try {
-          functions.preview(employee.id);
-        } catch (error) {
-          console.error('Error al actualizar el empleado:', error);
-          toast.error('Error al actualizar el empleado. Por favor, inténtalo de nuevo.');
-        }
-      }
+        functions.preview(employee.id);
+      },
     },
     {
       title: 'Eliminar',
@@ -457,39 +450,39 @@ export const EmployerTable = ({ data = [], functions }) => {
       onClick: () => {
         functions.handleDelete(employee);
       },
-    }
+    },
   ];
 
   return (
-    <div>
-      <table className="min-w-full bg-white">
+    <div className="overflow-x-auto">
+      <table className="min-w-full bg-white divide-y divide-gray-200">
         <thead>
-          <tr>
-            <th className="py-2">Cédula</th>
-            <th className="py-2">Nombre</th>
-            <th className="py-2">Género</th>
-            <th className="py-2">Correo</th>
-            <th className="py-2">Teléfono</th>
-            <th className="py-2">Fecha Nacimiento</th>
-            <th className="py-2">Dirección</th>
-            <th className="py-2">Rol</th>
-            <th className="py-2">Nombre de Usuario</th>
-            <th className="py-2">Acciones</th>
+          <tr className="bg-gray-50">
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cédula</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Género</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Correo</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teléfono</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha Nacimiento</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dirección</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rol</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre de Usuario</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="bg-white divide-y divide-gray-200">
           {data.map((employee) => (
             <tr key={employee.id}>
-              <td className="py-2">{employee.id}</td>
-              <td className="py-2">{employee.name}</td>
-              <td className="py-2">{employee.genre}</td>
-              <td className="py-2">{employee.mail}</td>
-              <td className="py-2">{employee.telephone}</td>
-              <td className="py-2">{employee.birth}</td>
-              <td className="py-2">{employee.address}</td>
-              <td className="py-2">{employee.role}</td>
-              <td className="py-2">{employee.userName}</td>
-              <td className="py-2">
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.id}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.name}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.genre}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.mail}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.telephone}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.birth}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.address}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.role}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.userName}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                 <MenuSelect datas={DropDown1(employee)} item={employee}>
                   <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
                     <BiDotsHorizontalRounded />
@@ -524,20 +517,27 @@ export const SpecialistTable = ({ data = [], functions }) => {
   ];
 
   return (
-    <div>
-      <table className="min-w-full bg-white">
+    <div className="overflow-x-auto">
+      <table className="min-w-full bg-white divide-y divide-gray-200">
         <thead>
-          <tr>
-            <th className="py-2">ID</th>
-            <th className="py-2">Nombre del especialista</th>
+          <tr className="bg-gray-50">
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              ID
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Nombre del especialista
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Acciones
+            </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="bg-white divide-y divide-gray-200">
           {data.map((specialist) => (
             <tr key={specialist.id}>
-              <td className="py-2">{specialist.id}</td>
-              <td className="py-2">{specialist.nameSpecialist}</td>
-              <td className="py-2">
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{specialist.id}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{specialist.nameSpecialist}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                 <MenuSelect datas={DropDown1(specialist)} item={specialist}>
                   <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
                     <BiDotsHorizontalRounded />
@@ -552,54 +552,108 @@ export const SpecialistTable = ({ data = [], functions }) => {
   );
 };
 
-
 //---------inventario----
 
 //procedimientos
-export function ProceduresTable({ data, onEdit, onDelete }) {
+export function ProceduresTable({ data = [], functions }) {
   const DropDown1 = (procedure) => [
     {
-      title: 'Edit',
+      title: 'Actualizar',
       icon: FiEdit,
-      onClick: () => onEdit(procedure),
+      onClick: () => {
+        functions.preview(procedure.id);
+      },
     },
     {
-      title: 'Delete',
+      title: 'Eliminar',
       icon: RiDeleteBin6Line,
-      onClick: () => onDelete(procedure.id),
+      onClick: () => {
+        functions.handleDelete(procedure);
+      },
     },
   ];
 
   return (
-    <table className="min-w-full divide-y divide-gray-200">
-      <thead className="bg-gray-50">
-        <tr>
-          <th className={thclass}>Procedure Name</th>
-          <th className={thclass}>Procedure Cost</th>
-          <th className={thclass}>Actions</th>
-        </tr>
-      </thead>
-      <tbody className="bg-white divide-y divide-gray-200">
-        {data.map((procedure) => (
-          <tr key={procedure.id}>
-            <td className={tdclass}>{procedure.procedureName}</td>
-            <td className={tdclass}>{procedure.procedureCost}</td>
-            <td className={tdclass}>
-              <MenuSelect datas={DropDown1(procedure)} item={procedure}>
-                <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
-                  <BiDotsHorizontalRounded />
-                </div>
-              </MenuSelect>
-            </td>
+    <div className="overflow-x-auto">
+      <table className="min-w-full bg-white divide-y divide-gray-200">
+        <thead className="bg-gray-50">
+          <tr>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre del procedimiento</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Costo del procedimiento</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200">
+          {data.map((procedure) => (
+            <tr key={procedure.id}>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{procedure.id}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{procedure.procedureName}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{procedure.procedureCost}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <MenuSelect datas={DropDown1(procedure)} item={procedure}>
+                  <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
+                    <BiDotsHorizontalRounded />
+                  </div>
+                </MenuSelect>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
+export function DiagnosticHelpTable({ data = [], functions }) {
+  const DropDown1 = (diagnosticHelp) => [
+    {
+      title: 'Actualizar',
+      icon: FiEdit,
+      onClick: () => {
+        functions.preview(diagnosticHelp.id);
+      },
+    },
+    {
+      title: 'Eliminar',
+      icon: RiDeleteBin6Line,
+      onClick: () => {
+        functions.handleDelete(diagnosticHelp);
+      },
+    },
+  ];
 
-
+  return (
+    <div className="overflow-x-auto">
+      <table className="min-w-full bg-white divide-y divide-gray-200">
+        <thead className="bg-gray-50">
+          <tr>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre de la ayuda diagnostica</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Costo de la ayuda diagnostica</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200">
+          {data.map((diagnosticHelp) => (
+            <tr key={diagnosticHelp.id}>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{diagnosticHelp.id}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{diagnosticHelp.diagnosticName}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{diagnosticHelp.diagnosticCost}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <MenuSelect datas={DropDown1(diagnosticHelp)} item={diagnosticHelp}>
+                  <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
+                    <BiDotsHorizontalRounded />
+                  </div>
+                </MenuSelect>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
 
 // appointment table
 export function AppointmentTable({ data, functions, doctor }) {

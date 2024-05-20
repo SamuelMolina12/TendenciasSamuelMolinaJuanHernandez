@@ -10,6 +10,8 @@ import {
 import { FaRegCalendarAlt, FaTelegramPlane, FaWhatsapp } from 'react-icons/fa';
 import {
   RiFileList3Line,
+
+  RiHeartAddLine,
   RiHeartLine,
   RiImageLine,
   RiLockPasswordLine,
@@ -62,6 +64,12 @@ export const MenuDatas = [
     title: 'Procedimientos',
     path: '/inventory/procedure',
     icon: RiStethoscopeLine,
+
+  },
+  {
+    title:'Ayudas Diagnosticas',
+    path:'/inventory/diagnostichelp',
+    icon: RiHeartAddLine,
 
   },
   {
@@ -434,7 +442,80 @@ export const createProcedure = async (procedureData) => {
 };
 
 
+export const updateProcedure = async (id,procedureData) => {
+  try {
+    const response = await axios.put(`http://localhost:8000/hospital/inventory/procedure/${id}`, procedureData,{
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });    
+  
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
+export const deleteProcedure = async (id) => {
+  try {
+    const response = await axios.delete(`http://localhost:8000/hospital/inventory/procedure/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error al eliminar el procedimiento:', error);
+    throw error;
+  }
+};
+//Ayudas Diagnosticas
+
+export const DiagnosticHelpData = async () => {
+  try {
+    const response = await axios.get('http://localhost:8000/hospital/inventory/diagnosticHelp');
+    if (Array.isArray(response.data)) {
+      return response.data;
+    }
+    else if (typeof response.data === 'object' && response.data !== null) {
+      return [response.data];
+    }
+    else {
+      console.error('La respuesta no es un arreglo ni un objeto válido:', response.data);
+      return [];
+    }
+  } catch (error) {
+    console.error('Error al obtener ayudas diagnosticas:', error);
+    return [];
+  }
+};
+export const createDiagnosticHelp = async (diagnosticHelpData) => {
+  try {
+    const response = await axios.post('http://localhost:8000/hospital/inventory/diagnosticHelp', diagnosticHelpData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateDiagnosticHelp = async (id,diagnosticHelpData) => {
+  try {
+    const response = await axios.put(`http://localhost:8000/hospital/inventory/diagnosticHelp/${id}`, diagnosticHelpData,{
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });    
+  
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteDiagnosticHelp = async (id) => {
+  try {
+    const response = await axios.delete(`http://localhost:8000/hospital/inventory/diagnosticHelp/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
 export const sortsDatas = {
   status: [

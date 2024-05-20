@@ -1,30 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from './Modal';
 import { Button, Input } from '../Form';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
-import { createSpecialist } from '../Datas';
+import { createSpecialist, updateSpecialist } from '../Datas';
 
-function AddSpecialistModal({ closeModal, isOpen }) {
-  const [specialistData, setSpecialistData] = useState({
+function AddSpecialistModal({ closeModal, isOpen, specialistData }) {
+  const [formData, setFormData] = useState({
     nameSpecialist: '',
   });
   const [errorMessage, setErrorMessage] = useState('');
 
+  useEffect(() => {
+    if (specialistData) {
+      setFormData({
+        nameSpecialist: specialistData.nameSpecialist || '',
+      });
+    }
+  }, [specialistData]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setSpecialistData({ ...specialistData, [name]: value });
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async () => {
     try {
-      const response = await createSpecialist(specialistData);
-      console.log('Especialista creado:', response);
-      toast.success('Especialista creado con éxito');
+      if (specialistData) {
+        await updateSpecialist(specialistData.id, formData);
+        toast.success('Especialista actualizado con éxito');
+      } else {
+        await createSpecialist(formData);
+        toast.success('Especialista creado con éxito');
+      }
       closeModal();
     } catch (error) {
-      console.error('Error al crear el especialista:', error);
-      setErrorMessage(error.response?.data?.message || 'Error al crear el especialista. Por favor, inténtalo de nuevo.');
+      console.error('Error al guardar el especialista:', error);
+      setErrorMessage(error.response?.data?.message || 'Error al guardar el especialista. Por favor, inténtalo de nuevo.');
     }
   };
 
@@ -32,14 +44,14 @@ function AddSpecialistModal({ closeModal, isOpen }) {
     <Modal
       closeModal={closeModal}
       isOpen={isOpen}
-      title="Crear Especialista"
+      title={specialistData ? 'Actualizar Especialista' : 'Crear Especialista'}
       width="max-w-3xl"
     >
       {/* Campos del formulario */}
       <Input
         label="Nombre Especialista"
         name="nameSpecialist"
-        value={specialistData.nameSpecialist}
+        value={formData.nameSpecialist}
         onChange={handleInputChange}
         placeholder="Ingrese el nombre del especialista"
         color={true}

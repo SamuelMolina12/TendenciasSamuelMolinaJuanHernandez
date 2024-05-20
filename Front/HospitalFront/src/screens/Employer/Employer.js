@@ -1,18 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { BiPlus } from 'react-icons/bi';
 import Layout from '../../Layout';
-import { useNavigate } from 'react-router-dom';
-import AddDoctorModal from '../../components/Modals/AddDoctorModal';
-import DeleteEmployerModal from '../../components/Modals/DelEmployerModal'; 
-import { EmployerTable } from '../../components/Tables';
-import { EmployerData, deleteEmployer } from '../../components/Datas'; 
 
-function Doctor() {
+
+//Añadir y actualizar empleados
+import AddEmployerModal from '../../components/Modals/AddEmployerModal';
+
+//Eliminar empleados
+import DeleteEmployerModal from '../../components/Modals/DelEmployerModal';
+
+//Importar tabla de empleados
+import { EmployerTable } from '../../components/Tables';
+
+import { EmployerData } from '../../components/Datas';
+
+function Employer() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); 
-  const [selectedEmployer, setSelectedEmployer] = useState(null);
   const [employerData, setEmployerData] = useState([]);
-  const navigate = useNavigate();
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedEmployer, setSelectedEmployer] = useState(null);
+
+
 
   const onCloseModal = async () => {
     setIsModalOpen(false);
@@ -48,7 +57,7 @@ function Doctor() {
   return (
     <Layout>
       {isModalOpen && (
-        <AddDoctorModal
+        <AddEmployerModal
           closeModal={onCloseModal}
           isOpen={isModalOpen}
           employerData={selectedEmployer}
@@ -81,7 +90,7 @@ function Doctor() {
             data={employerData}
             functions={{
               preview: preview,
-              handleDelete: handleDelete, 
+              handleDelete: handleDelete,
             }}
           />
         </div>
@@ -90,4 +99,4 @@ function Doctor() {
   );
 }
 
-export default Doctor;
+export default Employer;

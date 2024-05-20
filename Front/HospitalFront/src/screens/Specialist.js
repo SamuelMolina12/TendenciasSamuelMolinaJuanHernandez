@@ -4,13 +4,11 @@ import Layout from '../Layout';
 import { toast } from 'react-hot-toast';
 import { SpecialistTable } from '../components/Tables';
 import AddSpecialistModal from '../components/Modals/AddSpecialistModal';
-import UpdateSpecialistModal from '../components/Modals/UpdSpecialistModal';
 import DelSpecialistModal from '../components/Modals/DelSpecialistModal';
 import { SpecialistData } from '../components/Datas';
 
 function Receptions() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedSpecialist, setSelectedSpecialist] = useState(null);
   const [data, setData] = useState([]);
@@ -21,7 +19,7 @@ function Receptions() {
         const result = await SpecialistData();
         setData(result);
       } catch (error) {
-        console.error('Error al obtener datos de especialistas:', error);
+
         toast.error('Error al obtener datos de especialistas.');
       }
     };
@@ -29,14 +27,8 @@ function Receptions() {
     fetchData();
   }, []);
 
-  const onCloseModal = async () => {
-    setIsOpen(false);
-    setSelectedSpecialist(null);
-    await getData();
-  };
-
-  const onCloseUpdateModal = async () => {
-    setIsUpdateModalOpen(false);
+  const onCloseAddModal = async () => {
+    setIsAddModalOpen(false);
     setSelectedSpecialist(null);
     await getData();
   };
@@ -57,9 +49,9 @@ function Receptions() {
     }
   };
 
-  const preview = (specialist) => {
+  const handleEdit = (specialist) => {
     setSelectedSpecialist(specialist);
-    setIsUpdateModalOpen(true);
+    setIsAddModalOpen(true);
   };
 
   const handleDelete = (specialist) => {
@@ -69,20 +61,11 @@ function Receptions() {
 
   return (
     <Layout>
-      {isOpen && (
+      {isAddModalOpen && (
         <AddSpecialistModal
-          closeModal={onCloseModal}
-          isOpen={isOpen}
-
-          datas={selectedSpecialist}
-        />
-      )}
-      {isUpdateModalOpen && (
-        <UpdateSpecialistModal
-          closeModal={onCloseUpdateModal}
-          isOpen={isUpdateModalOpen}
-          specialist={selectedSpecialist}
-          onUpdateSuccess={getData}
+          closeModal={onCloseAddModal}
+          isOpen={isAddModalOpen}
+          specialistData={selectedSpecialist} 
         />
       )}
       {isDeleteModalOpen && (
@@ -94,7 +77,7 @@ function Receptions() {
         />
       )}
       <button
-        onClick={() => setIsOpen(true)}
+        onClick={() => setIsAddModalOpen(true)}
         className="w-16 animate-bounce h-16 border border-border z-50 bg-subMain text-white rounded-full flex-colo fixed bottom-8 right-12 button-fb"
       >
         <BiPlus className="text-2xl" />
@@ -110,7 +93,7 @@ function Receptions() {
         <div className="mt-8 w-full overflow-x-scroll">
           <SpecialistTable
             data={data}
-            functions={{ preview, handleDelete }}
+            functions={{ preview: handleEdit, handleDelete }}
           />
         </div>
       </div>

@@ -2,56 +2,72 @@ import React, { useState, useEffect } from 'react';
 import { BiPlus } from 'react-icons/bi';
 import Layout from '../../Layout';
 import { toast } from 'react-hot-toast';
+import AddProcedureModal from '../../components/Modals/AddProcedureModal';
 import { ProceduresTable } from '../../components/Tables'; 
 import { ProceduresData } from '../../components/Datas'; 
-import AddProcedureModal from '../../components/Modals/AddProcedureModal';
+import DeleteProcedureModal from '../../components/Modals/DelProcedureModal';
 
 function Procedures() {
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [data, setData] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [procedureData, setProcedureData] = useState([]);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedProcedure, setSelectedProcedure] = useState(null);
 
-  const fetchProcedures = async () => {
-    const procedures = await ProceduresData();
-    setData(procedures);
+  const onCloseModal = async () => {
+    setIsModalOpen(false);
+    setSelectedProcedure(null);
+    await getData();
   };
 
-  const onCloseAddModal = () => {
-    setIsAddModalOpen(false);
-    fetchProcedures();
+  const onCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+    setSelectedProcedure(null);
   };
 
-  const onEdit = (procedure) => {
+  const preview = (id) => {
+    const procedure = procedureData.find(pro => pro.id === id);
     setSelectedProcedure(procedure);
-    setIsAddModalOpen(true);
+    setIsModalOpen(true);
   };
 
-  const onDelete = async (id) => {
+  const handleDelete = (procedure) => {
+    setSelectedProcedure(procedure);
+    setIsDeleteModalOpen(true);
+  };
+
+  const getData = async () => {
     try {
-      // Lógica para eliminar el procedimiento (si está implementado)
-      toast.success('Procedimiento eliminado con éxito');
-      fetchProcedures();
+      const data = await ProceduresData();
+      setProcedureData(data);
     } catch (error) {
-      console.error('Error al eliminar el procedimiento:', error);
-      toast.error('Error al eliminar el procedimiento. Por favor, inténtalo de nuevo.');
+      console.error('Error al obtener datos de procedimientos:', error);
+      toast.error('Error al obtener datos de procedimientos.');
     }
   };
 
   useEffect(() => {
-    fetchProcedures();
+    getData();
   }, []);
 
   return (
     <Layout>
-      {isAddModalOpen && (
+      {isModalOpen && (
         <AddProcedureModal
-          closeModal={onCloseAddModal}
-          isOpen={isAddModalOpen}
+          closeModal={onCloseModal}
+          isOpen={isModalOpen}
           procedure={selectedProcedure}
         />
       )}
+      {isDeleteModalOpen && (
+        <DeleteProcedureModal
+          closeModal={onCloseDeleteModal}
+          isOpen={isDeleteModalOpen}
+          procedureId={selectedProcedure?.id}
+          onDeleteSuccess={getData}
+        />
+      )}
       <button
-        onClick={() => setIsAddModalOpen(true)}
+        onClick={() => setIsModalOpen(true)}
         className="w-16 animate-bounce h-16 border border-border z-50 bg-subMain text-white rounded-full flex-colo fixed bottom-8 right-12 button-fb"
       >
         <BiPlus className="text-2xl" />
@@ -60,9 +76,8 @@ function Procedures() {
       <div className="bg-white my-8 rounded-xl border-[1px] border-border p-5">
         <div className="mt-8 w-full overflow-x-scroll">
           <ProceduresTable
-            data={data}
-            onEdit={onEdit}
-            onDelete={onDelete}
+            data={procedureData}
+            functions={{ preview, handleDelete }}
           />
         </div>
       </div>
