@@ -33,7 +33,7 @@ function AddDoctorModal({ closeModal, isOpen, employerData }) {
         address: employerData.address || '',
         role: employerData.role || '',
         userName: employerData.userName || '',
-        password: '' 
+        password: employerData.password ||''
       });
     }
   }, [employerData]);
@@ -45,18 +45,20 @@ function AddDoctorModal({ closeModal, isOpen, employerData }) {
 
   const handleSubmit = async () => {
     try {
-      if (employerData) {
+      const dataToSubmit = { ...formData };
+      dataToSubmit.telephone = String(dataToSubmit.telephone); // Convertir teléfono a string
 
-        await updateEmployer(employerData.id, formData);
+      if (employerData) {
+        await updateEmployer(employerData.id, dataToSubmit);
         toast.success('Empleado actualizado con éxito');
       } else {
-
-        await createEmployer(formData);
+        await createEmployer(dataToSubmit);
         toast.success('Empleado creado con éxito');
       }
       closeModal();
     } catch (error) {
       console.error('Error al guardar el empleado:', error);
+      toast.error('Error al guardar el empleado. Por favor, inténtalo de nuevo.');
       setErrorMessage(error.response?.data?.message || 'Error al guardar el empleado. Por favor, inténtalo de nuevo.');
     }
   };
@@ -141,16 +143,15 @@ function AddDoctorModal({ closeModal, isOpen, employerData }) {
         placeholder="Ingrese el nombre de usuario"
         color={true}
       />
-      {!employerData && (
-        <Input
-          label="Contraseña"
-          name="password"
-          value={formData.password}
-          onChange={handleInputChange}
-          placeholder="Ingrese la contraseña"
-          color={true}
-        />
-      )}
+      {/* Mostrar el campo de contraseña tanto en crear como en actualizar */}
+      <Input
+        label="Contraseña"
+        name="password"
+        value={formData.password}
+        onChange={handleInputChange}
+        placeholder="Ingrese la contraseña"
+        color={true}
+      />
       {errorMessage && <p className="text-red-600">{errorMessage}</p>}
 
       <div className="grid sm:grid-cols-2 gap-4 w-full">
