@@ -5,7 +5,7 @@ import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
 import { createEmployer, updateEmployer } from '../Datas';
 
-function AddDoctorModal({ closeModal, isOpen, employerData }) {
+function AddEmployerModal({ closeModal, isOpen, employerData }) {
   const [formData, setFormData] = useState({
     id: '',
     name: '',
@@ -46,7 +46,7 @@ function AddDoctorModal({ closeModal, isOpen, employerData }) {
   const handleSubmit = async () => {
     try {
       const dataToSubmit = { ...formData };
-      dataToSubmit.telephone = String(dataToSubmit.telephone); // Convertir teléfono a string
+      dataToSubmit.telephone = String(dataToSubmit.telephone); 
 
       if (employerData) {
         await updateEmployer(employerData.id, dataToSubmit);
@@ -56,8 +56,7 @@ function AddDoctorModal({ closeModal, isOpen, employerData }) {
         toast.success('Empleado creado con éxito');
       }
       closeModal();
-    } catch (error) {
-      console.error('Error al guardar el empleado:', error);
+    } catch (error) {   
       toast.error('Error al guardar el empleado. Por favor, inténtalo de nuevo.');
       setErrorMessage(error.response?.data?.message || 'Error al guardar el empleado. Por favor, inténtalo de nuevo.');
     }
@@ -70,7 +69,7 @@ function AddDoctorModal({ closeModal, isOpen, employerData }) {
       title={employerData ? 'Actualizar Empleado' : 'Crear Empleado'}
       width="max-w-3xl"
     >
-      {/* Campos del formulario */}
+
       <Input
         label="Cédula"
         name="id"
@@ -143,7 +142,7 @@ function AddDoctorModal({ closeModal, isOpen, employerData }) {
         placeholder="Ingrese el nombre de usuario"
         color={true}
       />
-      {/* Mostrar el campo de contraseña tanto en crear como en actualizar */}
+
       <Input
         label="Contraseña"
         name="password"
@@ -173,4 +172,4 @@ function AddDoctorModal({ closeModal, isOpen, employerData }) {
   );
 }
 
-export default AddDoctorModal;
+export default AddEmployerModal;
