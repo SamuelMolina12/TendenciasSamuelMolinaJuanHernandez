@@ -1,15 +1,13 @@
-// src/components/Modals/AddDoctorModal.js
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from './Modal';
 import { Button, Input } from '../Form';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
-import { createEmployer } from '../Datas';
+import { createEmployer, updateEmployer } from '../Datas';
 
-function AddDoctorModal({ closeModal, isOpen }) {
-  const [employeeData, setEmployeeData] = useState({
-    id: '', // Cambiado de 'cedula' a 'id'
+function AddEmployerModal({ closeModal, isOpen, employerData }) {
+  const [formData, setFormData] = useState({
+    id: '',
     name: '',
     genre: '',
     mail: '',
@@ -18,27 +16,49 @@ function AddDoctorModal({ closeModal, isOpen }) {
     address: '',
     role: '',
     userName: '',
-    password: '' // Agregado campo de contraseña
+    password: ''
   });
+
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    if (employerData) {
+      setFormData({
+        id: employerData.id || '',
+        name: employerData.name || '',
+        genre: employerData.genre || '',
+        mail: employerData.mail || '',
+        telephone: employerData.telephone || '',
+        birth: employerData.birth || '',
+        address: employerData.address || '',
+        role: employerData.role || '',
+        userName: employerData.userName || '',
+        password: employerData.password ||''
+      });
+    }
+  }, [employerData]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setEmployeeData({ ...employeeData, [name]: value });
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async () => {
     try {
-      // Usar la función createEmployer para hacer la solicitud POST
-      const response = await createEmployer(employeeData);
+      const dataToSubmit = { ...formData };
+      dataToSubmit.telephone = String(dataToSubmit.telephone); 
 
-      // Manejar la respuesta si es necesario
-      console.log('Empleado creado:', response);
-      
-      // Cerrar el modal después de crear el empleado
+      if (employerData) {
+        await updateEmployer(employerData.id, dataToSubmit);
+        toast.success('Empleado actualizado con éxito');
+      } else {
+        await createEmployer(dataToSubmit);
+        toast.success('Empleado creado con éxito');
+      }
       closeModal();
-    } catch (error) {
-      console.error('Error al crear el empleado:', error);
-      toast.error('Error al crear el empleado. Por favor, inténtalo de nuevo.');
+    } catch (error) {   
+      toast.error('Error al guardar el empleado. Por favor, inténtalo de nuevo.');
+      setErrorMessage(error.response?.data?.message || 'Error al guardar el empleado. Por favor, inténtalo de nuevo.');
     }
   };
 
@@ -46,14 +66,14 @@ function AddDoctorModal({ closeModal, isOpen }) {
     <Modal
       closeModal={closeModal}
       isOpen={isOpen}
-      title="Crear Empleado"
+      title={employerData ? 'Actualizar Empleado' : 'Crear Empleado'}
       width="max-w-3xl"
     >
-      {/* Aquí están los campos del formulario */}
+
       <Input
-        label="Cédula" // Cambiado de "cedula" a "Cédula"
-        name="id" // Cambiado de "cedula" a "id"
-        value={employeeData.id} // Cambiado de "cedula" a "id"
+        label="Cédula"
+        name="id"
+        value={formData.id}
         onChange={handleInputChange}
         placeholder="Ingrese la cédula"
         color={true}
@@ -61,7 +81,7 @@ function AddDoctorModal({ closeModal, isOpen }) {
       <Input
         label="Nombre Completo"
         name="name"
-        value={employeeData.name}
+        value={formData.name}
         onChange={handleInputChange}
         placeholder="Ingrese el nombre completo"
         color={true}
@@ -69,7 +89,7 @@ function AddDoctorModal({ closeModal, isOpen }) {
       <Input
         label="Género"
         name="genre"
-        value={employeeData.genre}
+        value={formData.genre}
         onChange={handleInputChange}
         placeholder="Ingrese el género"
         color={true}
@@ -77,7 +97,7 @@ function AddDoctorModal({ closeModal, isOpen }) {
       <Input
         label="Correo Electrónico"
         name="mail"
-        value={employeeData.mail}
+        value={formData.mail}
         onChange={handleInputChange}
         placeholder="Ingrese el correo electrónico"
         color={true}
@@ -85,7 +105,7 @@ function AddDoctorModal({ closeModal, isOpen }) {
       <Input
         label="Teléfono"
         name="telephone"
-        value={employeeData.telephone}
+        value={formData.telephone}
         onChange={handleInputChange}
         placeholder="Ingrese el número de teléfono"
         color={true}
@@ -93,7 +113,7 @@ function AddDoctorModal({ closeModal, isOpen }) {
       <Input
         label="Fecha de Nacimiento"
         name="birth"
-        value={employeeData.birth}
+        value={formData.birth}
         onChange={handleInputChange}
         placeholder="Ingrese la fecha de nacimiento"
         color={true}
@@ -101,7 +121,7 @@ function AddDoctorModal({ closeModal, isOpen }) {
       <Input
         label="Dirección"
         name="address"
-        value={employeeData.address}
+        value={formData.address}
         onChange={handleInputChange}
         placeholder="Ingrese la dirección"
         color={true}
@@ -109,7 +129,7 @@ function AddDoctorModal({ closeModal, isOpen }) {
       <Input
         label="Rol"
         name="role"
-        value={employeeData.role}
+        value={formData.role}
         onChange={handleInputChange}
         placeholder="Ingrese el rol"
         color={true}
@@ -117,20 +137,21 @@ function AddDoctorModal({ closeModal, isOpen }) {
       <Input
         label="Nombre de Usuario"
         name="userName"
-        value={employeeData.userName}
+        value={formData.userName}
         onChange={handleInputChange}
         placeholder="Ingrese el nombre de usuario"
         color={true}
       />
-      {/* Nuevo campo de contraseña */}
+
       <Input
         label="Contraseña"
         name="password"
-        value={employeeData.password}
+        value={formData.password}
         onChange={handleInputChange}
         placeholder="Ingrese la contraseña"
         color={true}
       />
+      {errorMessage && <p className="text-red-600">{errorMessage}</p>}
 
       <div className="grid sm:grid-cols-2 gap-4 w-full">
         <button
@@ -151,4 +172,4 @@ function AddDoctorModal({ closeModal, isOpen }) {
   );
 }
 
-export default AddDoctorModal;
+export default AddEmployerModal;

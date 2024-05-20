@@ -30,6 +30,9 @@ const Campaings = React.lazy(() => import('./screens/Campaings'));
 const Services = React.lazy(() => import('./screens/Services'));
 const Invoices = React.lazy(() => import('./screens/Invoices/Invoices'));
 const Settings = React.lazy(() => import('./screens/Settings'));
+
+
+
 const CreateInvoice = React.lazy(() =>
   import('./screens/Invoices/CreateInvoice')
 );
@@ -41,18 +44,27 @@ const EditPayment = React.lazy(() => import('./screens/Payments/EditPayment'));
 const PreviewPayment = React.lazy(() =>
   import('./screens/Payments/PreviewPayment')
 );
-const Medicine = React.lazy(() => import('./screens/Medicine'));
+
 const PatientProfile = React.lazy(() =>
   import('./screens/Patients/PatientProfile')
 );
 const CreatePatient = React.lazy(() =>
   import('./screens/Patients/CreatePatient')
 );
-const Doctors = React.lazy(() => import('./screens/Doctors/Doctors'));
+//empleado
+const Employer = React.lazy(() => import('./screens/Employer/Employer'));
 const DoctorProfile = React.lazy(() =>
-  import('./screens/Doctors/DoctorProfile')
+  import('./screens/Employer/DoctorProfile')
 );
-const Receptions = React.lazy(() => import('./screens/Receptions'));
+//especialista
+const Specialist = React.lazy(() => import('./screens/Specialist'));
+
+//medicina
+const Medicine = React.lazy(() => import('./screens/Medicine'));
+//procedimiento
+const Procedure = React.lazy(() => import('./screens/Inventory/Procedure'));
+//Ayuda diagnostica
+const DiagnosticHelp = React.lazy(() => import('./screens/Inventory/DiagnosticHelp'));
 const NewMedicalRecode = React.lazy(() =>
   import('./screens/Patients/NewMedicalRecode')
 );
@@ -169,12 +181,12 @@ function App() {
               </Suspense>
             }
           />
-          {/* doctors */}
+          {/* Empleado */}
           <Route
-            path="/doctors"
+            path="/employer"
             element={
               <Suspense fallback={<BigLoader />}>
-                <Doctors />
+                <Employer />
               </Suspense>
             }
           />
@@ -186,12 +198,30 @@ function App() {
               </Suspense>
             }
           />
-          {/* reception */}
+          {/* especialistas */}
           <Route
-            path="/receptions"
+            path="/specialist"
             element={
               <Suspense fallback={<BigLoader />}>
-                <Receptions />
+                <Specialist />
+              </Suspense>
+            }
+          />
+          {/* procedimientos */}
+          <Route
+            path="/inventory/procedure"
+            element={
+              <Suspense fallback={<BigLoader />}>
+                <Procedure />
+              </Suspense>
+            }
+          />
+          {/* ayuda diagnostica */}
+          <Route
+            path="/inventory/diagnostichelp"
+            element={
+              <Suspense fallback={<BigLoader />}>
+                <DiagnosticHelp />
               </Suspense>
             }
           />

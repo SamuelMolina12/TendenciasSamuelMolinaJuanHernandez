@@ -39,8 +39,7 @@ def passwordValidator(password,element):
 def usernameValidator(userName, element):
     
     if not re.match(r"^[a-zA-Z0-9]{1,15}$", userName):
-        print("Error: El campo " + element + " debe contener solo letras y números y tener entre 1 y 15 caracteres.")
-        return False
+        raise Exception("El campo " + element + " debe contener solo letras y números y tener entre 1 y 15 caracteres.")
     return userName
 
 
@@ -62,16 +61,16 @@ def validateYesNo(input_str):
             return userInput
         else:
             print("Por favor, responda con 'si' o 'no'.")
+    #   //1212      
 
 
 def phoneValidator(thelephone, element):
     if thelephone.strip() == "":
-        print("El campo " + element + " está vacío.")
-        return False
+        raise Exception("El campo " + element + " está vacío.")
+
     
     if not (1 <= len(thelephone) <= 10 and thelephone.isdigit()):
-        print("Error: El campo " + element + " debe contener entre 1 y 10 dígitos.")
-        return False
+        raise Exception("El campo " + element + " debe tener entre 1 y 10 dígitos.")
     return thelephone
 
 
@@ -93,22 +92,22 @@ def genreValidator(genre,element):
 
 def addressValidator(address, element):
     if len(address) > 30:
-        print("Error: El campo " + element + " no puede tener más de 30 caracteres.")
-        return False
+
+        raise Exception("El campo " + element + " no puede tener más de 30 caracteres.")
     return address
 
 
 def dateValidator(birth, element):
     if birth is None or birth.strip() == "":
-        print(" El campo " + element + " está vacío.")
-        return False
+
+        raise Exception("El campo " + element + " está vacío.")
     try:
         date = datetime.strptime(birth, '%d/%m/%Y')
         if date > datetime.now() or date < datetime.now() - timedelta(days=365*150):
             raise ValueError
     except ValueError:
-        print("Error: El campo " + element + " no está en el formato DD/MM/YYYY o no es una fecha válida.")
-        return False
+
+        raise ValueError("El campo " + element + " no está en el formato DD/MM/YYYY o no es una fecha válida.")
     return birth
 
 
