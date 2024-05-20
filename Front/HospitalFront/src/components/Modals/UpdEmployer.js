@@ -29,7 +29,7 @@ function Updatedemployer({ closeModal, isOpen, employerData }) {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    // Si el nombre es "telephone", convierte el valor a string
+
     const updatedValue = name === 'telephone' ? String(value) : value;
     setUpdatedEmployerData({ ...updatedEmployerData, [name]: updatedValue }); 
   };
@@ -39,8 +39,8 @@ function Updatedemployer({ closeModal, isOpen, employerData }) {
       const { id, ...dataToUpdate } = updatedEmployerData; // Excluir el id
 
       dataToUpdate.telephone = String(dataToUpdate.telephone);
-      console.log('Datos que se van a enviar:', dataToUpdate); // Log de los datos que se envían
-      const updatedData = await updateEmployer(id, dataToUpdate); // Pasar el id por separado
+      console.log('Datos que se van a enviar:', dataToUpdate); 
+      const updatedData = await updateEmployer(id, dataToUpdate); 
       console.log('Empleado actualizado:', updatedData);
       toast.success('Empleado actualizado con éxito.');
       closeModal();

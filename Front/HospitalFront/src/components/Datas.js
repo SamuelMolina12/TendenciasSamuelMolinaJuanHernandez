@@ -45,12 +45,12 @@ export const MenuDatas = [
 
   {
     title: 'Empleados',
-    path: '/doctors',
+    path: '/employer',
     icon: RiUserHeartLine,
   },
   {
     title: 'Especialistas',
-    path: '/receptions',
+    path: '/specialist',
     icon: HiOutlineUsers,
   },
   {
@@ -59,8 +59,8 @@ export const MenuDatas = [
     icon: RiMedicineBottleLine,
   },
   { 
-    ttle: 'Procedures',
-    path: '/procedures',
+    title: 'Procedimientos',
+    path: '/inventory/procedure',
     icon: RiStethoscopeLine,
 
   },
@@ -400,6 +400,41 @@ export const deleteSpecialist = async (id) => {
     throw error;
   }
 };
+
+
+//----------inventario--------
+
+//Procedimientos
+export const ProceduresData = async () => {
+  try {
+    const response = await axios.get('http://127.0.0.1:8000/hospital/inventory/procedure');
+    if (Array.isArray(response.data)) {
+      return response.data;
+    }
+    else if (typeof response.data === 'object' && response.data !== null) {
+      return [response.data];
+    }
+    else {
+      console.error('La respuesta no es un arreglo ni un objeto válido:', response.data);
+      return [];
+    }
+  } catch (error) {
+    console.error('Error al obtener procedimientos:', error);
+    return [];
+  }
+};
+
+export const createProcedure = async (procedureData) => {
+  try {
+    const response = await axios.post('http://localhost:8000/hospital/inventory/procedure', procedureData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
 
 export const sortsDatas = {
   status: [

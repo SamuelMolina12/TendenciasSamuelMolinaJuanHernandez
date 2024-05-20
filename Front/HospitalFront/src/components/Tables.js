@@ -552,6 +552,55 @@ export const SpecialistTable = ({ data = [], functions }) => {
   );
 };
 
+
+//---------inventario----
+
+//procedimientos
+export function ProceduresTable({ data, onEdit, onDelete }) {
+  const DropDown1 = (procedure) => [
+    {
+      title: 'Edit',
+      icon: FiEdit,
+      onClick: () => onEdit(procedure),
+    },
+    {
+      title: 'Delete',
+      icon: RiDeleteBin6Line,
+      onClick: () => onDelete(procedure.id),
+    },
+  ];
+
+  return (
+    <table className="min-w-full divide-y divide-gray-200">
+      <thead className="bg-gray-50">
+        <tr>
+          <th className={thclass}>Procedure Name</th>
+          <th className={thclass}>Procedure Cost</th>
+          <th className={thclass}>Actions</th>
+        </tr>
+      </thead>
+      <tbody className="bg-white divide-y divide-gray-200">
+        {data.map((procedure) => (
+          <tr key={procedure.id}>
+            <td className={tdclass}>{procedure.procedureName}</td>
+            <td className={tdclass}>{procedure.procedureCost}</td>
+            <td className={tdclass}>
+              <MenuSelect datas={DropDown1(procedure)} item={procedure}>
+                <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
+                  <BiDotsHorizontalRounded />
+                </div>
+              </MenuSelect>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
+
+
+
 // appointment table
 export function AppointmentTable({ data, functions, doctor }) {
   return (

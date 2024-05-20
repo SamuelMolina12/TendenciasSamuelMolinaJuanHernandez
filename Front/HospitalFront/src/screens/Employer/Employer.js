@@ -3,26 +3,19 @@ import { BiPlus } from 'react-icons/bi';
 import Layout from '../../Layout';
 import { useNavigate } from 'react-router-dom';
 import AddDoctorModal from '../../components/Modals/AddDoctorModal';
-import Updatedemployer from '../../components/Modals/UpdEmployer';
 import DeleteEmployerModal from '../../components/Modals/DelEmployerModal'; 
 import { EmployerTable } from '../../components/Tables';
 import { EmployerData, deleteEmployer } from '../../components/Datas'; 
 
 function Doctor() {
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); 
   const [selectedEmployer, setSelectedEmployer] = useState(null);
   const [employerData, setEmployerData] = useState([]);
   const navigate = useNavigate();
 
-  const onCloseAddModal = async () => {
-    setIsAddModalOpen(false);
-    await getData();
-  };
-
-  const onCloseUpdateModal = async () => {
-    setIsUpdateModalOpen(false);
+  const onCloseModal = async () => {
+    setIsModalOpen(false);
     setSelectedEmployer(null);
     await getData();
   };
@@ -35,7 +28,7 @@ function Doctor() {
   const preview = (id) => {
     const employer = employerData.find(emp => emp.id === id);
     setSelectedEmployer(employer);
-    setIsUpdateModalOpen(true);
+    setIsModalOpen(true);
   };
 
   const handleDelete = async (id) => {
@@ -54,18 +47,10 @@ function Doctor() {
 
   return (
     <Layout>
-      {isAddModalOpen && (
+      {isModalOpen && (
         <AddDoctorModal
-          closeModal={onCloseAddModal}
-          isOpen={isAddModalOpen}
-          doctor={true}
-          datas={null}
-        />
-      )}
-      {isUpdateModalOpen && (
-        <Updatedemployer
-          closeModal={onCloseUpdateModal}
-          isOpen={isUpdateModalOpen}
+          closeModal={onCloseModal}
+          isOpen={isModalOpen}
           employerData={selectedEmployer}
         />
       )}
@@ -78,7 +63,7 @@ function Doctor() {
         />
       )}
       <button
-        onClick={() => setIsAddModalOpen(true)}
+        onClick={() => setIsModalOpen(true)}
         className="w-16 animate-bounce h-16 border border-border z-50 bg-subMain text-white rounded-full flex-colo fixed bottom-8 right-12 button-fb"
       >
         <BiPlus className="text-2xl" />
@@ -96,7 +81,7 @@ function Doctor() {
             data={employerData}
             functions={{
               preview: preview,
-              handleDelete: handleDelete, // Pasa la función de eliminación a la tabla
+              handleDelete: handleDelete, 
             }}
           />
         </div>
