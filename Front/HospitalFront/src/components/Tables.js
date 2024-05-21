@@ -192,73 +192,6 @@ export function InvoiceTable({ data }) {
 }
 
 // prescription table
-export function MedicineTable({ data, onEdit }) {
-  const DropDown1 = [
-    {
-      title: 'Edit',
-      icon: FiEdit,
-      onClick: (item) => {
-        onEdit(item);
-      },
-    },
-    {
-      title: 'Delete',
-      icon: RiDeleteBin6Line,
-      onClick: () => {
-        toast.error('This feature is not available yet');
-      },
-    },
-  ];
-  return (
-    <table className="table-auto w-full">
-      <thead className="bg-dry rounded-md overflow-hidden">
-        <tr>
-          <th className={thclass}>Name</th>
-          <th className={thclass}>
-            Price <span className="text-xs font-light">(Tsh)</span>
-          </th>
-          <th className={thclass}>Status</th>
-          <th className={thclass}>InStock</th>
-          <th className={thclass}>Measure</th>
-          <th className={thclass}>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((item, index) => (
-          <tr
-            key={item.id}
-            className="border-b border-border hover:bg-greyed transitions"
-          >
-            <td className={tdclass}>
-              <h4 className="text-sm font-medium">{item?.name}</h4>
-            </td>
-            <td className={`${tdclass} font-semibold`}>{item?.price}</td>
-            <td className={tdclass}>
-              <span
-                className={`text-xs font-medium ${
-                  item?.status === 'Out of stock'
-                    ? 'text-red-600'
-                    : 'text-green-600'
-                }`}
-              >
-                {item?.status}
-              </span>
-            </td>
-            <td className={tdclass}>{item?.stock}</td>
-            <td className={tdclass}>{item?.measure}</td>
-            <td className={tdclass}>
-              <MenuSelect datas={DropDown1} item={item}>
-                <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
-                  <BiDotsHorizontalRounded />
-                </div>
-              </MenuSelect>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-}
 
 // service table
 export function ServiceTable({ data, onEdit }) {
@@ -553,6 +486,59 @@ export const SpecialistTable = ({ data = [], functions }) => {
 };
 
 //---------inventario----
+//Medicinas
+export function MedicineTable({ data = [], functions }) {
+  const DropDown1 = (medicine) => [
+    {
+      title: 'Actualizar',
+      icon: FiEdit,
+      onClick: () => {
+        functions.preview(medicine.id);
+      },
+    },
+    {
+      title: 'Eliminar',
+      icon: RiDeleteBin6Line,
+      onClick: () => {
+        functions.handleDelete(medicine);
+      },
+    },
+  ];
+
+  return (
+    <div className="overflow-x-auto">
+      <table className="min-w-full bg-white divide-y divide-gray-200">
+        <thead className="bg-gray-50">
+          <tr>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre de la medicina</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Costo de la medicina</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cantidad</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200">
+          {data.map((medicine) => (
+            <tr key={medicine.id}>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{medicine.id}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{medicine.medicineName}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{medicine.medicineCost}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{medicine.quantity}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <MenuSelect datas={DropDown1(medicine)} item={medicine}>
+                  <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
+                    <BiDotsHorizontalRounded />
+                  </div>
+                </MenuSelect>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 
 //procedimientos
 export function ProceduresTable({ data = [], functions }) {
