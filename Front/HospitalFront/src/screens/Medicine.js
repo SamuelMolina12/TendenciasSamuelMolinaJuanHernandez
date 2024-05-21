@@ -1,11 +1,9 @@
-import React from 'react';
-import { MdOutlineCloudDownload } from 'react-icons/md';
-import { toast } from 'react-hot-toast';
-import { BiChevronDown, BiPlus } from 'react-icons/bi';
+import React , { useState } from 'react';
 import Layout from '../Layout';
-import { Button, Select } from '../components/Form';
+
 import { MedicineTable } from '../components/Tables';
 import { medicineData, sortsDatas } from '../components/Datas';
+import DeleteDiagnosticHelpMo
 import AddEditMedicineModal from '../components/Modals/AddEditMedicine';
 
 function Medicine() {

@@ -220,80 +220,25 @@ export const memberData = [
     date: '01 June 2018',
   },
 ];
-export const medicineData = [
-  {
-    id: 1,
-    name: 'Paracetamol',
-    measure: 'Tablet',
-    stock: 400,
-    price: 1000,
-    status: 'Available',
-    instraction: 'After meal',
-  },
-  {
-    id: 2,
-    name: 'Amoxicillin',
-    measure: 'Capsule',
-    stock: 200,
-    price: 2300,
-    status: 'Available',
-    instraction: 'After meal',
-  },
-  {
-    id: 3,
-    name: 'Ibuprofen',
-    measure: 'mm',
-    stock: 0,
-    price: 5000,
-    status: 'Out of stock',
-    instraction: 'Before meal',
-  },
-  {
-    id: 4,
-    name: 'Aspirin',
-    measure: 'cm',
-    stock: 370,
-    price: 3500,
-    status: 'Available',
-    instraction: 'After meal',
-  },
-  {
-    id: 5,
-    name: 'Diazepam',
-    measure: 'gm',
-    stock: 0,
-    price: 12000,
-    status: 'Out of stock',
-    instraction: 'Before meal',
-  },
-  {
-    id: 6,
-    name: 'Lorazepam',
-    measure: 'mg',
-    stock: 123,
-    price: 15500,
-    status: 'Available',
-    instraction: 'Before meal',
-  },
-  {
-    id: 7,
-    name: 'Codeine',
-    measure: 'ml',
-    stock: 1,
-    price: 30000,
-    status: 'Available',
-    instraction: 'After meal',
-  },
-  {
-    id: 8,
-    name: 'Tramadol',
-    measure: 'lb',
-    stock: 0,
-    price: 200,
-    status: 'Out of stock',
-    instraction: 'Before meal',
-  },
-];
+export const medicineData = async () => {
+  try {
+    const response = await axios.get('http://127.0.0.1:8000/hospital/inventory/medicine');
+    
+    if (Array.isArray(response.data)) {
+      return response.data;
+    } else if (typeof response.data === 'object' && response.data !== null) {
+      return [response.data];
+    } else {
+      console.error('La respuesta no es un arreglo ni un objeto válido:', response.data);
+      return [];
+    }
+  } catch (error) {
+    console.error('Error al obtener empleados:', error);
+    return [];
+  }
+};
+  
+
 //Empleados
 export const EmployerData = async () => {
   try {
