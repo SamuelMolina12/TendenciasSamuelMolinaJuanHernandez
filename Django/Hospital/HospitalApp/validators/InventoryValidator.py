@@ -5,7 +5,7 @@ import HospitalApp.service.InventoryService as infoService
 
 #Medicina ---------------
 def createMedicine(medicineName,medicineCost,medicineQuantity):
-    validators.textValidator(medicineName,"medicina\n")
+    validators.textValidator(medicineName,"medicina")
   
 
     validators.costValidator(medicineCost,"costo")

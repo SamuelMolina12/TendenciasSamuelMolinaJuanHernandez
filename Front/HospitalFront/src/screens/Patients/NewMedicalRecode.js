@@ -5,7 +5,7 @@ import { IoArrowBackOutline } from 'react-icons/io5';
 import { Button, Checkbox, Select, Textarea } from '../../components/Form';
 import { BiChevronDown, BiPlus } from 'react-icons/bi';
 import {
-  medicineData,
+  MedicineData,
   memberData,
   patientImages,
   servicesData,
@@ -161,7 +161,7 @@ function NewMedicalRecode() {
               <p className="text-black text-sm">Medicine</p>
               <div className="w-full overflow-x-scroll">
                 <MedicineDosageTable
-                  data={medicineData?.slice(0, 3)}
+                  data={MedicineData?.slice(0, 3)}
                   functions={{
                     delete: (id) => {
                       toast.error('This feature is not available yet');

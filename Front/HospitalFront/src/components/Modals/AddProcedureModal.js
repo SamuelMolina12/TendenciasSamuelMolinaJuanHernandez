@@ -3,7 +3,7 @@ import Modal from './Modal';
 import { Button, Input } from '../Form';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
-import { createProcedure, updateProcedure } from '../Datas'; // Asegúrate de que updateProcedure esté importado
+import { createProcedure, updateProcedure } from '../Datas'; 
 
 function AddProcedureModal({ closeModal, isOpen, procedure }) {
   const [procedureData, setProcedureData] = useState({

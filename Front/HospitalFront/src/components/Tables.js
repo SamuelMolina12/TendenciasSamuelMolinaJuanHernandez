@@ -81,13 +81,12 @@ export function Transactiontable({ data, action, functions }) {
             <td className={tdclass}>{item.date}</td>
             <td className={tdclass}>
               <span
-                className={`py-1 px-4 ${
-                  item.status === 'Paid'
+                className={`py-1 px-4 ${item.status === 'Paid'
                     ? 'bg-subMain text-subMain'
                     : item.status === 'Pending'
-                    ? 'bg-orange-500 text-orange-500'
-                    : item.status === 'Cancel' && 'bg-red-600 text-red-600'
-                } bg-opacity-10 text-xs rounded-xl`}
+                      ? 'bg-orange-500 text-orange-500'
+                      : item.status === 'Cancel' && 'bg-red-600 text-red-600'
+                  } bg-opacity-10 text-xs rounded-xl`}
               >
                 {item.status}
               </span>
@@ -237,121 +236,13 @@ export function ServiceTable({ data, onEdit }) {
             <td className={`${tdclass} font-semibold`}>{item?.price}</td>
             <td className={tdclass}>
               <span
-                className={`text-xs font-medium ${
-                  !item?.status ? 'text-red-600' : 'text-green-600'
-                }`}
+                className={`text-xs font-medium ${!item?.status ? 'text-red-600' : 'text-green-600'
+                  }`}
               >
                 {!item?.status ? 'Disabled' : 'Enabled'}
               </span>
             </td>
             <td className={tdclass}>
-              <MenuSelect datas={DropDown1} item={item}>
-                <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
-                  <BiDotsHorizontalRounded />
-                </div>
-              </MenuSelect>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-}
-
-// patient table
-export function PatientTable({ data, functions, used }) {
-  const DropDown1 = !used
-    ? [
-        {
-          title: 'View',
-          icon: FiEye,
-          onClick: (data) => {
-            functions.preview(data.id);
-          },
-        },
-        {
-          title: 'Delete',
-          icon: RiDeleteBin6Line,
-          onClick: () => {
-            toast.error('This feature is not available yet');
-          },
-        },
-      ]
-    : [
-        {
-          title: 'View',
-          icon: FiEye,
-          onClick: (data) => {
-            functions.preview(data.id);
-          },
-        },
-      ];
-  const thclasse = 'text-start text-sm font-medium py-3 px-2 whitespace-nowrap';
-  const tdclasse = 'text-start text-xs py-4 px-2 whitespace-nowrap';
-  return (
-    <table className="table-auto w-full">
-      <thead className="bg-dry rounded-md overflow-hidden">
-        <tr>
-          <th className={thclasse}>#</th>
-          <th className={thclasse}>Patient</th>
-          <th className={thclasse}>Created At</th>
-          <th className={thclasse}>Gender</th>
-          {!used && (
-            <>
-              <th className={thclasse}>Blood Group</th>
-              <th className={thclasse}>Age</th>
-            </>
-          )}
-
-          <th className={thclasse}>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((item, index) => (
-          <tr
-            key={item.id}
-            className="border-b border-border hover:bg-greyed transitions"
-          >
-            <td className={tdclasse}>{index + 1}</td>
-            <td className={tdclasse}>
-              <div className="flex gap-4 items-center">
-                {!used && (
-                  <span className="w-12">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-12 rounded-full object-cover border border-border"
-                    />
-                  </span>
-                )}
-
-                <div>
-                  <h4 className="text-sm font-medium">{item.title}</h4>
-                  <p className="text-xs mt-1 text-textGray">{item.phone}</p>
-                </div>
-              </div>
-            </td>
-            <td className={tdclasse}>{item.date}</td>
-
-            <td className={tdclasse}>
-              <span
-                className={`py-1 px-4 ${
-                  item.gender === 'Male'
-                    ? 'bg-subMain text-subMain'
-                    : 'bg-orange-500 text-orange-500'
-                } bg-opacity-10 text-xs rounded-xl`}
-              >
-                {item.gender}
-              </span>
-            </td>
-            {!used && (
-              <>
-                <td className={tdclasse}>{item.blood}</td>
-                <td className={tdclasse}>{item.age}</td>
-              </>
-            )}
-
-            <td className={tdclasse}>
               <MenuSelect datas={DropDown1} item={item}>
                 <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
                   <BiDotsHorizontalRounded />
@@ -372,9 +263,9 @@ export const EmployerTable = ({ data = [], functions }) => {
   const DropDown1 = (employee) => [
     {
       title: 'Actualizar',
-      icon: FiEye,
+      icon: FiEdit,
       onClick: () => {
-        functions.preview(employee.id);
+        functions.handleUpdate(employee.id);
       },
     },
     {
@@ -408,7 +299,15 @@ export const EmployerTable = ({ data = [], functions }) => {
             <tr key={employee.id}>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.id}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.name}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.genre}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <span
+                  className={`py-1 px-4 ${employee.genre === 'Masculino'
+                      ? 'bg-subMain text-subMain'
+                      : 'bg-orange-500 text-orange-500'
+                    } bg-opacity-10 text-xs rounded-xl`}
+                >
+                  {employee.genre}
+                </span></td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.mail}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.telephone}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.birth}</td>
@@ -523,7 +422,7 @@ export function MedicineTable({ data = [], functions }) {
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{medicine.id}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{medicine.medicineName}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{medicine.medicineCost}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{medicine.quantity}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{medicine.medicineQuantity}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                 <MenuSelect datas={DropDown1(medicine)} item={medicine}>
                   <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
@@ -640,6 +539,83 @@ export function DiagnosticHelpTable({ data = [], functions }) {
     </div>
   );
 }
+// paciente tabla
+export function PatientTable({ data = [], functions }) {
+  const DropDown1 = (patient) => [
+    {
+      title: 'Ver',
+      icon: FiEye,
+      onClick: () => {
+        functions.preview(patient.id);
+      },
+    },
+    {
+      title: 'Actualizar',
+      icon: FiEdit,
+      onClick: () => {
+        functions.handleUpdate(patient.id);
+      },
+    },
+    {
+      title: 'Eliminar',
+      icon: RiDeleteBin6Line,
+      onClick: () => {
+        functions.handleDelete(patient);
+      },
+    },
+  ];
+  if (!data || !data[0] || !data[0].patients) {
+    return <div>No hay datos disponibles.</div>;
+  }
+  return (
+    <div className="overflow-x-auto">
+      <table className="min-w-full bg-white divide-y divide-gray-200">
+        <thead>
+          <tr className="bg-gray-50">
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cédula</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Correo</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Genero</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teléfono</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha Nacimiento</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dirección</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200">
+          {data[0].patients.map((patient) => (
+            <tr key={patient.id}>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{patient.id}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{patient.name}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{patient.mail}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <span
+                  className={`py-1 px-4 ${patient.genre === 'Masculino'
+                    ? 'bg-subMain text-subMain'
+                    : 'bg-orange-500 text-orange-500'
+                    } bg-opacity-10 text-xs rounded-xl`}
+                >
+                  {patient.genre}
+                </span>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{patient.telephone}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{patient.birth}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{patient.address}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <MenuSelect datas={DropDown1(patient)} item={patient}>
+                  <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
+                    <BiDotsHorizontalRounded />
+                  </div>
+                </MenuSelect>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
 
 // appointment table
 export function AppointmentTable({ data, functions, doctor }) {
@@ -673,13 +649,12 @@ export function AppointmentTable({ data, functions, doctor }) {
             </td>
             <td className={tdclass}>
               <span
-                className={`py-1  px-4 ${
-                  item.status === 'Approved'
+                className={`py-1  px-4 ${item.status === 'Approved'
                     ? 'bg-subMain text-subMain'
                     : item.status === 'Pending'
-                    ? 'bg-orange-500 text-orange-500'
-                    : item.status === 'Cancel' && 'bg-red-600 text-red-600'
-                } bg-opacity-10 text-xs rounded-xl`}
+                      ? 'bg-orange-500 text-orange-500'
+                      : item.status === 'Cancel' && 'bg-red-600 text-red-600'
+                  } bg-opacity-10 text-xs rounded-xl`}
               >
                 {item.status}
               </span>
@@ -736,13 +711,12 @@ export function PaymentTable({ data, functions, doctor }) {
             </td>
             <td className={tdclass}>
               <span
-                className={`py-1  px-4 ${
-                  item.status === 'Paid'
+                className={`py-1  px-4 ${item.status === 'Paid'
                     ? 'bg-subMain text-subMain'
                     : item.status === 'Pending'
-                    ? 'bg-orange-500 text-orange-500'
-                    : item.status === 'Cancel' && 'bg-red-600 text-red-600'
-                } bg-opacity-10 text-xs rounded-xl`}
+                      ? 'bg-orange-500 text-orange-500'
+                      : item.status === 'Cancel' && 'bg-red-600 text-red-600'
+                  } bg-opacity-10 text-xs rounded-xl`}
               >
                 {item.status}
               </span>

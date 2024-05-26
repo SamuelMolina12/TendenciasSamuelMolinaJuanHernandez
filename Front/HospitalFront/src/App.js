@@ -25,7 +25,7 @@ import Chats from './screens/Chats/Chats';
 const Dashboard = React.lazy(() => import('./screens/Dashboard'));
 const Payments = React.lazy(() => import('./screens/Payments/Payments'));
 const Appointments = React.lazy(() => import('./screens/Appointments'));
-const Patients = React.lazy(() => import('./screens/Patients/Patients'));
+const Patient = React.lazy(() => import('./screens/Patients/Patient'));
 const Campaings = React.lazy(() => import('./screens/Campaings'));
 const Services = React.lazy(() => import('./screens/Services'));
 const Invoices = React.lazy(() => import('./screens/Invoices/Invoices'));
@@ -153,7 +153,7 @@ function App() {
             path="/patients"
             element={
               <Suspense fallback={<BigLoader />}>
-                <Patients />
+                <Patient />
               </Suspense>
             }
           />

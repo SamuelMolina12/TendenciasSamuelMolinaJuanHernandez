@@ -3,7 +3,7 @@ import Modal from './Modal';
 import { Button } from '../Form';
 import { FiEye } from 'react-icons/fi';
 import { MedicineDosageTable } from '../Tables';
-import { medicineData } from '../Datas';
+import { MedicineData } from '../Datas';
 import { useNavigate } from 'react-router-dom';
 
 function MedicalRecodModal({ closeModal, isOpen, datas }) {
@@ -51,7 +51,7 @@ function MedicalRecodModal({ closeModal, isOpen, datas }) {
           </div>
           <div className="col-span-12 md:col-span-9 border-[1px] border-border rounded-xl overflow-hidden p-4">
             <MedicineDosageTable
-              data={medicineData?.slice(0, 3)}
+              data={MedicineData?.slice(0, 3)}
               functions={{}}
               button={false}
             />

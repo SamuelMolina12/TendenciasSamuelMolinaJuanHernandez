@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Modal from './Modal';
 import { BiSearch, BiPlus } from 'react-icons/bi';
-import { memberData, servicesData, medicineData } from '../Datas';
+import { memberData, servicesData, MedicineData } from '../Datas';
 import { RadioGroup } from '@headlessui/react';
 import { Button } from '../Form';
 
@@ -10,7 +10,7 @@ function PatientMedicineServiceModal({ closeModal, isOpen, patient }) {
   const datas = patient
     ? memberData
     : // combine medicine and services data and sort by name
-      [...servicesData.slice(1, 100), ...medicineData].sort((a, b) =>
+      [...servicesData.slice(1, 100), ...MedicineData].sort((a, b) =>
         a.name > b.name ? 1 : -1
       );
 

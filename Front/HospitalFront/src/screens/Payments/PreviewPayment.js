@@ -3,6 +3,7 @@ import Layout from '../../Layout';
 import { toast } from 'react-hot-toast';
 import { Link, useParams } from 'react-router-dom';
 import { IoArrowBackOutline } from 'react-icons/io5';
+
 import { invoicesData, transactionData } from '../../components/Datas';
 import ShareModal from '../../components/Modals/ShareModal';
 import { RiShareBoxLine } from 'react-icons/ri';

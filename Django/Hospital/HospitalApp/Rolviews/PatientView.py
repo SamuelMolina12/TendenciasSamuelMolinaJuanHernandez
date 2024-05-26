@@ -14,11 +14,11 @@ def validateRole(role,validateRoles):
 
 def getPatient(self, request, id=None):
     try:
-        token = request.META.get('HTTP_TOKEN')
-        sesion = AdminValidator.getSession(token)
-        role=sesion.user.role
+        # token = request.META.get('HTTP_TOKEN')
+        # sesion = AdminValidator.getSession(token)
+        # role=sesion.user.role
  
-        validateRole(role,["Personal Administrativo","Doctor","Enfermera"])         
+        # validateRole(role,["Personal Administrativo","Doctor","Enfermera"])         
         patients = [staffAdminValidator.getPatient(id)] if id else staffAdminValidator.getPatients()
         patientsdata = [{"id": patient.id, "name": patient.name,"mail":patient.mail, "genre": patient.genre,"telephone": patient.telephone,"birth":patient.birth,"address":patient.address} for patient in patients]
         clinicalAppointments = []    
@@ -40,7 +40,10 @@ def getPatient(self, request, id=None):
                     appointmentDict = {"id": appointment.id,"date": appointment.date,"hour": appointment.hour,"doctor": appointment.doctor,"appointmentType": appointment.appointmentType,"patientId": appointment.patient.id}
                     clinicalAppointments.append(appointmentDict)  
             
-        status = 204 if patientsdata else 404
+        if patients:
+            status = 200
+        else:
+            status = 404    
     except Exception as error:
         message = str(error)
         status = 400
@@ -54,10 +57,10 @@ def createPatient(self,request):
 
     try:
         body = json.loads(request.body)    
-        token = request.META.get('HTTP_TOKEN')
-        sesion = AdminValidator.getSession(token)
-        role=sesion.user.role
-        validateRole(role,["Personal Administrativo"])         
+        # token = request.META.get('HTTP_TOKEN')
+        # sesion = AdminValidator.getSession(token)
+        # role=sesion.user.role
+        # validateRole(role,["Personal Administrativo"])         
         staffAdminValidator.createPatient(body["id"],body["name"],body["mail"],body["genre"],body["telephone"],body["birth"],body["address"])
         staffAdminValidator.createPolicy(body["Policy"]["insuranceCompany"],body["Policy"]["policyNumber"],body["Policy"]["statePolicy"],body["Policy"]["termPolicy"],body["id"])
         staffAdminValidator.createEmergencyContact(body["emergencyContact"]["nameC"],body["emergencyContact"]["relationship"],body["emergencyContact"]["telephoneC"],body["id"])
@@ -76,10 +79,10 @@ def createPatient(self,request):
 def updatePatient(self, request, id):
     try:
         body = json.loads(request.body)    
-        token = request.META.get('HTTP_TOKEN')
-        sesion = AdminValidator.getSession(token)
-        role=sesion.user.role 
-        validateRole(role,["Personal Administrativo"])   
+        # token = request.META.get('HTTP_TOKEN')
+        # sesion = AdminValidator.getSession(token)
+        # role=sesion.user.role 
+        # validateRole(role,["Personal Administrativo"])   
         staffAdminValidator.updatePatient(id, body["name"],body["mail"],body["genre"],body["telephone"],body["birth"],body["address"])
         staffAdminValidator.updatePolicy(body["Policy"]["insuranceCompany"],body["Policy"]["policyNumber"],body["Policy"]["statePolicy"],body["Policy"]["termPolicy"],id)
         staffAdminValidator.updateEmergencyContact(body["emergencyContact"]["nameC"],body["emergencyContact"]["relationship"],body["emergencyContact"]["telephoneC"],id)            
@@ -93,10 +96,10 @@ def updatePatient(self, request, id):
 
 def deletePatient(self, request, id):
     try:
-        token = request.META.get('HTTP_TOKEN')
-        sesion = AdminValidator.getSession(token)
-        role=sesion.user.role 
-        validateRole(role,["Personal Administrativo"])          
+        # token = request.META.get('HTTP_TOKEN')
+        # sesion = AdminValidator.getSession(token)
+        # role=sesion.user.role 
+        # validateRole(role,["Personal Administrativo"])          
         staffAdminValidator.deletePatient(id) 
         message = "Paciente eliminado exitosamente"
         status = 204

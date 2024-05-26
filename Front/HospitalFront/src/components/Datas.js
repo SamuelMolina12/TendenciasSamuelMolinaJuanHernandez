@@ -40,7 +40,7 @@ export const MenuDatas = [
     icon: HiOutlineHome,
   },
   {
-    title: 'Patients',
+    title: 'Pacientes',
     path: '/patients',
     icon: TbUsers,
   },
@@ -56,7 +56,7 @@ export const MenuDatas = [
     icon: HiOutlineUsers,
   },
   {
-    title: 'Medicine',
+    title: 'Medicina',
     path: '/medicine',
     icon: RiMedicineBottleLine,
   },
@@ -220,7 +220,7 @@ export const memberData = [
     date: '01 June 2018',
   },
 ];
-export const medicineData = async () => {
+export const MedicineData = async () => {
   try {
     const response = await axios.get('http://127.0.0.1:8000/hospital/inventory/medicine');
     
@@ -237,7 +237,38 @@ export const medicineData = async () => {
     return [];
   }
 };
+export const createMedicine = async (medicineData) => {
+  try {
+    const response = await axios.post('http://localhost:8000/hospital/inventory/medicine', medicineData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+export const updateMedicine = async (id,medicineData) => {
+  try {
+    const response = await axios.put(`http://localhost:8000/hospital/inventory/medicine/${id}`, medicineData,{
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });    
   
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteMedicine = async (id) => {
+  try {
+    const response = await axios.delete(`http://localhost:8000/hospital/inventory/medicine/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};  
 
 //Empleados
 export const EmployerData = async () => {
@@ -246,12 +277,7 @@ export const EmployerData = async () => {
     
     if (Array.isArray(response.data)) {
       return response.data;
-    } else if (typeof response.data === 'object' && response.data !== null) {
-      return [response.data];
-    } else {
-      console.error('La respuesta no es un arreglo ni un objeto válido:', response.data);
-      return [];
-    }
+    } 
   } catch (error) {
     console.error('Error al obtener empleados:', error);
     return [];
@@ -356,6 +382,8 @@ export const deleteSpecialist = async (id) => {
 
 
 //----------inventario--------
+//medicina
+
 
 //Procedimientos
 export const ProceduresData = async () => {
@@ -461,6 +489,74 @@ export const deleteDiagnosticHelp = async (id) => {
     throw error;
   }
 };
+
+//paciente
+export const PatientData = async () => {
+  try {
+    const response = await axios.get('http://localhost:8000/hospital/patient');
+    if (Array.isArray(response.data)) {
+      console.log("Oep11")
+      return response.data;
+    }
+    else if (typeof response.data === 'object' && response.data !== null) {
+      console.log("Oep")
+      return [response.data];
+    }
+    else {
+      console.error('La respuesta no es un arreglo ni un objeto válido:', response.data);
+      return [];
+    }
+  } catch (error) {
+    console.error('Error al obtener pacientes:', error);
+    return [];
+  }
+};
+
+export const PatientDataId = async (id) => {
+  try {
+    const response = await axios.get(`http://localhost:8000/hospital/patient/${id}`);
+    if (Array.isArray(response.data)) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Error al obtener pacientes:', error);
+    return [];
+  }  
+};
+
+export const createPatient = async (patientData) => {
+  try {
+    const response = await axios.post('http://localhost:8000/hospital/patient', patientData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updatePatient = async (id,patientData) => {
+  try {
+    const response = await axios.put(`http://localhost:8000/hospital/patient/${id}`, patientData,{
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deletePatient = async (id) => {
+  try {
+    const response = await axios.delete(`http://localhost:8000/hospital/patient/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
 
 export const sortsDatas = {
   status: [
@@ -944,18 +1040,7 @@ export const invoicesData = [
         price: 300,
         description: '',
       },
-      {
-        id: 3,
-        name: medicineData[2].name,
-        price: 260,
-        description: '',
-      },
-      {
-        id: 4,
-        name: medicineData[0].name,
-        price: 190000,
-        description: '',
-      },
+
       {
         id: 5,
         name: servicesData[4].name,
@@ -977,24 +1062,14 @@ export const invoicesData = [
         price: 190000,
         description: '',
       },
-      {
-        id: 2,
-        name: medicineData[4].name,
-        price: 15000,
-        description: '',
-      },
+      
       {
         id: 3,
         name: servicesData[8].name,
         price: 20000,
         description: '',
-      },
-      {
-        id: 4,
-        name: medicineData[3].name,
-        price: 190000,
-        description: '',
-      },
+      }
+
     ],
   },
   {
@@ -1009,25 +1084,8 @@ export const invoicesData = [
         name: servicesData[5].name,
         price: 5000,
         description: '',
-      },
-      {
-        id: 2,
-        name: medicineData[6].name,
-        price: 16000,
-        description: '',
-      },
-      {
-        id: 3,
-        name: medicineData[7].name,
-        price: 10000,
-        description: '',
-      },
-      {
-        id: 4,
-        name: medicineData[2].name,
-        price: 20000,
-        description: '',
-      },
+      }
+      
     ],
   },
   {
@@ -1037,12 +1095,7 @@ export const invoicesData = [
     createdDate: '08/01/2023',
     dueDate: '12/01/2023',
     items: [
-      {
-        id: 1,
-        name: medicineData[5].name,
-        price: 5000,
-        description: '',
-      },
+      
       {
         id: 2,
         name: servicesData[6].name,
@@ -1055,12 +1108,7 @@ export const invoicesData = [
         price: 10000,
         description: '',
       },
-      {
-        id: 4,
-        name: medicineData[1].name,
-        price: 20000,
-        description: '',
-      },
+
       {
         id: 5,
         name: servicesData[3].name,
