@@ -1,89 +1,226 @@
-import React from 'react';
-import Uploder from '../Uploader';
-import { sortsDatas } from '../Datas';
-import { Button, DatePickerComp, Input, Select } from '../Form';
-import { BiChevronDown } from 'react-icons/bi';
+import React, { useState, useEffect } from 'react';
+import { sortsDatas, updatePatient } from '../Datas';
+import { Button, Input, Select } from '../Form';
 import { toast } from 'react-hot-toast';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
-import { RiDeleteBin5Line } from 'react-icons/ri';
 
-function PersonalInfo({ titles }) {
-  const [title, setTitle] = React.useState(sortsDatas.title[0]);
-  const [date, setDate] = React.useState(new Date());
-  const [gender, setGender] = React.useState(sortsDatas.genderFilter[0]);
+function PersonalInfo({ patientData }) {
+  const [title, setTitle] = useState(sortsDatas.title[0]);
+  const [formData, setFormData] = useState({
+    id: '',
+    name: '',
+    genre: '',
+    mail: '',
+    telephone: '',
+    birth: '',
+    address: '',
+    emergencyContact: {
+      nameC: '',
+      relationship: '',
+      telephoneC: '',
+    },
+    Policy: {
+      insuranceCompany: '',
+      policyNumber: '',
+      statePolicy: '',
+      termPolicy: '',
+    }
+  });
+
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    if (patientData) {
+      setFormData({
+        id: patientData.id || '',
+        name: patientData.name || '',
+        genre: patientData.genre || '',
+        mail: patientData.mail || '',
+        telephone: patientData.telephone || '',
+        birth: patientData.birth || '',
+        address: patientData.address || '',
+        emergencyContact: patientData.emergencyContact || {
+          nameC: '',
+          relationship: '',
+          telephoneC: '',
+        },
+        Policy: patientData.Policy || {
+          insuranceCompany: '',
+          policyNumber: '',
+          statePolicy: '',
+          termPolicy: '',
+        }
+      });
+    }
+  }, [patientData]);
+
+  const genreOptions = [
+    { title: 'Masculino', onClick: () => handleGenreChange('Masculino') },
+    { title: 'Femenino', onClick: () => handleGenreChange('Femenino') },
+  ];
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    const keys = name.split('.');
+
+    if (keys.length > 1) {
+      setFormData(prevState => {
+        const updatedData = { ...prevState };
+        let nestedData = updatedData;
+        for (let i = 0; i < keys.length - 1; i++) {
+          nestedData = nestedData[keys[i]];
+        }
+        nestedData[keys[keys.length - 1]] = value;
+        return updatedData;
+      });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+  };
+
+  const handleGenreChange = (genre) => {
+    setFormData({ ...formData, genre });
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const dataToSubmit = { ...formData };
+      dataToSubmit.telephone = String(dataToSubmit.telephone);
+      dataToSubmit.emergencyContact.telephoneC = String(dataToSubmit.emergencyContact.telephoneC);
+  
+      if (!dataToSubmit.id) {
+        throw new Error('ID del paciente no proporcionado.');
+      }
+  
+      await updatePatient(dataToSubmit.id, dataToSubmit);
+      toast.success('Paciente actualizado con éxito');
+    } catch (error) {
+      toast.error('Error al actualizar el paciente. Por favor, inténtalo de nuevo.');
+      setErrorMessage(error.response?.data?.message || error.message || 'Error al actualizar el paciente. Por favor, inténtalo de nuevo.');
+      console.error(error);
+    }
+  };
+
   return (
     <div className="flex-colo gap-4">
-      {/* uploader */}
-      <div className="flex gap-3 flex-col w-full col-span-6">
-        <p className="text-sm">Profile Image</p>
-        <Uploder />
-      </div>
-      {/* select  */}
-      {titles && (
-        <div className="flex w-full flex-col gap-3">
-          <p className="text-black text-sm">Title</p>
-          <Select
-            selectedPerson={title}
-            setSelectedPerson={setTitle}
-            datas={sortsDatas.title}
-          >
-            <div className="w-full flex-btn text-textGray text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain">
-              {title?.name} <BiChevronDown className="text-xl" />
-            </div>
-          </Select>
-        </div>
-      )}
+      <Input
+        label="Nombre Completo"
+        name="name"
+        value={formData.name}
+        onChange={handleInputChange}
+        placeholder="Ingrese el nombre completo"
+        color={true}
+      />
 
-      {/* fullName */}
-      <Input label="Full Name" color={true} type="text" />
-      {/* phone */}
-      <Input label="Phone Number" color={true} type="number" />
-      {/* email */}
-      <Input label="Email" color={true} type="email" />
-      {!titles && (
-        <>
-          {/* gender */}
-          <div className="flex w-full flex-col gap-3">
-            <p className="text-black text-sm">Gender</p>
-            <Select
-              selectedPerson={gender}
-              setSelectedPerson={setGender}
-              datas={sortsDatas.genderFilter}
-            >
-              <div className="w-full flex-btn text-textGray text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain">
-                {gender?.name} <BiChevronDown className="text-xl" />
-              </div>
-            </Select>
-          </div>
-          {/* emergancy contact */}
-          <Input label="Emergency Cotact" color={true} type="number" />
-          {/* date */}
-          <DatePickerComp
-            label="Date of Birth"
-            startDate={date}
-            onChange={(date) => setDate(date)}
-          />
-          {/* address */}
-          <Input label="Address" color={true} type="text" />
-        </>
-      )}
-      {/* submit */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-        <Button
-          label={'Delete Account'}
-          Icon={RiDeleteBin5Line}
-          onClick={() => {
-            toast.error('This feature is not available yet');
-          }}
-        />
-        <Button
-          label={'Save Changes'}
-          Icon={HiOutlineCheckCircle}
-          onClick={() => {
-            toast.error('This feature is not available yet');
-          }}
-        />
+      {/* Dropdown de género */}
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700">Género</label>
+        <Select datas={genreOptions} item={formData.genre}>
+          
+            <span>{formData.genre || 'Seleccione Género'}</span>
+  
+        </Select>
       </div>
+
+      <Input
+        label="Correo Electrónico"
+        name="mail"
+        value={formData.mail}
+        onChange={handleInputChange}
+        placeholder="Ingrese el correo electrónico"
+        color={true}
+      />
+      <Input
+        label="Teléfono"
+        name="telephone"
+        value={formData.telephone}
+        onChange={handleInputChange}
+        placeholder="Ingrese el teléfono"
+        color={true}
+      />
+      <Input
+        label="Fecha de Nacimiento"
+        name="birth"
+        value={formData.birth}
+        onChange={handleInputChange}
+        placeholder="Ingrese la fecha de nacimiento"
+        color={true}
+      />
+      <Input
+        label="Dirección"
+        name="address"
+        value={formData.address}
+        onChange={handleInputChange}
+        placeholder="Ingrese la dirección"
+        color={true}
+      />
+
+      <h3 className="text-lg font-medium text-gray-900">Contacto de Emergencia</h3>
+      <Input
+        label="Nombre del Contacto"
+        name="emergencyContact.nameC"
+        value={formData.emergencyContact.nameC}
+        onChange={handleInputChange}
+        placeholder="Ingrese el nombre del contacto"
+        color={true}
+      />
+      <Input
+        label="Relación"
+        name="emergencyContact.relationship"
+        value={formData.emergencyContact.relationship}
+        onChange={handleInputChange}
+        placeholder="Ingrese la relación"
+        color={true}
+      />
+      <Input
+        label="Teléfono del Contacto"
+        name="emergencyContact.telephoneC"
+        value={formData.emergencyContact.telephoneC}
+        onChange={handleInputChange}
+        placeholder="Ingrese el teléfono del contacto"
+        color={true}
+      />
+
+      <h3 className="text-lg font-medium text-gray-900">Información de la Póliza</h3>
+      <Input
+        label="Compañía de Seguros"
+        name="Policy.insuranceCompany"
+        value={formData.Policy.insuranceCompany}
+        onChange={handleInputChange}
+        placeholder="Ingrese la compañía de seguros"
+        color={true}
+      />
+      <Input
+        label="Número de Póliza"
+        name="Policy.policyNumber"
+        value={formData.Policy.policyNumber}
+        onChange={handleInputChange}
+        placeholder="Ingrese el número de póliza"
+        color={true}
+      />
+      <Input
+        label="Estado de la Póliza"
+        name="Policy.statePolicy"
+        value={formData.Policy.statePolicy}
+        onChange={handleInputChange}
+        placeholder="Ingrese el estado de la póliza"
+        color={true}
+      />
+      <Input
+        label="Término de la Póliza"
+        name="Policy.termPolicy"
+        value={formData.Policy.termPolicy}
+        onChange={handleInputChange}
+        placeholder="Ingrese el término de la póliza"
+        color={true}
+      />
+
+      {errorMessage && <div className="text-red-600">{errorMessage}</div>}
+      <Button
+        label={'Guardar Cambios'}
+        onClick={handleSubmit}
+        className="w-full flex justify-center items-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-main hover:bg-main focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-main"
+      />
     </div>
   );
 }

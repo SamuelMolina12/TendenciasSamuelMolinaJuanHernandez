@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Modal from './Modal';
-import { Button, Input } from '../Form';
+import { Button, Input, Select } from '../Form';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
 import { createEmployer, updateEmployer } from '../Datas';
@@ -19,6 +19,11 @@ function AddEmployerModal({ closeModal, isOpen, employerData }) {
     password: ''
   });
 
+  const genreOptions = [
+    { title: 'Masculino', onClick: (data) => handleGenreChange(data, 'Masculino') },
+    { title: 'Femenino', onClick: (data) => handleGenreChange(data, 'Femenino') },
+  ];
+
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
@@ -33,7 +38,7 @@ function AddEmployerModal({ closeModal, isOpen, employerData }) {
         address: employerData.address || '',
         role: employerData.role || '',
         userName: employerData.userName || '',
-        password: employerData.password ||''
+        password: employerData.password || ''
       });
     }
   }, [employerData]);
@@ -43,10 +48,14 @@ function AddEmployerModal({ closeModal, isOpen, employerData }) {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleGenreChange = (data, genre) => {
+    setFormData({ ...formData, genre });
+  };
+
   const handleSubmit = async () => {
     try {
       const dataToSubmit = { ...formData };
-      dataToSubmit.telephone = String(dataToSubmit.telephone); 
+      dataToSubmit.telephone = String(dataToSubmit.telephone);
 
       if (employerData) {
         await updateEmployer(employerData.id, dataToSubmit);
@@ -56,7 +65,7 @@ function AddEmployerModal({ closeModal, isOpen, employerData }) {
         toast.success('Empleado creado con éxito');
       }
       closeModal();
-    } catch (error) {   
+    } catch (error) {
       toast.error('Error al guardar el empleado. Por favor, inténtalo de nuevo.');
       setErrorMessage(error.response?.data?.message || 'Error al guardar el empleado. Por favor, inténtalo de nuevo.');
     }
@@ -69,7 +78,6 @@ function AddEmployerModal({ closeModal, isOpen, employerData }) {
       title={employerData ? 'Actualizar Empleado' : 'Crear Empleado'}
       width="max-w-3xl"
     >
-
       <Input
         label="Cédula"
         name="id"
@@ -86,14 +94,18 @@ function AddEmployerModal({ closeModal, isOpen, employerData }) {
         placeholder="Ingrese el nombre completo"
         color={true}
       />
-      <Input
-        label="Género"
-        name="genre"
-        value={formData.genre}
-        onChange={handleInputChange}
-        placeholder="Ingrese el género"
-        color={true}
-      />
+
+      {/* Dropdown de género */}
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700">Género</label>
+        <Select datas={genreOptions} item={formData.genre}>
+          <button className="w-full bg-transparent text-sm px-4 py-2 border border-gray-300 rounded-lg focus:border focus:border-subMain flex justify-between items-center">
+            {formData.genre || 'Seleccione un género'}
+
+          </button>
+        </Select>
+      </div>
+
       <Input
         label="Correo Electrónico"
         name="mail"
@@ -142,7 +154,6 @@ function AddEmployerModal({ closeModal, isOpen, employerData }) {
         placeholder="Ingrese el nombre de usuario"
         color={true}
       />
-
       <Input
         label="Contraseña"
         name="password"

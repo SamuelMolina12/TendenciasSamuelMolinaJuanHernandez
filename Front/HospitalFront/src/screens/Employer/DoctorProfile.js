@@ -5,7 +5,7 @@ import ChangePassword from '../../components/UsedComp/ChangePassword';
 import { Link } from 'react-router-dom';
 import { IoArrowBackOutline } from 'react-icons/io5';
 import PatientsUsed from '../../components/UsedComp/PatientsUsed';
-import AppointmentsUsed from '../../components/UsedComp/AppointmentsUsed';
+
 import { doctorTab } from '../../components/Datas';
 import PaymentsUsed from '../../components/UsedComp/PaymentUsed';
 import InvoiceUsed from '../../components/UsedComp/InvoiceUsed';
@@ -24,8 +24,6 @@ function DoctorProfile() {
         return <PersonalInfo titles={true} />;
       case 2:
         return <PatientsUsed />;
-      case 3:
-        return <AppointmentsUsed doctor={true} />;
       case 4:
         return <PaymentsUsed doctor={true} />;
       case 5:

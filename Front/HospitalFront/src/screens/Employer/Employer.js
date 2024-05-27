@@ -34,7 +34,7 @@ function Employer() {
     setSelectedEmployer(null);
   };
 
-  const preview = (id) => {
+  const handleUpdate = (id) => {
     const employer = employerData.find(emp => emp.id === id);
     setSelectedEmployer(employer);
     setIsModalOpen(true);
@@ -89,7 +89,7 @@ function Employer() {
           <EmployerTable
             data={employerData}
             functions={{
-              preview: preview,
+              handleUpdate: handleUpdate,
               handleDelete: handleDelete,
             }}
           />

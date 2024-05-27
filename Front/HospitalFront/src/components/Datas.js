@@ -12,14 +12,14 @@ import {
   RiFileList3Line,
 
   RiHeartAddLine,
-  RiHeartLine,
-  RiImageLine,
   RiLockPasswordLine,
   RiMedicineBottleLine,
   RiMoneyDollarCircleLine,
   RiStethoscopeLine,
   RiUserHeartLine,
   RiUserLine,
+  RiFileTextLine,
+  RiFileList2Line
 } from 'react-icons/ri';
 import {
   MdListAlt,
@@ -40,7 +40,7 @@ export const MenuDatas = [
     icon: HiOutlineHome,
   },
   {
-    title: 'Patients',
+    title: 'Pacientes',
     path: '/patients',
     icon: TbUsers,
   },
@@ -56,7 +56,7 @@ export const MenuDatas = [
     icon: HiOutlineUsers,
   },
   {
-    title: 'Medicine',
+    title: 'Medicina',
     path: '/medicine',
     icon: RiMedicineBottleLine,
   },
@@ -220,7 +220,7 @@ export const memberData = [
     date: '01 June 2018',
   },
 ];
-export const medicineData = async () => {
+export const MedicineData = async () => {
   try {
     const response = await axios.get('http://127.0.0.1:8000/hospital/inventory/medicine');
     
@@ -237,7 +237,38 @@ export const medicineData = async () => {
     return [];
   }
 };
+export const createMedicine = async (medicineData) => {
+  try {
+    const response = await axios.post('http://localhost:8000/hospital/inventory/medicine', medicineData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+export const updateMedicine = async (id,medicineData) => {
+  try {
+    const response = await axios.put(`http://localhost:8000/hospital/inventory/medicine/${id}`, medicineData,{
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });    
   
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteMedicine = async (id) => {
+  try {
+    const response = await axios.delete(`http://localhost:8000/hospital/inventory/medicine/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};  
 
 //Empleados
 export const EmployerData = async () => {
@@ -246,12 +277,7 @@ export const EmployerData = async () => {
     
     if (Array.isArray(response.data)) {
       return response.data;
-    } else if (typeof response.data === 'object' && response.data !== null) {
-      return [response.data];
-    } else {
-      console.error('La respuesta no es un arreglo ni un objeto válido:', response.data);
-      return [];
-    }
+    } 
   } catch (error) {
     console.error('Error al obtener empleados:', error);
     return [];
@@ -356,6 +382,8 @@ export const deleteSpecialist = async (id) => {
 
 
 //----------inventario--------
+//medicina
+
 
 //Procedimientos
 export const ProceduresData = async () => {
@@ -461,6 +489,140 @@ export const deleteDiagnosticHelp = async (id) => {
     throw error;
   }
 };
+
+//paciente
+export const PatientData = async () => {
+  try {
+    const response = await axios.get('http://localhost:8000/hospital/patient');
+    if (Array.isArray(response.data)) {
+      return response.data;
+    }
+    else if (typeof response.data === 'object' && response.data !== null) {
+      return [response.data];
+    }
+    else {
+      console.error('La respuesta no es un arreglo ni un objeto válido:', response.data);
+      return [];
+    }
+  } catch (error) {
+    console.error('Error al obtener pacientes:', error);
+    return [];
+  }
+};
+
+export const PatientDataId = async (id) => {
+  try {
+    const response = await axios.get(`http://localhost:8000/hospital/patient/${id}`);
+    if (response.data && response.data.patients && response.data.patients.length > 0) {
+      return response.data.patients[0];
+      
+    } else {
+      console.error('No se encontraron pacientes:', response.data);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error al obtener pacientes:', error);
+    return null;
+  }
+}
+
+export const createPatient = async (patientData) => {
+  try {
+    const response = await axios.post('http://localhost:8000/hospital/patient', patientData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updatePatient = async (id,patientData) => {
+  try {
+    const response = await axios.put(`http://localhost:8000/hospital/patient/${id}`, patientData,{
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deletePatient = async (id) => {
+  try {
+    const response = await axios.delete(`http://localhost:8000/hospital/patient/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+//Citas Medicas
+
+export const AppointmentsData = async () => {
+  try {
+    const response = await axios.get('http://127.0.0.1:8000/hospital/patient/clinicalAppointment');
+    if (Array.isArray(response.data)) {
+      return response.data;
+    } else if (typeof response.data === 'object' && response.data !== null) {
+      return [response.data];
+    } else {
+      console.error('La respuesta no es un arreglo ni un objeto válido:', response.data);
+      return [];
+    }
+  } catch (error) {
+    console.error('Error al obtener citas:', error);
+    return [];
+  }
+};
+
+
+export const AppointmentsDataPatient = async (id) => {
+  try {
+    const response = await axios.get(`http://127.0.0.1:8000/hospital/patient/clinicalAppointment/${id}`);
+  if (Array.isArray(response.data)) {
+
+    return response.data;
+
+  }
+  else if (typeof response.data === 'object' && response.data !== null) {
+    console.log(response.data)
+    return [response.data];
+
+  } else {
+    console.error('La respuesta no es un arreglo ni un objeto válido:', response.data);
+    return [];
+  }
+} catch (error) {
+  console.error('Error al obtener citas:', error);
+  return [];
+}
+}
+
+
+
+
+//factura
+export const BillingDataPatient = async (id) => {
+  try {
+    const response = await axios.get(`http://127.0.0.1:8000/hospital/patient/billing/${id}`);
+    if (Array.isArray(response.data)) {
+
+      return response.data;
+    } else if (typeof response.data === 'object' && response.data !== null) {
+
+      return [response.data];
+    } else {
+      console.error('La respuesta no es un arreglo ni un objeto válido:', response.data);
+      return [];
+    }
+  } catch (error) {
+    console.error('Error al obtener facturas:', error);
+    return [];
+  }
+};
+
+
 
 export const sortsDatas = {
   status: [
@@ -944,18 +1106,7 @@ export const invoicesData = [
         price: 300,
         description: '',
       },
-      {
-        id: 3,
-        name: medicineData[2].name,
-        price: 260,
-        description: '',
-      },
-      {
-        id: 4,
-        name: medicineData[0].name,
-        price: 190000,
-        description: '',
-      },
+
       {
         id: 5,
         name: servicesData[4].name,
@@ -977,24 +1128,14 @@ export const invoicesData = [
         price: 190000,
         description: '',
       },
-      {
-        id: 2,
-        name: medicineData[4].name,
-        price: 15000,
-        description: '',
-      },
+      
       {
         id: 3,
         name: servicesData[8].name,
         price: 20000,
         description: '',
-      },
-      {
-        id: 4,
-        name: medicineData[3].name,
-        price: 190000,
-        description: '',
-      },
+      }
+
     ],
   },
   {
@@ -1009,25 +1150,8 @@ export const invoicesData = [
         name: servicesData[5].name,
         price: 5000,
         description: '',
-      },
-      {
-        id: 2,
-        name: medicineData[6].name,
-        price: 16000,
-        description: '',
-      },
-      {
-        id: 3,
-        name: medicineData[7].name,
-        price: 10000,
-        description: '',
-      },
-      {
-        id: 4,
-        name: medicineData[2].name,
-        price: 20000,
-        description: '',
-      },
+      }
+      
     ],
   },
   {
@@ -1037,12 +1161,7 @@ export const invoicesData = [
     createdDate: '08/01/2023',
     dueDate: '12/01/2023',
     items: [
-      {
-        id: 1,
-        name: medicineData[5].name,
-        price: 5000,
-        description: '',
-      },
+      
       {
         id: 2,
         name: servicesData[6].name,
@@ -1055,12 +1174,7 @@ export const invoicesData = [
         price: 10000,
         description: '',
       },
-      {
-        id: 4,
-        name: medicineData[1].name,
-        price: 20000,
-        description: '',
-      },
+
       {
         id: 5,
         name: servicesData[3].name,
@@ -1077,63 +1191,7 @@ export const invoicesData = [
   },
 ];
 
-export const appointmentsData = [
-  {
-    id: 1,
-    time: '2 hrs later',
-    user: memberData[4],
-    from: '10:00 AM',
-    to: '12:00 PM',
-    hours: 2,
-    status: 'Pending',
-    doctor: memberData[0],
-    date: 'Jun 12, 2021',
-  },
-  {
-    id: 2,
-    time: '1 hrs ago',
-    user: memberData[5],
-    from: '13:00 Pm',
-    to: '18:00 PM',
-    hours: 5,
-    status: 'Cancel',
-    doctor: memberData[1],
-    date: 'Feb 24, 2021',
-  },
-  {
-    id: 3,
-    time: '2 hrs ago',
-    user: memberData[6],
-    from: '10:00 AM',
-    to: '12:00 PM',
-    hours: 2,
-    status: 'Approved',
-    doctor: memberData[2],
-    date: 'Mar 12, 2023',
-  },
-  {
-    id: 4,
-    time: '3 hrs later',
-    user: memberData[7],
-    from: '06:00 AM',
-    to: '08:00 AM',
-    hours: 3,
-    status: 'Pending',
-    doctor: memberData[3],
-    date: 'Apr 06, 2023',
-  },
-  {
-    id: 5,
-    time: '4 hrs ago',
-    user: memberData[3],
-    from: '10:00 AM',
-    to: '12:00 PM',
-    hours: 7,
-    status: 'Approved',
-    doctor: memberData[4],
-    date: 'May 18, 2023',
-  },
-];
+
 
 export const transactionData = [
   {
@@ -1306,44 +1364,36 @@ export const shareData = [
 export const patientTab = [
   {
     id: 1,
-    title: 'Medical Records',
-    icon: TbChartHistogram,
+    title: 'Informacion del paciente',
+    icon: RiUserLine,
   },
   {
     id: 2,
-    title: 'Appointments',
+    title: 'Citas Medicas',
     icon: BiCalendar,
   },
   {
     id: 3,
-    title: 'Invoices',
+    title: 'Ordenes',
     icon: RiFileList3Line,
   },
   {
     id: 4,
-    title: 'Payments',
-    icon: RiMoneyDollarCircleLine,
+    title: 'Historias Clinicas',
+    icon: RiFileTextLine,
   },
   {
     id: 5,
-    title: 'Images',
-    icon: RiImageLine,
+    title: 'Historia de visitas',
+    icon: RiFileList2Line,
   },
   {
     id: 6,
-    title: 'Chart',
-    icon: RiStethoscopeLine,
-  },
-  {
-    id: 7,
-    title: 'Patient Information',
-    icon: RiUserLine,
-  },
-  {
-    id: 8,
-    title: 'Health Information',
-    icon: RiHeartLine,
-  },
+    title: 'Facturas',
+    icon: RiFileList2Line,
+
+
+  }
 ];
 
 export const doctorTab = [

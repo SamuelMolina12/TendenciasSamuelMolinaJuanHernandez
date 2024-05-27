@@ -14,6 +14,7 @@ import { BsCalendarMonth } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 
 function Payments() {
+
   const [status, setStatus] = useState(sortsDatas.status[0]);
   const [method, setMethod] = useState(sortsDatas.method[0]);
   const [dateRange, setDateRange] = useState([new Date(), new Date()]);

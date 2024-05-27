@@ -1,38 +1,69 @@
-import React , { useState } from 'react';
+import React , { useState ,useEffect} from 'react';
 import Layout from '../Layout';
+import { BiPlus } from 'react-icons/bi';
 
 import { MedicineTable } from '../components/Tables';
-import { medicineData, sortsDatas } from '../components/Datas';
-import DeleteDiagnosticHelpMo
-import AddEditMedicineModal from '../components/Modals/AddEditMedicine';
+import { MedicineData} from '../components/Datas';
+import DeleteMedicine from '../components/Modals/DelMedicineModal';
+import AddMedicineModal from '../components/Modals/AddMedicineModal';
 
 function Medicine() {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [data, setData] = React.useState({});
-  const [status, setStatus] = React.useState(sortsDatas.stocks[0]);
 
-  const onCloseModal = () => {
-    setIsOpen(false);
-    setData({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [medicineData, setMedicineData] = useState([]);
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedMedicine, setSelectedMedicine] = useState(null);
+
+  const onCloseModal = async () => {
+    setIsModalOpen(false);
+    setSelectedMedicine(null);
+    await getData();
   };
 
-  const onEdit = (datas) => {
-    setIsOpen(true);
-    setData(datas);
+  const onCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+    setSelectedMedicine(null);
   };
+
+  const preview = (id) => {
+    const medicine = medicineData.find(med => med.id === id);
+    setSelectedMedicine(medicine);
+    setIsModalOpen(true);
+  };
+  const handleDelete = async (id) => {
+    setSelectedMedicine(id);
+    setIsDeleteModalOpen(true);
+  };
+
+  const getData = async () => {
+    const data = await MedicineData();
+    setMedicineData(data);
+  };
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <Layout>
-      {isOpen && (
-        <AddEditMedicineModal
-          datas={data}
-          isOpen={isOpen}
+      {isModalOpen && (
+        <AddMedicineModal
           closeModal={onCloseModal}
+          isOpen={isModalOpen}
+          medicineData={selectedMedicine}
         />
       )}
+      {isDeleteModalOpen && (
+        <DeleteMedicine
+          closeModal={onCloseDeleteModal}
+          isOpen={isDeleteModalOpen}
+          medicineId={selectedMedicine?.id}
+          onDeleteSuccess={getData}
+        />
+      )}       
       {/* add button */}
       <button
-        onClick={() => setIsOpen(true)}
+        onClick={() => setIsModalOpen(true)}
         className="w-16 animate-bounce h-16 border border-border z-50 bg-subMain text-white rounded-full flex-colo fixed bottom-8 right-12 button-fb"
       >
         <BiPlus className="text-2xl" />
@@ -46,37 +77,14 @@ function Medicine() {
         data-aos-offset="200"
         className="bg-white my-8 rounded-xl border-[1px] border-border p-5"
       >
-        {/* datas */}
-
-        <div className="grid md:grid-cols-6 grid-cols-1 gap-2">
-          <div className="md:col-span-5 grid lg:grid-cols-4 xs:grid-cols-2 items-center gap-2">
-            <input
-              type="text"
-              placeholder='Search "paracetamol"'
-              className="h-14 w-full text-sm text-main rounded-md bg-dry border border-border px-4"
-            />
-            <Select
-              selectedPerson={status}
-              setSelectedPerson={setStatus}
-              datas={sortsDatas.stocks}
-            >
-              <div className="w-full flex-btn text-main text-sm p-4 border bg-dry border-border font-light rounded-lg focus:border focus:border-subMain">
-                {status.name} <BiChevronDown className="text-xl" />
-              </div>
-            </Select>
-          </div>
-
-          {/* export */}
-          <Button
-            label="Export"
-            Icon={MdOutlineCloudDownload}
-            onClick={() => {
-              toast.error('Exporting is not available yet');
+        <div className="mt-8 w-full overflow-x-scroll">
+          <MedicineTable
+            data={medicineData}
+            functions={{
+              preview: preview,
+              handleDelete: handleDelete,
             }}
           />
-        </div>
-        <div className="mt-8 w-full overflow-x-scroll">
-          <MedicineTable data={medicineData} onEdit={onEdit} />
         </div>
       </div>
     </Layout>

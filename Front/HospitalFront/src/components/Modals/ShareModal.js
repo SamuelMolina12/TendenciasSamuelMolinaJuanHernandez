@@ -7,6 +7,7 @@ import { toast } from 'react-hot-toast';
 
 function ShareModal({ closeModal, isOpen }) {
   const [selected, setSelected] = useState();
+  console.log("Olla")
   return (
     <Modal
       closeModal={closeModal}
