@@ -529,5 +529,15 @@ def createBilling(patient_id, doctor_id, order_id):
     billing.totalPay = totalPay
     billing.save()
 
+def getBilling(id):
+    billing = models.Billing.objects.filter(patient_id=id)
+    if billing.exists():
+        return billing
+    else:
+        raise Exception("No hay una factura para ese paciente")
+    
+
+
+
 
 

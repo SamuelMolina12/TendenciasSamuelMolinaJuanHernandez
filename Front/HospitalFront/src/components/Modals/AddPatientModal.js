@@ -3,7 +3,7 @@ import Modal from './Modal';
 import { Button, Input, Select } from '../Form';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
-import { createPatient, updatePatient } from '../Datas';
+import { createPatient } from '../Datas';
 
 function AddPatientModal({ closeModal, isOpen, patientData }) {
     const [formData, setFormData] = useState({
@@ -15,13 +15,11 @@ function AddPatientModal({ closeModal, isOpen, patientData }) {
         birth: '',
         address: '',
         emergencyContact: {
-
             nameC: '',
             relationship: '',
             telephoneC: '',
         },
         Policy: {
-
             insuranceCompany: '',
             policyNumber: '',
             statePolicy: '',
@@ -47,13 +45,11 @@ function AddPatientModal({ closeModal, isOpen, patientData }) {
                 birth: patientData.birth || '',
                 address: patientData.address || '',
                 emergencyContact: {
-
                     nameC: patientData.emergencyContact?.nameC || '',
                     relationship: patientData.emergencyContact?.relationship || '',
                     telephoneC: patientData.emergencyContact?.telephoneC || '',
                 },
                 Policy: {
-
                     insuranceCompany: patientData.Policy?.insuranceCompany || '',
                     policyNumber: patientData.Policy?.policyNumber || '',
                     statePolicy: patientData.Policy?.statePolicy || '',
@@ -92,13 +88,8 @@ function AddPatientModal({ closeModal, isOpen, patientData }) {
             dataToSubmit.telephone = String(dataToSubmit.telephone);
             dataToSubmit.emergencyContact.telephoneC = String(dataToSubmit.emergencyContact.telephoneC);
 
-            if (patientData) {
-                await updatePatient(patientData.id, dataToSubmit);
-                toast.success('Paciente actualizado con éxito');
-            } else {
-                await createPatient(dataToSubmit);
-                toast.success('Paciente creado con éxito');
-            }
+            await createPatient(dataToSubmit);
+            toast.success('Paciente creado con éxito');
             closeModal();
         } catch (error) {
             toast.error('Error al crear el paciente. Por favor, inténtalo de nuevo.');
@@ -173,63 +164,67 @@ function AddPatientModal({ closeModal, isOpen, patientData }) {
                 color={true}
             />
 
-            <Input
-                label="Contacto de Emergencia"
-                name="emergencyContact.nameC"
-                value={formData.emergencyContact.nameC}
-                onChange={handleInputChange}
-                placeholder="Ingrese el nombre del contacto de emergencia"
-                color={true}
-            />
-            <Input
-                label="Parentesco"
-                name="emergencyContact.relationship"
-                value={formData.emergencyContact.relationship}
-                onChange={handleInputChange}
-                placeholder="Ingrese el parentesco"
-                color={true}
-            />
-            <Input
-                label="Teléfono de Emergencia"
-                name="emergencyContact.telephoneC"
-                value={formData.emergencyContact.telephoneC}
-                onChange={handleInputChange}
-                placeholder="Ingrese el teléfono de emergencia"
-                color={true}
-            />
+            {!patientData && (
+                <>
+                    <Input
+                        label="Contacto de Emergencia"
+                        name="emergencyContact.nameC"
+                        value={formData.emergencyContact.nameC}
+                        onChange={handleInputChange}
+                        placeholder="Ingrese el nombre del contacto de emergencia"
+                        color={true}
+                    />
+                    <Input
+                        label="Parentesco"
+                        name="emergencyContact.relationship"
+                        value={formData.emergencyContact.relationship}
+                        onChange={handleInputChange}
+                        placeholder="Ingrese el parentesco"
+                        color={true}
+                    />
+                    <Input
+                        label="Teléfono de Emergencia"
+                        name="emergencyContact.telephoneC"
+                        value={formData.emergencyContact.telephoneC}
+                        onChange={handleInputChange}
+                        placeholder="Ingrese el teléfono de emergencia"
+                        color={true}
+                    />
 
-            <Input
-                label="Compañía de Seguros"
-                name="Policy.insuranceCompany"
-                value={formData.Policy.insuranceCompany}
-                onChange={handleInputChange}
-                placeholder="Ingrese la compañía de seguros"
-                color={true}
-            />
-            <Input
-                label="Número de Póliza"
-                name="Policy.policyNumber"
-                value={formData.Policy.policyNumber}
-                onChange={handleInputChange}
-                placeholder="Ingrese el número de póliza"
-                color={true}
-            />
-            <Input
-                label="Estado de la Póliza"
-                name="Policy.statePolicy"
-                value={formData.Policy.statePolicy}
-                onChange={handleInputChange}
-                placeholder="Ingrese el estado de la póliza"
-                color={true}
-            />
-            <Input
-                label="Término de la Póliza"
-                name="Policy.termPolicy"
-                value={formData.Policy.termPolicy}
-                onChange={handleInputChange}
-                placeholder="Ingrese el término de la póliza"
-                color={true}
-            />
+                    <Input
+                        label="Compañía de Seguros"
+                        name="Policy.insuranceCompany"
+                        value={formData.Policy.insuranceCompany}
+                        onChange={handleInputChange}
+                        placeholder="Ingrese la compañía de seguros"
+                        color={true}
+                    />
+                    <Input
+                        label="Número de Póliza"
+                        name="Policy.policyNumber"
+                        value={formData.Policy.policyNumber}
+                        onChange={handleInputChange}
+                        placeholder="Ingrese el número de póliza"
+                        color={true}
+                    />
+                    <Input
+                        label="Estado de la Póliza"
+                        name="Policy.statePolicy"
+                        value={formData.Policy.statePolicy}
+                        onChange={handleInputChange}
+                        placeholder="Ingrese el estado de la póliza"
+                        color={true}
+                    />
+                    <Input
+                        label="Término de la Póliza"
+                        name="Policy.termPolicy"
+                        value={formData.Policy.termPolicy}
+                        onChange={handleInputChange}
+                        placeholder="Ingrese el término de la póliza"
+                        color={true}
+                    />
+                </>
+            )}
 
             {errorMessage && <p className="text-red-600">{errorMessage}</p>}
 

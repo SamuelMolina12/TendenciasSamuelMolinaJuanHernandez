@@ -15,6 +15,7 @@ import SenderReceverComp from '../../components/SenderReceverComp';
 
 function PreviewPayment() {
   const { id } = useParams();
+
   const [isShareOpen, setIsShareOpen] = useState(false);
   const payment = transactionData.find((item) => item.id.toString() === id);
   const buttonClass =

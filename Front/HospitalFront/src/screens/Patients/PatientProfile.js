@@ -1,42 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from '../../Layout';
 import { patientTab } from '../../components/Datas';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { IoArrowBackOutline } from 'react-icons/io5';
 import MedicalRecord from './MedicalRecord';
-import AppointmentsUsed from '../../components/UsedComp/AppointmentsUsed';
+import ClinicalAppointmentUsed from '../../components/UsedComp/ClinicalAppoinmentsUsed';
 import InvoiceUsed from '../../components/UsedComp/InvoiceUsed';
 import PaymentsUsed from '../../components/UsedComp/PaymentUsed';
 import PersonalInfo from '../../components/UsedComp/PersonalInfo';
 import PatientImages from './PatientImages';
 import HealthInfomation from './HealthInfomation';
-import DentalChart from './DentalChart';
+import BillingUsed from '../../components/UsedComp/BillingUsed';
+import { PatientDataId } from '../../components/Datas';
 
 function PatientProfile() {
-  const [activeTab, setActiveTab] = React.useState(1);
+  const [activeTab, setActiveTab] = useState(1);
+  const [patientData, setPatientData] = useState(null);
+  const { id } = useParams();
 
-  const tabPanel = () => {
-    switch (activeTab) {
-      case 1:
-        return <MedicalRecord />;
-      case 2:
-        return <AppointmentsUsed doctor={false} />;
-      case 3:
-        return <InvoiceUsed />;
-      case 4:
-        return <PaymentsUsed doctor={false} />;
-      case 5:
-        return <PatientImages />;
-      case 6:
-        return <DentalChart />;
-      case 7:
-        return <PersonalInfo titles={false} />;
-      case 8:
-        return <HealthInfomation />;
-      default:
-        return;
-    }
-  };
+  useEffect(() => {
+    const fetchPatientData = async () => {
+      const data = await PatientDataId(id);
+      setPatientData(data);
+    };
+
+    fetchPatientData();
+  }, [id]);
+
+  if (!patientData) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Layout>
@@ -47,7 +40,7 @@ function PatientProfile() {
         >
           <IoArrowBackOutline />
         </Link>
-        <h1 className="text-xl font-semibold">Amani Mmassy</h1>
+        <h1 className="text-xl font-semibold">Paciente</h1>
       </div>
       <div className=" grid grid-cols-12 gap-6 my-8 items-start">
         <div
@@ -57,15 +50,9 @@ function PatientProfile() {
           data-aos-offset="200"
           className="col-span-12 flex-colo gap-6 lg:col-span-4 bg-white rounded-xl border-[1px] border-border p-6 lg:sticky top-28"
         >
-          <img
-            src="/images/user7.png"
-            alt="setting"
-            className="w-40 h-40 rounded-full object-cover border border-dashed border-subMain"
-          />
           <div className="gap-2 flex-colo">
-            <h2 className="text-sm font-semibold">Amani Mmassy</h2>
-            <p className="text-xs text-textGray">amanimmassy@gmail.com</p>
-            <p className="text-xs">+254 712 345 678</p>
+            <h2 className="text-sm font-semibold">{patientData.name}</h2>
+            <p className="text-xs text-textGray">{patientData.mail}</p>
           </div>
           {/* tabs */}
           <div className="flex-colo gap-3 px-2 xl:px-12 w-full">
@@ -94,7 +81,14 @@ function PatientProfile() {
           data-aos-offset="200"
           className="col-span-12 lg:col-span-8 bg-white rounded-xl border-[1px] border-border p-6"
         >
-          {tabPanel()}
+          {activeTab === 1 && <PersonalInfo patientData={patientData} />}
+          {activeTab === 2 && <ClinicalAppointmentUsed patientId={id} />}
+          {activeTab === 3 && <InvoiceUsed />}
+          {activeTab === 4 && <PaymentsUsed doctor={false} />}
+          {activeTab === 5 && <PatientImages />}
+          {activeTab === 6 && <BillingUsed patientId={id} />}
+          {activeTab === 7 && <MedicalRecord />}
+          {activeTab === 8 && <HealthInfomation />}
         </div>
       </div>
     </Layout>

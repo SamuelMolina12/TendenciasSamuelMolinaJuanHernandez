@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../../Layout';
 import { BiPlus } from 'react-icons/bi';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { PatientData } from '../../components/Datas';
-import { PatientTable } from '../../components/Tables'
+import { PatientTable } from '../../components/Tables';
 import AddPatientModal from '../../components/Modals/AddPatientModal';
 import DeletePatientModal from '../../components/Modals/DelPatientModal';
-
-
 
 function Patient() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,7 +14,7 @@ function Patient() {
   const [selectedPatient, setSelectedPatient] = useState(null);
   const navigate = useNavigate();
 
-  const onCloseModal = async () => { 
+  const onCloseModal = async () => {
     setIsModalOpen(false);
     setSelectedPatient(null);
     await getData();
@@ -25,13 +23,11 @@ function Patient() {
   const onCloseDeleteModal = () => {
     setIsDeleteModalOpen(false);
     setSelectedPatient(null);
-  }
-  const handleUpdate = (id) => {
-    const patient = patientData.find(emp => emp.id === id);
-    setSelectedPatient(patient);
-    setIsModalOpen(true);
   };
-  const handleDelete = async (id) => {
+
+
+
+  const handleDelete = (id) => {
     setSelectedPatient(id);
     setIsDeleteModalOpen(true);
   };
@@ -39,14 +35,11 @@ function Patient() {
   const getData = async () => {
     const data = await PatientData();
     setPatientData(data);
-  };  
+  };
 
   useEffect(() => {
     getData();
   }, []);
-
-
-
 
   const preview = (id) => {
     navigate(`/patients/preview/${id}`);
@@ -54,13 +47,15 @@ function Patient() {
 
   return (
     <Layout>
-     
-      <Link
-        to="/patients/create"
+      <button
+        onClick={() => {
+          setSelectedPatient(null); 
+          setIsModalOpen(true);
+        }}
         className="w-16 animate-bounce h-16 border border-border z-50 bg-subMain text-white rounded-full flex-colo fixed bottom-8 right-12 button-fb"
       >
         <BiPlus className="text-2xl" />
-      </Link>
+      </button>
       {isModalOpen && (
         <AddPatientModal
           closeModal={onCloseModal}
@@ -72,16 +67,10 @@ function Patient() {
         <DeletePatientModal
           closeModal={onCloseDeleteModal}
           isOpen={isDeleteModalOpen}
-          patientId={selectedPatient?.id}
+          patientId={selectedPatient}
           onDeleteSuccess={getData}
         />
       )}
-      <button
-        onClick={() => setIsModalOpen(true)}
-        className="w-16 animate-bounce h-16 border border-border z-50 bg-subMain text-white rounded-full flex-colo fixed bottom-8 right-12 button-fb"
-      >
-        <BiPlus className="text-2xl" />
-      </button>
       <h1 className="text-xl font-semibold">Pacientes</h1>
       <div
         data-aos="fade-up"
@@ -95,7 +84,6 @@ function Patient() {
             data={patientData}
             functions={{
               preview: preview,
-              handleUpdate: handleUpdate,
               handleDelete: handleDelete,
             }}
           />

@@ -144,8 +144,7 @@ export function Textarea({ label, name, register, placeholder, rows }) {
 export function DatePickerComp({ label, startDate, onChange }) {
   return (
     <div className="text-sm w-full">
-      <label className={'text-black text-sm'}>{label}</label>
-
+      <label className="text-black text-sm">{label}</label>
       <DatePicker
         selected={startDate}
         onChange={onChange}

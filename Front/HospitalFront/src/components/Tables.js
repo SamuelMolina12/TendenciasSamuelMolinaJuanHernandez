@@ -549,18 +549,12 @@ export function PatientTable({ data = [], functions }) {
         functions.preview(patient.id);
       },
     },
-    {
-      title: 'Actualizar',
-      icon: FiEdit,
-      onClick: () => {
-        functions.handleUpdate(patient.id);
-      },
-    },
+
     {
       title: 'Eliminar',
       icon: RiDeleteBin6Line,
       onClick: () => {
-        functions.handleDelete(patient);
+        functions.handleDelete(patient.id);
       },
     },
   ];
@@ -616,67 +610,65 @@ export function PatientTable({ data = [], functions }) {
   );
 };
 
-
-// appointment table
-export function AppointmentTable({ data, functions, doctor }) {
+// Cita medica Tabla
+export function AppointmentTable({ data = [], functions }) {
   return (
     <table className="table-auto w-full">
       <thead className="bg-dry rounded-md overflow-hidden">
         <tr>
-          <th className={thclass}>Date</th>
-          <th className={thclass}>{doctor ? 'Patient' : 'Doctor'}</th>
-          <th className={thclass}>Status</th>
-          <th className={thclass}>Time</th>
-          <th className={thclass}>Action</th>
+          <th className={thclass}>Fecha</th>
+          <th className={thclass}>Hora</th>
+          <th className={thclass}>Doctor</th>
+          <th className={thclass}>Tipo de Cita</th>
         </tr>
       </thead>
       <tbody>
-        {data.map((item) => (
-          <tr
-            key={item.id}
-            className="border-b border-border hover:bg-greyed transitions"
-          >
-            <td className={tdclass}>
-              <p className="text-xs">{item.date}</p>
-            </td>
-            <td className={tdclass}>
-              <h4 className="text-xs font-medium">
-                {doctor ? item.user.title : item.doctor.title}
-              </h4>
-              <p className="text-xs mt-1 text-textGray">
-                {doctor ? item.user.phone : item.doctor.phone}
-              </p>
-            </td>
-            <td className={tdclass}>
-              <span
-                className={`py-1  px-4 ${item.status === 'Approved'
-                    ? 'bg-subMain text-subMain'
-                    : item.status === 'Pending'
-                      ? 'bg-orange-500 text-orange-500'
-                      : item.status === 'Cancel' && 'bg-red-600 text-red-600'
-                  } bg-opacity-10 text-xs rounded-xl`}
-              >
-                {item.status}
-              </span>
-            </td>
-            <td className={tdclass}>
-              <p className="text-xs">{`${item.from} - ${item.to}`}</p>
-            </td>
-
-            <td className={tdclass}>
-              <button
-                onClick={() => functions.preview(item)}
-                className="text-sm flex-colo bg-white text-subMain border rounded-md w-10 h-10"
-              >
-                <FiEye />
-              </button>
-            </td>
+        {data.map((appointment) => (
+          <tr key={appointment.id}>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.date}</td> 
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.hour}</td> 
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.doctor}</td> 
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.appointmentType}</td> 
           </tr>
         ))}
       </tbody>
     </table>
   );
 }
+
+//Facturacion Tabla
+export function BillingTable({ data = [], functions }) {
+  return (
+    <table className="table-auto w-full">
+      <thead className="bg-dry rounded-md overflow-hidden">
+        <tr>
+          <th className={thclass}>Id</th>
+          <th className={thclass}>Doctor</th>
+          <th className={thclass}>Numero de poliza</th>
+          <th className={thclass}>Termino de la poliza</th>
+          <th className={thclass}>Costo</th>
+          <th className={thclass}>Pago total</th>
+          <th className={thclass}>Fecha</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((billing) => (
+          <tr key={billing.id}>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{billing.id}</td> 
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{billing.doctorName}</td> 
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{billing.policyNumber}</td> 
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{billing.termPolicy}</td> 
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{billing.cost}</td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{billing.totalPay}</td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{billing.date}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
 
 // payment table
 export function PaymentTable({ data, functions, doctor }) {
