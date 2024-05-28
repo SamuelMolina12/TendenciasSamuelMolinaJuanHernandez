@@ -102,6 +102,8 @@ def getClinicalAppointment(id):
     id = validators.numberValidator(id,"id")
     return staffAdminService.getClinicalAppointment(id)
 
+def getAllClinicalAppointments():
+    return staffAdminService.getAllClinicalAppointments()
 def getClinicalAppointmentPatient(id):
     id = validators.numberValidator(id,"id")
     return staffAdminService.getClinicalAppointmentPatient(id)

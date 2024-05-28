@@ -558,10 +558,11 @@ export const deletePatient = async (id) => {
 };
 
 //Citas Medicas
-
-export const AppointmentsData = async () => {
+export const AppointmentsData = async (date) => {
   try {
-    const response = await axios.get('http://127.0.0.1:8000/hospital/patient/clinicalAppointment');
+    const response = await axios.get('http://127.0.0.1:8000/hospital/patient/clinicalAppointment', {
+      params: { date }
+    });
     if (Array.isArray(response.data)) {
       return response.data;
     } else if (typeof response.data === 'object' && response.data !== null) {
@@ -575,7 +576,6 @@ export const AppointmentsData = async () => {
     return [];
   }
 };
-
 
 export const AppointmentsDataPatient = async (id) => {
   try {
@@ -599,6 +599,36 @@ export const AppointmentsDataPatient = async (id) => {
 }
 }
 
+export const createAppointment = async (appointmentData) => {
+  try {
+    const response = await axios.post('http://127.0.0.1:8000/hospital/patient/clinicalAppointment', appointmentData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateAppointment = async (id, appointmentData) => {
+  try {
+    const response = await axios.put(`http://127.0.0.1:8000/hospital/patient/clinicalAppointment/${id}`, appointmentData, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteAppointment = async (id) => {
+  try {
+    const response = await axios.delete(`http://127.0.0.1:8000/hospital/patient/clinicalAppointment/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
 
 

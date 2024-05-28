@@ -88,7 +88,7 @@ class ClinicalAppointmentView(View):
     def dispatch(self, request, *args: any, **kwargs: any):
         return super().dispatch(request, *args, **kwargs)
    
-    def get(self,request,id):
+    def get(self,request,id=None):
         return patientView.getClinicalAppointment(self, request, id)
  
     def post(self,request):

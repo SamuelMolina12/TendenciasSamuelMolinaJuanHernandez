@@ -3,26 +3,28 @@ import Modal from './Modal';
 import { Button, Input } from '../Form';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
-import {createMedicine, updateMedicine} from '../Datas';
-
+import { createMedicine, updateMedicine } from '../Datas';
 
 function AddMedicineModal({ closeModal, isOpen, medicine }) {
   const [medicineData, setMedicineData] = useState({
     medicineName: '',
     medicineCost: '',
     medicineQuantity: '',
-
   });
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     if (medicine) {
       setMedicineData({
-       
         medicineName: medicine.medicineName || '',
         medicineCost: medicine.medicineCost || '',
-        medicineQuantity: medicine.medicineQuantity || ''
-       
+        medicineQuantity: medicine.medicineQuantity || '',
+      });
+    } else {
+      setMedicineData({
+        medicineName: '',
+        medicineCost: '',
+        medicineQuantity: '',
       });
     }
   }, [medicine]);
@@ -36,10 +38,10 @@ function AddMedicineModal({ closeModal, isOpen, medicine }) {
     try {
       if (medicine) {
         await updateMedicine(medicine.id, medicineData);
-        toast.success('medicina actualizada con éxito');
+        toast.success('Medicina actualizada con éxito');
       } else {
         await createMedicine(medicineData);
-        toast.success('medicina creada con éxito');
+        toast.success('Medicina creada con éxito');
       }
       closeModal();
     } catch (error) {
@@ -49,12 +51,7 @@ function AddMedicineModal({ closeModal, isOpen, medicine }) {
   };
 
   return (
-    <Modal
-      closeModal={closeModal}
-      isOpen={isOpen}
-      title={medicine ? 'Actualizar Medicina' : 'Crear Medicina'}
-      width="max-w-3xl"
-    >
+    <Modal closeModal={closeModal} isOpen={isOpen} title={medicine ? 'Actualizar Medicina' : 'Crear Medicina'} width="max-w-3xl">
       <Input
         label="Nombre de la medicina"
         name="medicineName"
@@ -76,26 +73,15 @@ function AddMedicineModal({ closeModal, isOpen, medicine }) {
         name="medicineQuantity"
         value={medicineData.medicineQuantity}
         onChange={handleInputChange}
-        placeholder="Ingrese la cantidad de la medicina (mg, ml,etc)"
+        placeholder="Ingrese la cantidad de la medicina (mg, ml, etc)"
         color={true}
-      />      
-
+      />
       {errorMessage && <p className="text-red-600">{errorMessage}</p>}
-
       <div className="grid sm:grid-cols-2 gap-4 w-full">
-        <button
-          onClick={closeModal}
-          className="bg-red-600 bg-opacity-5 text-red-600 text-sm p-4 rounded-lg font-light border border-red-600"
-        >
+        <button onClick={closeModal} className="bg-red-600 bg-opacity-5 text-red-600 text-sm p-4 rounded-lg font-light border border-red-600">
           Cancelar
         </button>
-        <Button
-          label="Guardar"
-          Icon={HiOutlineCheckCircle}
-          onClick={handleSubmit}
-          color="bg-subMain"
-          textColor="text-white"
-        />
+        <Button label="Guardar" Icon={HiOutlineCheckCircle} onClick={handleSubmit} color="bg-subMain" textColor="text-white" />
       </div>
     </Modal>
   );

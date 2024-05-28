@@ -1,21 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { BiPlus } from 'react-icons/bi';
 import Layout from '../../Layout';
-
-
 import AddDiagnosticHelpModal from '../../components/Modals/AddDiagnosticHelpModal';
-
-
 import DeleteDiagnosticHelpModal from '../../components/Modals/DelDiagnosticHelpModal';
-
 import { DiagnosticHelpTable } from '../../components/Tables';
-
 import { DiagnosticHelpData } from '../../components/Datas';
 
 function DiagnosticHelp() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [diagnosticHelpData, setDiagnosticHelpData] = useState([]);
-
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [selectedDiagnosticHelp, setSelectedDiagnosticHelp] = useState(null);
 
@@ -39,7 +32,7 @@ function DiagnosticHelp() {
     const handleDelete = async (id) => {
         setSelectedDiagnosticHelp(id);
         setIsDeleteModalOpen(true);
-    }
+    };
 
     const getData = async () => {
         const data = await DiagnosticHelpData();
@@ -54,17 +47,19 @@ function DiagnosticHelp() {
         <Layout>
             {isModalOpen && (
                 <AddDiagnosticHelpModal
-                    onClose={onCloseModal}
-                    selectedDiagnosticHelp={selectedDiagnosticHelp}
+                    closeModal={onCloseModal}
+                    isOpen={isModalOpen}
+                    diagnosticHelpData={selectedDiagnosticHelp}
                 />
             )}
             {isDeleteModalOpen && (
                 <DeleteDiagnosticHelpModal
-                    onClose={onCloseDeleteModal}
-                    selectedDiagnosticHelp={selectedDiagnosticHelp}
+                    closeModal={onCloseDeleteModal}
+                    isOpen={isDeleteModalOpen}
+                    diagnosticHelpId={selectedDiagnosticHelp?.id}
+                    onDeleteSuccess={getData}
                 />
             )}
-
             <button
                 onClick={() => setIsModalOpen(true)}
                 className="w-16 animate-bounce h-16 border border-border z-50 bg-subMain text-white rounded-full flex-colo fixed bottom-8 right-12 button-fb"
@@ -82,9 +77,9 @@ function DiagnosticHelp() {
                 <div className="mt-8 w-full overflow-x-scroll">
                     <DiagnosticHelpTable
                         data={diagnosticHelpData}
-                        function={{
+                        functions={{
                             preview: preview,
-                            handleDelete: handleDelete
+                            handleDelete: handleDelete,
                         }}
                     />
                 </div>
@@ -94,5 +89,3 @@ function DiagnosticHelp() {
 }
 
 export default DiagnosticHelp;
-
-

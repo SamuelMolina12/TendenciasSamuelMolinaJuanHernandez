@@ -201,7 +201,7 @@ def updateDiagnosticHelp(self, request, id):
         # sesion = AdminValidator.getSession(token)
         # role=sesion.user.role
         # validateRole(role,["Soporte de informacion"])        
-        infoValidator.updateDiagnosticHelp(id,body["diagnosticName"],body["quantity"],body["diagnosticCost"],body["requiresSpecialistD"],body["specialist_id"])
+        infoValidator.updateDiagnosticHelp(id,body["diagnosticName"],body["diagnosticCost"])
         message = "Ayuda Diagnstica actualizada exitosamente"
         status = 204
     except Exception as error:
