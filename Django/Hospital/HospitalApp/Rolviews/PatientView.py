@@ -106,21 +106,34 @@ def deletePatient(self, request, id):
     return JsonResponse(response, status=status)
 
 
-def getClinicalAppointment(self,request,id):
+def getClinicalAppointment(self, request, id=None):
     try:
         # token = request.META.get('HTTP_TOKEN')
         # sesion = AdminValidator.getSession(token)
-        # role=sesion.user.role 
-        # validateRole(role,["Personal Administrativo"])           
-        appointments = staffAdminValidator.getClinicalAppointment(id)
+        # role = sesion.user.role
+        # validateRole(role, ["Personal Administrativo"]) 
+        if id:
+            appointments = staffAdminValidator.getClinicalAppointment(id)
+        else:
+            appointments = staffAdminValidator.getAllClinicalAppointments()
+        
         clinicalAppointments = []
         for appointment in appointments:
-            appointmentDict = {"id": appointment.id,"date": appointment.date,"hour": appointment.hour,"doctor": appointment.doctor,"appointmentType": appointment.appointmentType,"patientId": appointment.patient.id  }
+            appointmentDict = {
+                "id": appointment.id,
+                "date": appointment.date,
+                "hour": appointment.hour,
+                "doctor": appointment.doctor,
+                "appointmentType": appointment.appointmentType,
+                "patientId": appointment.patient.id
+            }
             clinicalAppointments.append(appointmentDict)
-        if appointments:
+        
+        if clinicalAppointments:
             status = 200
         else:
-            status = 404    
+            status = 404
+    
     except Exception as error:
         message = str(error)
         status = 400

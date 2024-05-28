@@ -27,24 +27,36 @@ function AddDiagnosticHelpModal({ closeModal, isOpen, diagnosticHelpData }) {
         setFormData({ ...formData, [name]: value });
     }
 
-    const handleSubmit = async (e) => {
-        try {
-            const dataToSubmit = { ...formData };
-            // dataToSubmit.diagnosticCost = String(dataToSubmit.diagnosticCost);
-
-            if (diagnosticHelpData) {
-                await updateDiagnosticHelp(diagnosticHelpData.id, dataToSubmit);
-                toast.success('Ayuda diagnostica actualizada con éxito');
-            } else {
-                await createDiagnosticHelp(dataToSubmit);
-                toast.success('Ayuda diagnostica creada con éxito');
-            }
-            closeModal();
-        } catch (error) {
-            toast.error('Error al guardar la ayuda diagnostica. Por favor, inténtalo de nuevo.');
-            setErrorMessage('Error al guardar la ayuda diagnostica. Por favor, inténtalo de nuevo.');
+    const handleSubmit = async () => {
+        if (!formData.diagnosticName || !formData.diagnosticCost) {
+          setErrorMessage('Por favor, completa todos los campos.');
+          return;
         }
-    };
+        
+        try {
+          const dataToSubmit = {
+            diagnosticName: formData.diagnosticName,
+            diagnosticCost: parseFloat(formData.diagnosticCost),
+          };
+          
+          if (isNaN(dataToSubmit.diagnosticCost)) {
+            setErrorMessage('El costo debe ser un número válido.');
+            return;
+          }
+      
+          if (diagnosticHelpData) {
+            await updateDiagnosticHelp(diagnosticHelpData.id, dataToSubmit);
+            toast.success('Ayuda diagnóstica actualizada con éxito');
+          } else {
+            await createDiagnosticHelp(dataToSubmit);
+            toast.success('Ayuda diagnóstica creada con éxito');
+          }
+          closeModal();
+        } catch (error) {
+          toast.error('Error al guardar la ayuda diagnóstica. Por favor, inténtalo de nuevo.');
+          setErrorMessage('Error al guardar la ayuda diagnóstica. Por favor, inténtalo de nuevo.');
+        }
+      };
 
     return (
         <Modal

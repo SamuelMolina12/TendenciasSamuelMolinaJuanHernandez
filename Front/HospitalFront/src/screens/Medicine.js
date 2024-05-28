@@ -1,14 +1,13 @@
-import React , { useState ,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../Layout';
 import { BiPlus } from 'react-icons/bi';
 
 import { MedicineTable } from '../components/Tables';
-import { MedicineData} from '../components/Datas';
+import { MedicineData } from '../components/Datas';
 import DeleteMedicine from '../components/Modals/DelMedicineModal';
 import AddMedicineModal from '../components/Modals/AddMedicineModal';
 
 function Medicine() {
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [medicineData, setMedicineData] = useState([]);
 
@@ -27,10 +26,12 @@ function Medicine() {
   };
 
   const preview = (id) => {
-    const medicine = medicineData.find(med => med.id === id);
+    const medicine = medicineData.find((med) => med.id === id);
+    console.log('Selected Medicine:', medicine);
     setSelectedMedicine(medicine);
     setIsModalOpen(true);
   };
+
   const handleDelete = async (id) => {
     setSelectedMedicine(id);
     setIsDeleteModalOpen(true);
@@ -40,6 +41,7 @@ function Medicine() {
     const data = await MedicineData();
     setMedicineData(data);
   };
+
   useEffect(() => {
     getData();
   }, []);
@@ -50,7 +52,7 @@ function Medicine() {
         <AddMedicineModal
           closeModal={onCloseModal}
           isOpen={isModalOpen}
-          medicineData={selectedMedicine}
+          medicine={selectedMedicine} // Cambiar esta línea
         />
       )}
       {isDeleteModalOpen && (
@@ -60,7 +62,7 @@ function Medicine() {
           medicineId={selectedMedicine?.id}
           onDeleteSuccess={getData}
         />
-      )}       
+      )}
       {/* add button */}
       <button
         onClick={() => setIsModalOpen(true)}
@@ -68,7 +70,6 @@ function Medicine() {
       >
         <BiPlus className="text-2xl" />
       </button>
-      {/*  */}
       <h1 className="text-xl font-semibold">Medicine</h1>
       <div
         data-aos="fade-up"

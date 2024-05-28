@@ -113,7 +113,13 @@ def getClinicalAppointment(id):
         return appointments
     else:
         raise Exception("No hay citas médicas para este paciente")
-
+    
+def getAllClinicalAppointments():
+    appointments = models.ClinicalAppointment.objects.all()
+    if appointments.exists():
+        return appointments
+    else:
+        raise Exception("No hay citas médicas para mostrar")
 
 def deletePatient(id):
     patient = models.Patient.objects.filter(id=id).first()
