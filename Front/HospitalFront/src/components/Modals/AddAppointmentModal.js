@@ -3,44 +3,55 @@ import Modal from './Modal';
 import { Button, Input } from '../Form';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
-import { createAppointment, updateAppointment } from '../Datas';
+import { createAppointment } from '../Datas';
+import moment from 'moment';
 
-function AddAppointmentModal({ onClose, isOpen, appointment }) {
+function AddAppointmentModal({ onClose, isOpen, appointment}) {
   const [formData, setFormData] = useState({
-    patientName: '',
+
     appointmentDate: '',
     appointmentTime: '',
-    doctorName: '',
+    doctor: '',
+    appointmentType: '',
+    patientId: '',
   });
 
   useEffect(() => {
     if (appointment) {
       setFormData({
-        patientName: appointment.patientName || '',
+
         appointmentDate: appointment.appointmentDate || '',
         appointmentTime: appointment.appointmentTime || '',
-        doctorName: appointment.doctorName || '',
+        doctor: appointment.doctor || '',
+        appointmentType: appointment.appointmentType || '',
+        patientId: appointment.patientId || '',
       });
     }
   }, [appointment]);
 
   const handleInputChange = (e) => {
+
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async () => {
-    try {
-      if (appointment) {
-        await updateAppointment(appointment.id, formData);
-        toast.success('Cita actualizada con éxito');
-      } else {
-        await createAppointment(formData);
-        toast.success('Cita creada con éxito');
-      }
+    try { 
+      const formattedDate = moment(formData.appointmentDate, 'YYYY-MM-DD').format('DD/MM/YYYY');
+      const formattedData = {
+        date: formattedDate,
+        hour: formData.appointmentTime,
+        doctor: formData.doctor,
+        appointmentType: formData.appointmentType,
+        patientId: formData.patientId,
+      };
+
+      await createAppointment(formattedData);
+      toast.success('Cita creada con éxito');
       onClose();
     } catch (error) {
       toast.error('Error al guardar la cita. Por favor, inténtalo de nuevo.');
+
     }
   };
 
@@ -48,17 +59,9 @@ function AddAppointmentModal({ onClose, isOpen, appointment }) {
     <Modal
       closeModal={onClose}
       isOpen={isOpen}
-      title={appointment ? 'Actualizar Cita' : 'Crear Cita'}
+      title={"Crear Cita"}
       width="max-w-3xl"
     >
-      <Input
-        label="Nombre del Paciente"
-        name="patientName"
-        value={formData.patientName}
-        onChange={handleInputChange}
-        placeholder="Ingrese el nombre del paciente"
-        color={true}
-      />
       <Input
         label="Fecha de la Cita"
         name="appointmentDate"
@@ -76,11 +79,27 @@ function AddAppointmentModal({ onClose, isOpen, appointment }) {
         color={true}
       />
       <Input
-        label="Nombre del Doctor"
-        name="doctorName"
-        value={formData.doctorName}
+        label="Cedula del doctor"
+        name="doctor"
+        value={formData.doctor}
         onChange={handleInputChange}
         placeholder="Ingrese el nombre del doctor"
+        color={true}
+      />
+      <Input
+        label="Tipo de Cita"
+        name="appointmentType"
+        value={formData.appointmentType}
+        onChange={handleInputChange}
+        placeholder="Ingrese el tipo de cita"
+        color={true}
+      />
+      <Input
+        label="Cedula del paciente"
+        name="patientId"
+        value={formData.patientId}
+        onChange={handleInputChange}
+        placeholder="Ingrese el nombre del paciente"
         color={true}
       />
       <div className="grid sm:grid-cols-2 gap-4 w-full">

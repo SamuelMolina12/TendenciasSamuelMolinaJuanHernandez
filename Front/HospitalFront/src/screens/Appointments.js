@@ -5,6 +5,7 @@ import { AppointmentTable } from '../components/Tables';
 import { AppointmentsData } from '../components/Datas';
 import AddAppointmentModal from '../components/Modals/AddAppointmentModal';
 import DelAppointmentModal from '../components/Modals/DelAppointmentModal';
+import moment from 'moment'; 
 
 function Appointments() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -13,22 +14,21 @@ function Appointments() {
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [filterDate, setFilterDate] = useState('');
 
+
   const onCloseModal = async () => {
     setIsModalOpen(false);
     setSelectedAppointment(null);
     await getData();
   };
 
+
   const onCloseDeleteModal = () => {
     setIsDeleteModalOpen(false);
     setSelectedAppointment(null);
   };
 
-  const handleUpdate = (id) => {
-    const appointment = appointmentsData.find(appt => appt.id === id);
-    setSelectedAppointment(appointment);
-    setIsModalOpen(true);
-  };
+
+
 
   const handleDelete = (id) => {
     const appointment = appointmentsData.find(appt => appt.id === id);
@@ -36,10 +36,26 @@ function Appointments() {
     setIsDeleteModalOpen(true);
   };
 
+
   const getData = async () => {
-    const data = await AppointmentsData(filterDate);
-    setAppointmentsData(data);
+ 
+    const data = await AppointmentsData();
+ 
+
+
+    const normalizedData = data.map(appointment => ({
+      ...appointment,
+      date: moment(appointment.date, 'DD/MM/YYYY').format('YYYY-MM-DD')
+    }));
+
+
+    const filteredData = filterDate
+      ? normalizedData.filter(appointment => appointment.date === filterDate)
+      : normalizedData;
+
+    setAppointmentsData(filteredData);
   };
+
 
   useEffect(() => {
     getData();
@@ -65,25 +81,34 @@ function Appointments() {
       <div className="flex justify-between items-center">
         <h1 className="text-3xl text-gray-700">Citas Médicas</h1>
         <div className="flex items-center">
+
           <input
             type="date"
             value={filterDate}
-            onChange={(e) => setFilterDate(e.target.value)}
+            onChange={(e) => {
+              const selectedDate = e.target.value; 
+              setFilterDate(selectedDate);
+            }}
             className="mr-4 px-4 py-2 border rounded-md"
           />
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="flex items-center bg-green-500 text-white px-4 py-2 rounded-md"
-          >
-            <BiPlus className="mr-2" />
-            Añadir Cita
-          </button>
+        <button
+        onClick={() => {
+          setSelectedAppointment(null); 
+          setIsModalOpen(true);
+          }}
+        className="w-16 animate-bounce h-16 border border-border z-50 bg-subMain text-white rounded-full flex-colo fixed bottom-8 right-12 button-fb"
+        >
+        <BiPlus className="text-2xl" />
+        </button>
         </div>
       </div>
       <AppointmentTable
         data={appointmentsData}
-        onUpdate={handleUpdate}
-        onDelete={handleDelete}
+        functions={{
+          handleDelete: handleDelete,
+        }}
+        showPatientId={true}
+        showActions={true}
       />
     </Layout>
   );

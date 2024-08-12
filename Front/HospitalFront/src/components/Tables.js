@@ -611,33 +611,61 @@ export function PatientTable({ data = [], functions }) {
 };
 
 // Cita medica Tabla
-export function AppointmentTable({ data = [], functions }) {
+export function AppointmentTable({ data = [], functions, showPatientId = false, showActions = false }) {
+  const DropDown1 = (patient) => [
+    {
+      title: 'Eliminar',
+      icon: RiDeleteBin6Line,
+      onClick: () => {
+        functions.handleDelete(patient.id);
+      },
+    },
+  ];
+
+  if (data.length === 0) {
+    return <div>No hay citas para la fecha seleccionada.</div>;
+  }
+
   return (
-    <table className="table-auto w-full">
-      <thead className="bg-dry rounded-md overflow-hidden">
-        <tr>
-          <th className={thclass}>Fecha</th>
-          <th className={thclass}>Hora</th>
-          <th className={thclass}>Doctor</th>
-          <th className={thclass}>Tipo de Cita</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((appointment) => (
-          <tr key={appointment.id}>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.date}</td> 
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.hour}</td> 
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.doctor}</td> 
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.appointmentType}</td> 
+    <div className="overflow-x-auto">
+      <table className="min-w-full bg-white divide-y divide-gray-200">
+        <thead className="bg-gray-50">
+          <tr>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hora</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cedula del Doctor</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo de Cita</th>
+            {showPatientId && <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cedula del paciente</th>}
+            {showActions && <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>}
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200">
+          {data.map((appointment) => (
+            <tr key={appointment.id}>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.date}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.hour}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.doctor}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.appointmentType}</td>
+              {showPatientId && <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.patientId}</td>}
+              {showActions && (
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <MenuSelect datas={DropDown1(appointment)} item={appointment}>
+                    <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
+                      <BiDotsHorizontalRounded />
+                    </div>
+                  </MenuSelect>
+                </td>
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
 //Facturacion Tabla
-export function BillingTable({ data = [], functions }) {
+export function BillingTable({ data = [] }) {
   return (
     <table className="table-auto w-full">
       <thead className="bg-dry rounded-md overflow-hidden">
@@ -645,7 +673,7 @@ export function BillingTable({ data = [], functions }) {
           <th className={thclass}>Id</th>
           <th className={thclass}>Doctor</th>
           <th className={thclass}>Numero de poliza</th>
-          <th className={thclass}>Termino de la poliza</th>
+          <th className={thclass}>Estado de la poliza</th>
           <th className={thclass}>Costo</th>
           <th className={thclass}>Pago total</th>
           <th className={thclass}>Fecha</th>
@@ -658,7 +686,7 @@ export function BillingTable({ data = [], functions }) {
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{billing.id}</td> 
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{billing.doctorName}</td> 
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{billing.policyNumber}</td> 
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{billing.termPolicy}</td> 
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{billing.statePolicy}</td> 
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{billing.cost}</td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{billing.totalPay}</td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{billing.date}</td>

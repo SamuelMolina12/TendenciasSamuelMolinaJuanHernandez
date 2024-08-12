@@ -73,12 +73,12 @@ export const MenuDatas = [
 
   },
   {
-    title: 'Appointments',
+    title: 'Citas Medicas',
     path: '/appointments',
     icon: FaRegCalendarAlt,
   },
   {
-    title: 'Payments',
+    title: 'Facturas',
     path: '/payments',
     icon: MdListAlt,
   },
@@ -608,18 +608,6 @@ export const createAppointment = async (appointmentData) => {
   }
 };
 
-export const updateAppointment = async (id, appointmentData) => {
-  try {
-    const response = await axios.put(`http://127.0.0.1:8000/hospital/patient/clinicalAppointment/${id}`, appointmentData, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
 
 export const deleteAppointment = async (id) => {
   try {
@@ -633,6 +621,28 @@ export const deleteAppointment = async (id) => {
 
 
 //factura
+
+export const BillingData = async () => {
+  try {
+    const response = await axios.get('http://127.0.0.1:8000/hospital/patient/billing');
+    if (Array.isArray(response.data)) {
+      return response.data;
+    } else if (typeof response.data === 'object' && response.data !== null) {
+      return [response.data];
+    } else {
+      console.error('La respuesta no es un arreglo ni un objeto válido:', response.data);
+    return [];
+    }
+  } catch (error) {
+    console.error('Error al obtener facturas:', error);
+    return [];
+  }
+};          
+
+
+
+
+
 export const BillingDataPatient = async (id) => {
   try {
     const response = await axios.get(`http://127.0.0.1:8000/hospital/patient/billing/${id}`);
@@ -652,6 +662,14 @@ export const BillingDataPatient = async (id) => {
   }
 };
 
+export const createBilling = async (billingData) => {
+  try {
+    const response = await axios.post('http://127.0.0.1:8000/hospital/patient/billing', billingData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
 
 export const sortsDatas = {

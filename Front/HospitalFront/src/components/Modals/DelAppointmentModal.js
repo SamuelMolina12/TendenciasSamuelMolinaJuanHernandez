@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from './Modal';
 import { Button } from '../Form';
-import { HiOutlineTrash } from 'react-icons/hi';
+import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
 import { deleteAppointment } from '../Datas';
 
@@ -24,17 +24,17 @@ function DelAppointmentModal({ onClose, isOpen, appointment, onDeleteSuccess }) 
       title="Eliminar Cita"
       width="max-w-lg"
     >
-      <p>¿Está seguro de que desea eliminar esta cita?</p>
+      <p>¿Seguro que desea eliminar la Cita Medica?</p>
       <div className="grid sm:grid-cols-2 gap-4 w-full mt-4">
         <button
           onClick={onClose}
-          className="bg-gray-600 bg-opacity-5 text-gray-600 text-sm p-4 rounded-lg font-light border border-gray-600"
+          className="bg-red-600 bg-opacity-5 text-red-600 text-sm p-4 rounded-lg font-light border border-red-600"
         >
           Cancelar
         </button>
         <Button
-          label="Eliminar"
-          Icon={HiOutlineTrash}
+          label="Eliminar Cita Médica"
+          Icon={HiOutlineCheckCircle}
           onClick={handleDelete}
           color="bg-red-600"
           textColor="text-white"

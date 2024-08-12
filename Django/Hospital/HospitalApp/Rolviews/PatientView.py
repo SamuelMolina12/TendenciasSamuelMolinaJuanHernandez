@@ -116,17 +116,9 @@ def getClinicalAppointment(self, request, id=None):
             appointments = staffAdminValidator.getClinicalAppointment(id)
         else:
             appointments = staffAdminValidator.getAllClinicalAppointments()
-        
         clinicalAppointments = []
         for appointment in appointments:
-            appointmentDict = {
-                "id": appointment.id,
-                "date": appointment.date,
-                "hour": appointment.hour,
-                "doctor": appointment.doctor,
-                "appointmentType": appointment.appointmentType,
-                "patientId": appointment.patient.id
-            }
+            appointmentDict = {"id": appointment.id,"date": appointment.date,"hour": appointment.hour,"doctor": appointment.doctor,"appointmentType": appointment.appointmentType,"patientId": appointment.patient.id}
             clinicalAppointments.append(appointmentDict)
         
         if clinicalAppointments:
@@ -376,16 +368,20 @@ def createBilling(self,request):
     return JsonResponse(response,status=status)
 
 
-def getBilling(self,request,id):
+def getBilling(self,request,id=None):
     try:
         # token = request.META.get('HTTP_TOKEN')
         # sesion = AdminValidator.getSession(token)
         # role=sesion.user.role 
-        # validateRole(role,["Personal Administrativo"])           
-        billings = staffAdminValidator.getBilling(id)
-        billingsData = []
+        # validateRole(role,["Personal Administrativo"])
+        if id:           
+            billings = staffAdminValidator.getBilling(id)
+        else:
+            billings = staffAdminValidator.getAllBillings()
+        billingsData = []        
+
         for billing in billings:
-            billingDict = {"id": billing.id,"doctorName":billing.doctorName,"policyNumber":billing.policyNumber,"termPolicy":billing.termPolicy,"cost":billing.cost,"totalPay":billing.totalPay,"date":billing.date,"patientId": billing.patient.id }
+            billingDict = {"id": billing.id,"doctorName":billing.doctorName,"policyNumber":billing.policyNumber,"statePolicy":billing.statePolicy,"cost":billing.cost,"totalPay":billing.totalPay,"date":billing.date,"patientId": billing.patient.id }
             billingsData.append(billingDict)
         if billings:
             status = 200

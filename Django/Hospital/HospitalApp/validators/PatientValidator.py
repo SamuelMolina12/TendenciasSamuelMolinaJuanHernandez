@@ -65,7 +65,7 @@ def createPolicy(insuranceCompany,policyNumber,statePolicy,termPolicy,patientId)
 def createClinicalAppointment (date, hour, doctor, appointmentType,patientId):
   
 
-    validators.dateValidator(date, "fecha  \n")
+    validators.dateFValidator(date, "fecha  \n")
 
     validators.timeValidator(hour, "hora de\n")
 
@@ -320,4 +320,7 @@ def createBilling(patient_id,doctor_id,order_id):
 def getBilling(id):
     id = validators.numberValidator(id,"id")
     return staffAdminService.getBilling(id)    
+
+def getAllBillings():
+    return staffAdminService.getAllBillings()
 

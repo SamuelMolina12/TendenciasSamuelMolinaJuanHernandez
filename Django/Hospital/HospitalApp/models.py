@@ -127,7 +127,7 @@ class Billing(models.Model):
     doctorName = models.CharField(max_length=30)
     policy =  models.ForeignKey(Policy,on_delete=models.CASCADE)
     policyNumber = models.IntegerField()
-    termPolicy=models.CharField(max_length=30)
+    statePolicy=models.CharField(max_length=30)
 
     order = models.ForeignKey(Order,on_delete=models.CASCADE)
     cost = models.FloatField() 

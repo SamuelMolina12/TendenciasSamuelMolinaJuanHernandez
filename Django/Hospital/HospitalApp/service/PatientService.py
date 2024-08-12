@@ -527,7 +527,7 @@ def createBilling(patient_id, doctor_id, order_id):
     billing.doctorName = doctor.name
     billing.policy = policy
     billing.policyNumber = policy.policyNumber
-    billing.termPolicy = policy.termPolicy
+    billing.statePolicy = policy.statePolicy
     
     billing.order = order
 
@@ -541,7 +541,13 @@ def getBilling(id):
         return billing
     else:
         raise Exception("No hay una factura para ese paciente")
-    
+
+def getAllBillings():
+    billing = models.Billing.objects.all()
+    if billing.exists():
+        return billing
+    else:
+        raise Exception("No hay facturas para mostrar")    
 
 
 

@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { AppointmentsDataPatient } from '../Datas';
 import { AppointmentTable } from '../Tables';
@@ -21,13 +20,11 @@ function ClinicalAppointmentUsed({ patientId }) {
     fetchData();
   }, [patientId]);
 
-
-
   return (
     <div className="w-full">
       <h1 className="text-sm font-medium mb-6">Citas Médicas del paciente</h1>
       <div className="w-full overflow-x-scroll">
-        <AppointmentTable data={appointments} />
+        <AppointmentTable data={appointments} showPatientId={false} showActions={false} />
       </div>
     </div>
   );
